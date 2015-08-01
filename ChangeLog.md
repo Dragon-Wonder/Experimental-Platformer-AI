@@ -3,7 +3,14 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.2.0] - 2015-08-01
+## [1.2.1] - 2015-08-01
+
+### Fixed
+
+	-A misplaced check of if the map should be shown that crashed the program
+	
+
+## [1.2.0] - 2015-08-01 - [YANKED]
 
 ### Added
 
