@@ -1,11 +1,31 @@
 # Change Log
 
 All notable changes to this project will be documented here.
-This project adheres to [Semantic Versioning](http://semver.org/).
+This project adheres to [Semantic Versioning](http://semver.org/)
+
+## [1.2.0] - 2015-08-01
+
+### Added
+
+	-Verison Number added to Config file
+
+### Fixed
+
+	-Monster movement is no longer randomly
+	
+		-Hopefully to improve suvivabilty between generations
+
+
+## [1.1.2] - 2015-08-01
+
+### Fixed
+
+	-Best Player list no longer appears on show map update
 
 ## [1.1.1] - 2015-08-01
 
 ### Fixed
+
 	-Increase wait dealy from 20 to 65 so updating is not so jarring.
 
 ## [1.1.0] - 2015-07-31
