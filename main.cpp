@@ -1,9 +1,5 @@
 /**********************************************************************************************************************************************/
-/*
-Made By: Patrick J. Rye
-Purpose: A very makeshift AI learning program. Its kind of like Mario but much simpler	
-*/
-const char version[] = "v1.1.1";	
+const char version[] = "v1.2.0";	
 /**********************************************************************************************************************************************/
 #include <cstdio>
 #include <cstdlib>
@@ -49,6 +45,7 @@ struct monster {
 	unsigned char x;
 	unsigned char y;
 	bool living;
+	bool movingright;
 };
 
 enum dir {
@@ -135,7 +132,7 @@ int main()
 		}
 		if(blnShowMap) {showmap();}
 	}
-	getbestplayers();
+	if (!(blnShowMap)) {getbestplayers();}
 	if (blnError) {printf("\nThere was an error!\n"); return 1;}
 	printf("Best Player fitnesses are:\n");
 	for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
@@ -158,7 +155,7 @@ int main()
 			}
 			if(blnShowMap) {showmap();}
 		}
-		getbestplayers();
+		if (!(blnShowMap)) {getbestplayers();}
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
 		printf("Best Player fitnesses are:\n");
 		for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
@@ -183,7 +180,7 @@ int main()
 			}
 			if(blnShowMap) {showmap(); getchar();}
 		}
-		getbestplayers();
+		if (!(blnShowMap)) {getbestplayers();}
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
 		printf("Best Player fitnesses are:\n");
 		for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
@@ -336,7 +333,9 @@ void CheckConfigFile(){
 		ConfigFile = fopen("MarioConfig.ini","r");
 		
 		fgets(chrTempString,50,ConfigFile);
-		printf("%s\n",chrTempString);
+		//printf("%s\n",chrTempString);
+		fgets(chrTempString,50,ConfigFile);
+		//printf("%s\n",chrTempString);
 		
 		fgets(chrTempString,50,ConfigFile);
 		//printf("%s\n",chrTempString);
@@ -404,6 +403,7 @@ void CheckConfigFile(){
 		printf("Config File not found it will be created!\n");
 		ConfigFile = fopen("MarioConfig.ini","w");
 		fprintf(ConfigFile,"Config File for the program.\n");
+		fprintf(ConfigFile,"Version: %s\n",version);
 		fprintf(ConfigFile,"First Generation Steps: 50\n");
 		fprintf(ConfigFile,"Generation Increase: 50\n");
 		fprintf(ConfigFile,"Log to File: 1\n");
@@ -444,6 +444,7 @@ void findMonsters(){
 					monsters[0].x = x;
 					monsters[0].y = y;
 					monsters[0].living = true;
+					monsters[0].movingright = false;
 				}else{
 					intNumMonsters++;
 					monsters = (struct monster*)realloc(monsters,sizeof(struct monster) * intNumMonsters);
@@ -451,6 +452,7 @@ void findMonsters(){
 					monsters[intNumMonsters - 1].x = x;
 					monsters[intNumMonsters - 1].y = y;
 					monsters[intNumMonsters - 1].living = true;
+					monsters[0].movingright = false;
 				}
 			}
 		}
@@ -458,26 +460,19 @@ void findMonsters(){
 }
 /**********************************************************************************************************************************************/
 void moveMonsters(){
-	unsigned char Direction = 0;
+	unsigned char tempx;
 	for(unsigned char i = 0; i < intNumMonsters; i++){
 		if (monsters[i].living){
-			Direction = GenerateRandomNumber(dirLeft, dirRight + 1);
-			unsigned char tempx = monsters[i].x;
-			switch (Direction){
-				case dirLeft:
-					tempx --;
-					break;
-				case dirRight:
-					tempx ++;
-					break;
-			};
-			if(map[monsters[i].y+1][monsters[i].x] == tileSpace) {tempx = monsters[i].x; monsters[i].living = false;}
+			if (monsters[i].movingright){tempx = monsters[i].x + 1;}
+			else{ tempx = monsters[i].x -1;}
 			if (map[monsters[i].y][tempx] == tileSpace){
 				map[monsters[i].y][monsters[i].x] = tileSpace;
 				map[monsters[i].y][tempx] = tileMonster;
 				monsters[i].x = tempx;
 			}
 			else if (map[monsters[i].y][tempx] == tilePlayer) {player.y = 13; player.falling = true;}
+			else if (map[monsters[i].y][tempx] == tileWall) {monsters[i].movingright = !(monsters[i].movingright);}
+			if(map[monsters[i].y+1][monsters[i].x] == tileSpace) {tempx = monsters[i].x; monsters[i].living = false;} 
 			if(monsters[i].living == false) {map[monsters[i].y][monsters[i].x] = tileSpace;}
 		}
 	}
