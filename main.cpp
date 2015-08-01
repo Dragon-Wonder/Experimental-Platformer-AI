@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************/
-const char version[] = "v1.2.1";	
+const char version[] = "v2.0.0";	
 /**********************************************************************************************************************************************/
 #include <cstdio>
 #include <cstdlib>
@@ -18,15 +18,14 @@ const unsigned char basemap[14][217] = {{1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 {0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,1,1,0,0,0,0},
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,1,1,0,0,0,0},
-{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,3,0,0,0,0,1,1,1,1,1,0,0,0},
-{0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,3,0,0,0,0,1,1,1,1,1,0,0,0},
-{1,1,1,1,1,2,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,4,0,0,1,1,1,0,0,0,0,0,0,0,0,4,0,0,0,0,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,0,3,0,0,0,1,1,1,1,1,1,0,0,0},
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,1,1,0,0,0,0},
+{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,3,0,0,0,0,1,1,1,1,1,0,0,0},
+{0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,3,0,0,0,0,1,1,1,1,1,0,0,0},
+{1,1,1,1,1,2,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,4,0,0,1,1,1,1,0,0,0,0,0,0,0,4,0,0,0,0,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,0,3,0,0,0,1,1,1,1,1,1,0,0,0},
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 /**********************************************************************************************************************************************/
 unsigned char map[14][217];
-//unsigned char basemap[14][217];
 /**********************************************************************************************************************************************/
 struct generation {
 	double fitness;
@@ -67,12 +66,15 @@ inline bool fileexists(const char *fileName) {std::ifstream infile(fileName); re
 /**********************************************************************************************************************************************/
 generation pastplayers[40];
 generation bestplayers[10];
-player player;
-monster *monsters;
+struct player player;
+struct player baseplayer;
+struct monster *monsters;
+struct monster *basemonsters;
 bool blnLogging = true;
 bool blnShowMap = false;
 bool blnAppendTimeToSeed = false;
 bool blnError = false;
+bool blnHardMode = false;
 unsigned char generationNum = 0;
 unsigned char numplayers = 0;
 unsigned int intSeed;
@@ -98,21 +100,22 @@ char moveplayer(int);
 void getbestplayers(void);
 void CheckConfigFile(void);
 unsigned char PickBestPlayer(void);
-void findMonsters(void);
 void moveMonsters(void);
+void loadMap(void);
 /**********************************************************************************************************************************************/
 int main() 
 {
 	CheckConfigFile();
+	loadMap();
 	if (blnError) {printf("\nThere was an error!\n"); return 1;}
 	restartmap();
-	if (blnError) {printf("\nThere was an error!\n"); return 1;}
 	showmap();
-	if (blnError) {printf("\nThere was an error!\n"); return 1;}
 	getchar();
+	
 	if (intSeed != 0 && blnAppendTimeToSeed) {srand(time(NULL)+intSeed);}
 	else if (intSeed != 0) {srand(intSeed);}
 	else {srand(time(NULL));}
+	
 	char playerstatus = 0;
 	if(blnShowMap) {showmap();}
 	if (blnLogging) { logfile = fopen("log.txt","w"); fclose(logfile);}
@@ -135,7 +138,6 @@ int main()
 	getbestplayers();
 	if (blnError) {printf("\nThere was an error!\n"); return 1;}
 	if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
-	//getchar();
 	while (intGenerationSteps + InputGenIncrease <= 1000){
 		numplayers = 0;
 		generationNum++;
@@ -157,7 +159,6 @@ int main()
 		getbestplayers();
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
-		//getchar();
 		intGenerationSteps += InputGenIncrease;
 	}
 	for (unsigned int j = 0; j < intGensPastGrowth; j++){
@@ -181,15 +182,15 @@ int main()
 		getbestplayers();
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
-		//getchar();
 	}
 	printf("\nDone!\n");
+	free(monsters);
+	free(basemonsters);
 	getchar();
 	return 0;
 }
 /**********************************************************************************************************************************************/
 unsigned char GenerateRandomNumber(unsigned char Min, unsigned char Max){
-	//srand(time(NULL));
 	unsigned char temprand = 0;
 	int inters = 0;
 	do{
@@ -200,19 +201,17 @@ unsigned char GenerateRandomNumber(unsigned char Min, unsigned char Max){
 }
 /**********************************************************************************************************************************************/
 void restartmap(){
-	free(monsters);
-	for(unsigned char y = 0; y < 14; y++){
-		for(unsigned char x = 0; x < 217; x++){
-			map[y][x] = basemap[y][x];
-			if(basemap[y][x] == tilePlayer){
-				player.x = x;
-				player.y = y;
-				player.falling = false;
-			}
-		}
+	for(unsigned char y = 0; y < 14; y++){for(unsigned char x = 0; x < 217; x++){map[y][x] = basemap[y][x];}}
+	for(unsigned char i = 0; i < intNumMonsters; i++) {
+		monsters[i].x = basemonsters[i].x;
+		monsters[i].y = basemonsters[i].y;
+		monsters[i].living = basemonsters[i].living;
+		monsters[i].movingright = basemonsters[i].movingright;
 	}
-	//printf("Start monster finder");
-	findMonsters();
+	player.x = baseplayer.x;
+	player.y = baseplayer.y;
+	player.falling = baseplayer.falling;
+	player.fitness = baseplayer.fitness;
 }
 /**********************************************************************************************************************************************/
 void nextplayer(){
@@ -227,7 +226,6 @@ void nextplayer(){
 			if (player.direction[i] == dirUp) {fprintf(logfile, " ↑");}
 			else if (player.direction[i] == dirLeft) {fprintf(logfile, " ←");}
 			else if (player.direction[i] == dirRight) {fprintf(logfile, " →");}
-			//else {fprintf(logfile,"");}
 		}
 	}
 	if(blnLogging) {fprintf(logfile,"\n"); fclose(logfile);}
@@ -236,7 +234,6 @@ void nextplayer(){
 void showmap(){
 	Sleep(65);
 	for (unsigned char i = 0; i < 14; i++) {printf("\n");}
-	//system("CLS");
 	for(unsigned char y = 0; y < 14; y++){
 		for(unsigned char x = player.x - 5; x < player.x + 73; x++){
 			if (map[y][x] == tileSpace) {printf(" ");}
@@ -268,7 +265,7 @@ double getfitness(unsigned int step){
 	temp += (player.x + player.y) / 6.0;
 	temp += (12.0 - player.y) / 4.0;
 	if (player.x > 204) {temp += 200.0;}
-	temp -= (step / 80.0);
+	if(blnHardMode) {temp -= (step / 50.0);}
 	return temp;
 }
 /**********************************************************************************************************************************************/
@@ -287,7 +284,7 @@ char moveplayer(int stepnum){
 			if (!player.falling && player.y != 0) {tempy-=2;}
 			break;
 	};
-	if (tempx < 5) {return 'D';}
+	if (tempx < 5 && blnHardMode) {return 'D';}
 	if (player.y == 13 && player.falling) {return 'D';} //For Dead
 	if (player.falling) {tempy ++;}
 	if (map[tempy][tempx] == tileMonster) {return 'D';}
@@ -301,9 +298,9 @@ char moveplayer(int stepnum){
 	map[tempy][tempx] = tilePlayer;
 	player.x = tempx;
 	player.y = tempy;
-	if (getfitness(stepnum) > player.fitness) {player.fitness = getfitness(stepnum);}
-	player.fitness = getfitness(stepnum);
-	if (player.fitness < 0.00F) {return 'D';}
+	if (blnHardMode) {player.fitness = getfitness(stepnum);}
+	else {if (getfitness(stepnum) > player.fitness) {player.fitness = getfitness(stepnum);}}
+	if (player.fitness < 0.00F && blnHardMode) {return 'D';}
 	if ((player.y == 13) || (map[player.y + 1][player.x] == tileSpace)) {player.falling = true;}
 	else {player.falling = false;}
 	return 'L';
@@ -330,24 +327,19 @@ void CheckConfigFile(){
 		ConfigFile = fopen("MarioConfig.ini","r");
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %d",&InputFirstGen);
 		if (intValuesScanned < 1) {printf("ERROR!"); InputFirstGen = 50;}
 		printf("First Gen Steps \t \t %2d\n",InputFirstGen);
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %d",&InputGenIncrease);
 		if (intValuesScanned < 1) {printf("ERROR!"); InputGenIncrease = 50;}
 		printf("Generation Increase \t \t %2d\n",InputGenIncrease);
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d", &intTempBool);
 		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
 		printf("Log to file \t \t \t %d\n",intTempBool);
@@ -355,7 +347,6 @@ void CheckConfigFile(){
 		else {blnLogging = false;}
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
 		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 		printf("Show Map Update \t \t %d\n",intTempBool);
@@ -363,13 +354,11 @@ void CheckConfigFile(){
 		else {blnShowMap = false;}		
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString,"%*s %*s [%u]", &intSeed);
 		if (intValuesScanned < 1) {printf("ERROR!"); intSeed = 0;}
 		printf("Random Seed \t \t \t %d\n",intSeed);
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
 		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
 		printf("Append Time \t \t \t %u\n",intTempBool);
@@ -377,22 +366,23 @@ void CheckConfigFile(){
 		else {blnAppendTimeToSeed = false;}
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intGensPastGrowth);
 		if (intValuesScanned < 1) {printf("ERROR!"); intGensPastGrowth = 10;}
 		printf("Gens Past Growth \t \t \t %u\n",intGensPastGrowth);
 		
 		fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %u", &intPercentMutationChance);
 		if (intValuesScanned < 1) {printf("ERROR!"); intPercentMutationChance = 30;}
 		printf("Percent Mutation Chance \t \t \t %u\n",intPercentMutationChance);		
 		
-		//fgets(chrTempString,50,ConfigFile);
-		//printf("%s\n",chrTempString);
-		//intValuesScanned = sscanf(chrTempString, "%*s %*s %*s [%s]", &strMapName);
-		//if (intValuesScanned < 1) {printf("ERROR!"); strMapName = "Level1.dat";}
-		//printf("Map Name \t \t \t %s\n",strMapName);
+		fgets(chrTempString,50,ConfigFile);
+		intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
+		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
+		printf("Hard mode \t \t \t %u\n",intTempBool);
+		if(intTempBool == 1) {blnHardMode = true;}
+		else {blnHardMode = false;}
+		
+		
 		
 		fclose(ConfigFile);
 		printf("\n\n\n\n\n");
@@ -400,16 +390,25 @@ void CheckConfigFile(){
 		printf("Config File not found it will be created!\n");
 		ConfigFile = fopen("MarioConfig.ini","w");
 		fprintf(ConfigFile,"Config File for the program.\n");
-		fprintf(ConfigFile,"Version: %s\n",version);
+		fprintf(ConfigFile,"%s\n",version);
 		fprintf(ConfigFile,"First Generation Steps: 50\n");
+		InputFirstGen = 50;
 		fprintf(ConfigFile,"Generation Increase: 50\n");
+		InputGenIncrease = 50;
 		fprintf(ConfigFile,"Log to File: 1\n");
+		blnLogging = true;
 		fprintf(ConfigFile,"Show map on update: 0\n");
+		blnShowMap = false;
 		fprintf(ConfigFile,"Random Seed: [00000]\n");
+		intSeed = 0;
 		fprintf(ConfigFile,"Append Time: 1\n");
+		blnAppendTimeToSeed = true;
 		fprintf(ConfigFile,"Gens Past Growth: 10\n");
+		intGensPastGrowth = 10;
 		fprintf(ConfigFile,"Percent Mutation Chance: 30\n");
-		//fprintf(ConfigFile,"Load map name: [Level1.dat]\n");
+		intPercentMutationChance = 30;
+		fprintf(ConfigFile,"Hard mode: 0\n");
+		blnHardMode = false;
 		fclose(ConfigFile);
 	}
 }
@@ -429,33 +428,6 @@ unsigned char PickBestPlayer(){
 	else {return 9;}
 }
 /**********************************************************************************************************************************************/
-void findMonsters(){
-	intNumMonsters = 0;
-	for (unsigned char y = 0; y < 14; y++){
-		for (unsigned char x = 0; x < 217; x++){
-			if(map[y][x] == tileMonster){
-				if(intNumMonsters == 0){
-					monsters = (struct monster*)malloc(sizeof(struct monster) * 1);
-					if (monsters == NULL) {blnError = true; return;}
-					intNumMonsters++;
-					monsters[0].x = x;
-					monsters[0].y = y;
-					monsters[0].living = true;
-					monsters[0].movingright = false;
-				}else{
-					intNumMonsters++;
-					monsters = (struct monster*)realloc(monsters,sizeof(struct monster) * intNumMonsters);
-					if (monsters == NULL) {blnError = true; return;}
-					monsters[intNumMonsters - 1].x = x;
-					monsters[intNumMonsters - 1].y = y;
-					monsters[intNumMonsters - 1].living = true;
-					monsters[0].movingright = false;
-				}
-			}
-		}
-	}
-}
-/**********************************************************************************************************************************************/
 void moveMonsters(){
 	unsigned char tempx;
 	for(unsigned char i = 0; i < intNumMonsters; i++){
@@ -473,5 +445,40 @@ void moveMonsters(){
 			if(monsters[i].living == false) {map[monsters[i].y][monsters[i].x] = tileSpace;}
 		}
 	}
+}
+/**********************************************************************************************************************************************/
+void loadMap() {
+	//Finds player and monster on the map, and place them in base stats used
+	//when restarting the map.
+	intNumMonsters = 0;
+	for (unsigned char y = 0; y < 14; y ++) {
+		for (unsigned char x = 0; x < 217; x++) {
+			if (basemap[y][x] == tilePlayer) {
+				baseplayer.x = x;
+				baseplayer.y = y;
+				baseplayer.falling = false;
+			}
+			else if (basemap[y][x] == tileMonster) {
+				intNumMonsters++;
+				if (intNumMonsters == 1) {
+					basemonsters = (struct monster*)malloc(sizeof(struct monster) * 1);
+					if (basemonsters == NULL) {blnError = true; return;}
+					basemonsters[0].x = x;
+					basemonsters[0].y = y;
+					basemonsters[0].living = true;
+					basemonsters[0].movingright = false;
+				} else {
+					basemonsters = (struct monster*)realloc(basemonsters,sizeof(struct monster) * intNumMonsters);
+					if (basemonsters == NULL) {blnError = true; return;}
+					basemonsters[intNumMonsters - 1].x = x;
+					basemonsters[intNumMonsters - 1].y = y;
+					basemonsters[intNumMonsters - 1].living = true;
+					basemonsters[0].movingright = false;
+				}
+			}
+		}
+	}
+	monsters = (struct monster*)malloc(sizeof(struct monster) * intNumMonsters);
+	if (monsters == NULL) {blnError = true; return;}
 }
 /**********************************************************************************************************************************************/
