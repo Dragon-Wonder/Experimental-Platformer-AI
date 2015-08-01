@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************/
-const char version[] = "v1.2.0";	
+const char version[] = "v1.2.1";	
 /**********************************************************************************************************************************************/
 #include <cstdio>
 #include <cstdlib>
@@ -132,10 +132,9 @@ int main()
 		}
 		if(blnShowMap) {showmap();}
 	}
-	if (!(blnShowMap)) {getbestplayers();}
+	getbestplayers();
 	if (blnError) {printf("\nThere was an error!\n"); return 1;}
-	printf("Best Player fitnesses are:\n");
-	for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
+	if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 	//getchar();
 	while (intGenerationSteps + InputGenIncrease <= 1000){
 		numplayers = 0;
@@ -155,10 +154,9 @@ int main()
 			}
 			if(blnShowMap) {showmap();}
 		}
-		if (!(blnShowMap)) {getbestplayers();}
+		getbestplayers();
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
-		printf("Best Player fitnesses are:\n");
-		for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
+		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 		//getchar();
 		intGenerationSteps += InputGenIncrease;
 	}
@@ -180,10 +178,9 @@ int main()
 			}
 			if(blnShowMap) {showmap(); getchar();}
 		}
-		if (!(blnShowMap)) {getbestplayers();}
+		getbestplayers();
 		if (blnError) {printf("\nThere was an error!\n"); return 1;}
-		printf("Best Player fitnesses are:\n");
-		for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}
+		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (unsigned char j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 		//getchar();
 	}
 	printf("\nDone!\n");
