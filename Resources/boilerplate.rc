@@ -1,0 +1,33 @@
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION    	2,1,0,0
+PRODUCTVERSION 	2,1,0,0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName","Public Domain"
+            VALUE "FileDescription","An Experiment into a self-learning AI trying to teach itself a simple verison of Mario"
+            VALUE "FileVersion","2.1.0"
+            VALUE "InternalName","MarioExperiment"
+            VALUE "LegalCopyright","http://unlicense.org"
+            VALUE "OriginalFilename","MarioExperiment.exe"
+            VALUE "ProductName","Mario Experiment"
+            VALUE "ProductVersion","2.1.0"
+			VALUE "Comments", "Source Code found at: https://github.com/GamerMan7799/Experimental-Mario-AI"
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+        /* The following line should only be modified for localized versions.     */
+        /* It consists of any number of WORD,WORD pairs, with each pair           */
+        /* describing a language,codepage combination supported by the file.      */
+        /*                                                                        */
+        /* For example, a file might have values "0x409,1252" indicating that it  */
+        /* supports English language (0x409) in the Windows ANSI codepage (1252). */
+
+        VALUE "Translation", 0x409, 1252
+
+    END
+END
