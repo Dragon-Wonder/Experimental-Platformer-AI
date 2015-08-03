@@ -3,6 +3,21 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [2.1.0] - 2015-08-03
+
+### Added
+
+	* Program now checks version number written to config file with its own
+		if the numbers do not match it will overwrite the old file with a new one
+		this is to prevent program crashing bugs if I add something to a new config
+		that isn't in the old one.
+		
+	* Added Icon to complied application (will likely change later just testing what I can do.)
+
+### Changed
+	
+	* A player "jumping" on a monster will kill it.
+
 ## [2.0.0] - 2015-08-01
 
 ### Added
