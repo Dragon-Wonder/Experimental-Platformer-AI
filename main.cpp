@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************/
-const char version[] = "v2.0.0";	
+const char* version = "v2.1.0";	
 /**********************************************************************************************************************************************/
 #include <cstdio>
 #include <cstdlib>
@@ -102,6 +102,8 @@ void CheckConfigFile(void);
 unsigned char PickBestPlayer(void);
 void moveMonsters(void);
 void loadMap(void);
+char CheckVerison(const char *);
+void KillMonster(unsigned char, unsigned char);
 /**********************************************************************************************************************************************/
 int main() 
 {
@@ -287,7 +289,10 @@ char moveplayer(int stepnum){
 	if (tempx < 5 && blnHardMode) {return 'D';}
 	if (player.y == 13 && player.falling) {return 'D';} //For Dead
 	if (player.falling) {tempy ++;}
-	if (map[tempy][tempx] == tileMonster) {return 'D';}
+	if (map[tempy][tempx] == tileMonster) {
+		if (player.falling) {KillMonster(tempx,tempy);}
+		else {return 'D';}
+	}
 	if (map[tempy][tempx] == tileWall){
 		if (map[tempy][player.x] == tileSpace) {tempx = player.x;}
 		else if (map[player.y][tempx] == tileSpace) {tempy = player.y;}
@@ -319,26 +324,53 @@ void getbestplayers(){
 /**********************************************************************************************************************************************/
 void CheckConfigFile(){
 	char chrTempString[50];
+	char chrConfigVerison;
+	int intTempBool;
+	int intValuesScanned;
 	bool blnFileExists = fileexists("MarioConfig.ini");
 	if (blnFileExists){
 		printf("Config File Found, loading values\n");
-		int intTempBool;
-		int intValuesScanned;
 		ConfigFile = fopen("MarioConfig.ini","r");
-		
 		fgets(chrTempString,50,ConfigFile);
 		fgets(chrTempString,50,ConfigFile);
-		
+		chrConfigVerison = CheckVerison(chrTempString);
+	} else {chrConfigVerison = 'N';}
+	
+	if (chrConfigVerison == 'P') {
+		//Prompt user about whether to use old config or make new one.
+		printf("\nThe config file you are using has a different Minor Version than the program.\n");
+		printf("The config file should in theory still work with this version but I can't say for sure.\n");
+		printf("Would you like to replace the config file with a new one?\n");
+		printf("Y or N\n> ");
+		scanf("%c",&chrConfigVerison);
+		switch (chrConfigVerison)
+		{
+			case 'Y' :
+			case 'y' :
+				chrConfigVerison = 'N';
+				break;
+			case 'N' :
+			case 'n' :
+				chrConfigVerison = 'U';
+				break;
+			default :
+				printf("\nUnknown answer; try again.\n");
+				break;
+		};
+	}
+	
+	if (chrConfigVerison == 'U') {
+		//Use the current config file.
 		fgets(chrTempString,50,ConfigFile);
 		intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %d",&InputFirstGen);
 		if (intValuesScanned < 1) {printf("ERROR!"); InputFirstGen = 50;}
 		printf("First Gen Steps \t \t %2d\n",InputFirstGen);
-		
+				
 		fgets(chrTempString,50,ConfigFile);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %d",&InputGenIncrease);
 		if (intValuesScanned < 1) {printf("ERROR!"); InputGenIncrease = 50;}
 		printf("Generation Increase \t \t %2d\n",InputGenIncrease);
-		
+			
 		fgets(chrTempString,50,ConfigFile);
 		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d", &intTempBool);
 		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
@@ -382,11 +414,13 @@ void CheckConfigFile(){
 		if(intTempBool == 1) {blnHardMode = true;}
 		else {blnHardMode = false;}
 		
-		
-		
 		fclose(ConfigFile);
 		printf("\n\n\n\n\n");
-	}else{
+	}
+	
+	
+	if (chrConfigVerison == 'N') {
+		//New config will be made.
 		printf("Config File not found it will be created!\n");
 		ConfigFile = fopen("MarioConfig.ini","w");
 		fprintf(ConfigFile,"Config File for the program.\n");
@@ -480,5 +514,25 @@ void loadMap() {
 	}
 	monsters = (struct monster*)malloc(sizeof(struct monster) * intNumMonsters);
 	if (monsters == NULL) {blnError = true; return;}
+}
+/**********************************************************************************************************************************************/
+char CheckVerison(const char *ConfigVerison) {
+	unsigned int P_MajorNum, P_MinorNum, P_PatchNum;
+	unsigned int C_MajorNum, C_MinorNum, C_PatchNum;
+	sscanf(version,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
+	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
+	//printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);
+	//printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);
+	if (P_MajorNum != C_MajorNum) {return 'N';}
+	else if (P_MinorNum != C_MinorNum) {return 'P';}
+	else {return 'U';}
+}
+/**********************************************************************************************************************************************/
+void KillMonster(unsigned char xplace, unsigned char yplace) {
+	for (unsigned int i = 0; i < intNumMonsters; i++) {
+		if (monsters[i].x == xplace && monsters[i].y == yplace) {
+			monsters[i].living = false;
+		}
+	}
 }
 /**********************************************************************************************************************************************/
