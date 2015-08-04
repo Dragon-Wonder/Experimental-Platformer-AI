@@ -1,19 +1,19 @@
-VS_VERSION_INFO VERSIONINFO
-FILEVERSION    	2,1,0,0
-PRODUCTVERSION 	2,1,0,0
+1 VERSIONINFO
+FILEVERSION    	3,0,0,0
+PRODUCTVERSION 	3,0,0,0
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName","Public Domain"
-            VALUE "FileDescription","An Experiment into a self-learning AI trying to teach itself a simple verison of Mario"
-            VALUE "FileVersion","2.1.0"
+            VALUE "FileDescription","An Experiment into a self-learning AI trying to teach itself a simple version of Mario"
+            VALUE "FileVersion","3.0.0"
             VALUE "InternalName","MarioExperiment"
             VALUE "LegalCopyright","http://unlicense.org"
             VALUE "OriginalFilename","MarioExperiment.exe"
             VALUE "ProductName","Mario Experiment"
-            VALUE "ProductVersion","2.1.0"
+            VALUE "ProductVersion","3.0.0"
 			VALUE "Comments", "Source Code found at: https://github.com/GamerMan7799/Experimental-Mario-AI"
         END
     END
