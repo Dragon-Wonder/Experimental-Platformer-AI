@@ -8,13 +8,24 @@
 /**********************************************************************************************************************************************/
 #include "mario.h"
 /**********************************************************************************************************************************************/
-const char* version = PROGRAM_VERISON; //PROGRAM_VERISON is define in mario.h
-/**********************************************************************************************************************************************/
 using namespace std;
 /**********************************************************************************************************************************************/
+extern const unsigned char basemap[Map_Height][Map_Width];
 uchar map[Map_Height][Map_Width];
 /**********************************************************************************************************************************************/
-inline bool fileexists(const char *fileName) {std::ifstream infile(fileName); return infile.good();}
+DEBUG_MODE
+/**********************************************************************************************************************************************/
+//These values are declared in config.cpp when config is loaded
+extern bool blnLogging;
+extern bool blnShowMap;
+extern bool blnAppendTimeToSeed;
+extern bool blnError;
+extern bool blnHardMode;
+extern uint InputFirstGen;
+extern uint InputGenIncrease;
+extern uint intGensPastGrowth;
+extern uint intPercentMutationChance;
+extern uint intSeed;
 /**********************************************************************************************************************************************/
 GEN pastplayers[Players_Per_Generation];
 GEN bestplayers[10];
@@ -22,25 +33,14 @@ PLYR player;
 PLYR baseplayer;
 MNSTR *monsters;
 MNSTR *basemonsters;
-bool blnLogging = true;
-bool blnShowMap = false;
-bool blnAppendTimeToSeed = false;
-bool blnError = false;
-bool blnHardMode = false;
 uchar generationNum = 0;
 uchar numplayers = 0;
-unit intSeed;
-unit InputFirstGen = 50;
-unit InputGenIncrease = 50;
-unit intGensPastGrowth = 10;
-unit intPercentMutationChance = 30;
 uchar intNumMonsters = 0;
-unit intGenerationSteps = 50;
-bool curses_started = false;
+uint intGenerationSteps = 50;
+//bool curses_started = false;
 /**********************************************************************************************************************************************/
 FILE* logfile;
-FILE* ConfigFile;
-FILE* mapFile;
+//FILE* mapFile;
 /**********************************************************************************************************************************************/
 int main() 
 {
@@ -61,15 +61,15 @@ int main()
 	if (blnLogging) { logfile = fopen("log.txt","w"); fclose(logfile);}
 	for (numplayers = 0; numplayers < Players_Per_Generation; numplayers ++){
 		if (numplayers != 0) {nextplayer();}
-		for (unit i = 0; i < InputFirstGen; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
+		for (uint i = 0; i < InputFirstGen; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
 		ErrorCheck
-		for(unit step = 0; step < InputFirstGen; step++){
+		for(uint step = 0; step < InputFirstGen; step++){
 			moveMonsters();
 			playerstatus = moveplayer(step);
 			if(blnShowMap) {showmap();}
 			ErrorCheck
 			if(playerstatus == DEAD) {
-				for (unit j = step; j < InputFirstGen; j++) {player.direction[j] = dirNone;}
+				for (uint j = step; j < InputFirstGen; j++) {player.direction[j] = dirNone;}
 				step = InputFirstGen;
 			}
 		}
@@ -85,12 +85,12 @@ int main()
 			if (numplayers != 0) {nextplayer();}
 			generateNewGenPlayer(intGenerationSteps);
 			ErrorCheck
-			for(unit step = 0; step < intGenerationSteps; step++){
+			for(uint step = 0; step < intGenerationSteps; step++){
 				moveMonsters();
 				playerstatus = moveplayer(step);
 				if(blnShowMap) {showmap();}
 				if(playerstatus == DEAD) {
-					for (unit j = step; j < intGenerationSteps; j++) {player.direction[j] = dirNone;}
+					for (uint j = step; j < intGenerationSteps; j++) {player.direction[j] = dirNone;}
 					step = intGenerationSteps;
 				}
 			}
@@ -101,19 +101,19 @@ int main()
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 		intGenerationSteps += InputGenIncrease;
 	}
-	for (unit j = 0; j < intGensPastGrowth; j++){
+	for (uint j = 0; j < intGensPastGrowth; j++){
 		numplayers = 0;
 		generationNum++;
 		for (numplayers = 0; numplayers < Players_Per_Generation; numplayers ++){
 			if (numplayers != 0) {nextplayer();}
 			generateNewGenPlayer(intGenerationSteps);
 			ErrorCheck
-			for(unit step = 0; step < intGenerationSteps; step++){
+			for(uint step = 0; step < intGenerationSteps; step++){
 				moveMonsters();
 				playerstatus = moveplayer(step);
 				if(blnShowMap) {showmap();}
 				if(playerstatus == DEAD) {
-					for (unit j = step; j < intGenerationSteps; j++) {player.direction[j] = dirNone;}
+					for (uint j = step; j < intGenerationSteps; j++) {player.direction[j] = dirNone;}
 					step = intGenerationSteps;
 				}
 			}
@@ -151,16 +151,15 @@ void restartmap(){
 	}
 	player.x = baseplayer.x;
 	player.y = baseplayer.y;
-	player.falling = baseplayer.falling;
-	player.fitness = baseplayer.fitness;
+	player.fitness = 0.00;
 }
 /**********************************************************************************************************************************************/
 void nextplayer(){
 	if(blnLogging) {logfile = fopen("log.txt","a");}
-	restartmap();
+	if(blnDebugMode) {printf("Player finished with fitness = %2.3f\n",player.fitness);}
 	pastplayers[numplayers].fitness = player.fitness;
 	if(blnLogging) {fprintf(logfile,"Player: %2d, Fitness: %2.2f",numplayers,player.fitness);}
-	player.fitness = 0.00;
+	player.fitness = 0.00f;
 	for (int i = 0; i < Max_Player_Steps; i++){
 		pastplayers[numplayers].direction[i] = player.direction[i];
 		if(blnLogging) {
@@ -170,6 +169,7 @@ void nextplayer(){
 		}
 	}
 	if(blnLogging) {fprintf(logfile,"\n"); fclose(logfile);}
+	restartmap();
 }
 /**********************************************************************************************************************************************/
 void showmap(){
@@ -180,8 +180,8 @@ void showmap(){
 			if (map[y][x] == tileSpace) {printf(" ");}
 			else if (map[y][x] == tileWall) {printf("█");}
 			else if (map[y][x] == tilePlayer) {printf("@");}
-			else if (map[y][x] == tilePole) {printf("|");}
-			else if (map[y][x] == tileMonster) {printf("?");}
+			else if (map[y][x] == tilePole) {printf("║");}
+			else if (map[y][x] == tileMonster) {printf("O");}
 			else {printf("#");}
 		}
 		printf("\n");
@@ -189,9 +189,9 @@ void showmap(){
 	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n",generationNum,numplayers+1,player.fitness);
 }
 /**********************************************************************************************************************************************/
-void generateNewGenPlayer(unit GenerationInputs){
+void generateNewGenPlayer(uint GenerationInputs){
 	uchar RandPlayer;
-	unit i;
+	uint i;
 	for (i = 0; i < GenerationInputs; i++) {
 		RandPlayer = PickBestPlayer(); 
 		if (GenerateRandomNumber(0,100) < intPercentMutationChance) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
@@ -200,17 +200,20 @@ void generateNewGenPlayer(unit GenerationInputs){
 	if(GenerationInputs < Max_Player_Steps) {for (i = GenerationInputs; i < GenerationInputs + InputGenIncrease; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}}
 }
 /**********************************************************************************************************************************************/
-double getfitness(unit step){
-	double temp = 0.00F;
+float getfitness(uint step){
+	float temp = 0.00f;
 	temp += (5.0/2.0)*(player.x - 6.0);
 	temp += (player.x + player.y) / 6.0;
 	temp += (12.0 - player.y) / 4.0;
 	if (player.x > 204) {temp += 200.0;}
-	if(blnHardMode) {temp -= (step / 25.0);}
+	if(blnHardMode) {temp -= (step / 50.0);}
 	return temp;
 }
 /**********************************************************************************************************************************************/
 char moveplayer(int stepnum){
+	static uchar jumpcount;
+	static bool playerfalling;
+	if (playerfalling == false) {jumpcount = 0;}
 	uchar tempx = player.x;
 	uchar tempy = player.y;
 	switch (player.direction[stepnum]){
@@ -222,14 +225,14 @@ char moveplayer(int stepnum){
 			break;
 		case dirUp :
 			if (map[player.y - 1][player.x] == tileWall) {break;}
-			if (!player.falling && player.y != 0) {tempy-=2;}
+			if (player.y > Jump_Height && jumpcount < Max_Jump_Count ) {tempy -= Jump_Height; jumpcount++;}
 			break;
 	};
 	if (tempx < 5 && blnHardMode) {return DEAD;}
-	if (player.y == Map_Height - 1 && player.falling) {return DEAD;} //For Dead
-	if (player.falling) {tempy ++;}
+	if (player.y == Map_Height - 1 && playerfalling) {return DEAD;}
+	if (playerfalling) {tempy ++;}
 	if (map[tempy][tempx] == tileMonster) {
-		if (player.falling) {KillMonster(tempx,tempy);}
+		if (playerfalling) {KillMonster(tempx,tempy);}
 		else {return DEAD;}
 	}
 	if (map[tempy][tempx] == tileWall){
@@ -242,148 +245,26 @@ char moveplayer(int stepnum){
 	map[tempy][tempx] = tilePlayer;
 	player.x = tempx;
 	player.y = tempy;
+	if(stepnum == 0) {player.fitness = getfitness(stepnum);}
 	if (blnHardMode) {player.fitness = getfitness(stepnum);}
 	else {if (getfitness(stepnum) > player.fitness) {player.fitness = getfitness(stepnum);}}
-	if (player.fitness < 0.00F && blnHardMode) {return DEAD;}
-	if ((player.y == Map_Height - 1) || (map[player.y + 1][player.x] == tileSpace)) {player.falling = true;}
-	else {player.falling = false;}
+	if (player.fitness < 0.00f && blnHardMode) {return DEAD;}
+	if ((player.y == Map_Height - 1) || (map[player.y + 1][player.x] == tileSpace)) {playerfalling = true;}
+	else {playerfalling = false;}
 	return LIVING;
 }
 /**********************************************************************************************************************************************/
 void getbestplayers(){
 	for (uchar j = 0; j < 10; j++){
-		double tempfitness = 0.00;
+		float tempfitness = 0.00f;
 		uchar bestplayernum = 0;
 		for(uchar i = 0; i < Players_Per_Generation; i++) {if (pastplayers[i].fitness > tempfitness) {tempfitness = pastplayers[i].fitness; bestplayernum = i;}}
 		bestplayers[j].fitness = pastplayers[bestplayernum].fitness;
+		if (blnDebugMode) {printf("Player: %d found with fitness %2.3f\n",bestplayernum,pastplayers[bestplayernum].fitness);}
 		for (int m = 0; m < Max_Player_Steps; m++) {bestplayers[j].direction[m] = pastplayers[bestplayernum].direction[m];}
 		pastplayers[bestplayernum].fitness = 0.00; //Make 0 so that they aren't recorded again.
 	}
-}
-/**********************************************************************************************************************************************/
-void CheckConfigFile(){
-	char chrTempString[50];
-	char chrConfigVerison;
-	int intTempBool;
-	int intValuesScanned;
-	bool blnFileExists = fileexists("MarioConfig.ini");
-	if (blnFileExists){
-		printf("Config File Found, loading values\n");
-		ConfigFile = fopen("MarioConfig.ini","r");
-		fgets(chrTempString,50,ConfigFile);
-		fgets(chrTempString,50,ConfigFile);
-		chrConfigVerison = CheckVerison(chrTempString);
-	} else {chrConfigVerison = NEWCONFIG;}
-	
-	if (chrConfigVerison == PROMPTUSER) {
-		//Prompt user about whether to use old config or make new one.
-		printf("\nThe config file you are using has a different Minor Version than the program.\n");
-		printf("The config file should in theory still work with this version but I can't say for sure.\n");
-		printf("Would you like to replace the config file with a new one?\n");
-		printf("Y or N\n> ");
-		scanf("%c",&chrConfigVerison);
-		switch (chrConfigVerison)
-		{
-			case 'Y' :
-			case 'y' :
-				chrConfigVerison = NEWCONFIG;
-				break;
-			case 'n' :
-			case 'N' :
-				chrConfigVerison = USECONFIG;
-				break;
-			default :
-				printf("\nUnknown answer; try again.\n");
-				break;
-		};
-	}
-	
-	if (chrConfigVerison == USECONFIG) {
-		//Use the current config file.
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %d",&InputFirstGen);
-		if (intValuesScanned < 1) {printf("ERROR!"); InputFirstGen = 50;}
-		printf("First Gen Steps \t \t %2d\n",InputFirstGen);
-				
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString, "%*s %*s %d",&InputGenIncrease);
-		if (intValuesScanned < 1) {printf("ERROR!"); InputGenIncrease = 50;}
-		printf("Generation Increase \t \t %2d\n",InputGenIncrease);
-			
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d", &intTempBool);
-		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
-		printf("Log to file \t \t \t %d\n",intTempBool);
-		if(intTempBool == 1) {blnLogging = true;}
-		else {blnLogging = false;}
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
-		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-		printf("Show Map Update \t \t %d\n",intTempBool);
-		if(intTempBool == 1) {blnShowMap = true;}
-		else {blnShowMap = false;}		
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString,"%*s %*s [%u]", &intSeed);
-		if (intValuesScanned < 1) {printf("ERROR!"); intSeed = 0;}
-		printf("Random Seed \t \t \t %d\n",intSeed);
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
-		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
-		printf("Append Time \t \t \t %u\n",intTempBool);
-		if(intTempBool == 1) {blnAppendTimeToSeed = true;}
-		else {blnAppendTimeToSeed = false;}
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intGensPastGrowth);
-		if (intValuesScanned < 1) {printf("ERROR!"); intGensPastGrowth = 10;}
-		printf("Gens Past Growth \t \t %u\n",intGensPastGrowth);
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %u", &intPercentMutationChance);
-		if (intValuesScanned < 1) {printf("ERROR!"); intPercentMutationChance = 30;}
-		printf("Percent Mutation Chance \t %u\n",intPercentMutationChance);		
-		
-		fgets(chrTempString,50,ConfigFile);
-		intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
-		if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-		printf("Hard mode \t \t \t %u\n",intTempBool);
-		if(intTempBool == 1) {blnHardMode = true;}
-		else {blnHardMode = false;}
-		
-		fclose(ConfigFile);
-		printf("\n\n");
-	}
-	
-	
-	if (chrConfigVerison == NEWCONFIG) {
-		//New config will be made.
-		printf("Config File not found it will be created!\n");
-		ConfigFile = fopen("MarioConfig.ini","w");
-		fprintf(ConfigFile,"Config File for the program.\n");
-		fprintf(ConfigFile,"%s\n",version);
-		fprintf(ConfigFile,"First Generation Steps: 50\n");
-		InputFirstGen = 50;
-		fprintf(ConfigFile,"Generation Increase: 50\n");
-		InputGenIncrease = 50;
-		fprintf(ConfigFile,"Log to File: 1\n");
-		blnLogging = true;
-		fprintf(ConfigFile,"Show map on update: 0\n");
-		blnShowMap = false;
-		fprintf(ConfigFile,"Random Seed: [00000]\n");
-		intSeed = 0;
-		fprintf(ConfigFile,"Append Time: 1\n");
-		blnAppendTimeToSeed = true;
-		fprintf(ConfigFile,"Gens Past Growth: 10\n");
-		intGensPastGrowth = 10;
-		fprintf(ConfigFile,"Percent Mutation Chance: 30\n");
-		intPercentMutationChance = 30;
-		fprintf(ConfigFile,"Hard mode: 0\n");
-		blnHardMode = false;
-		fclose(ConfigFile);
-	}
+	printf("\n\n");
 }
 /**********************************************************************************************************************************************/
 uchar PickBestPlayer(){
@@ -405,6 +286,7 @@ void moveMonsters(){
 	uchar tempx;
 	for(uchar i = 0; i < intNumMonsters; i++){
 		if (monsters[i].living){
+			tempx = monsters[i].x;
 			if (monsters[i].movingright){tempx = monsters[i].x + 1;}
 			else{ tempx = monsters[i].x -1;}
 			if (map[monsters[i].y][tempx] == tileSpace){
@@ -412,7 +294,7 @@ void moveMonsters(){
 				map[monsters[i].y][tempx] = tileMonster;
 				monsters[i].x = tempx;
 			}
-			else if (map[monsters[i].y][tempx] == tilePlayer) {player.y = Map_Height - 1; player.falling = true;}
+			else if (map[monsters[i].y][tempx] == tilePlayer) {player.y = Map_Height - 1;}
 			else if (map[monsters[i].y][tempx] == tileWall) {monsters[i].movingright = !(monsters[i].movingright);}
 			if(map[monsters[i].y+1][monsters[i].x] == tileSpace) {tempx = monsters[i].x; monsters[i].living = false;} 
 			if(monsters[i].living == false) {map[monsters[i].y][monsters[i].x] = tileSpace;}
@@ -424,12 +306,11 @@ void loadMap() {
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 	intNumMonsters = 0;
-	for (uchar y = 0; y < 14; y ++) {
-		for (uchar x = 0; x < 217; x++) {
+	for (uchar y = 0; y < Map_Height; y ++) {
+		for (uchar x = 0; x < Map_Width; x++) {
 			if (basemap[y][x] == tilePlayer) {
 				baseplayer.x = x;
 				baseplayer.y = y;
-				baseplayer.falling = false;
 			}
 			else if (basemap[y][x] == tileMonster) {
 				intNumMonsters++;
@@ -455,20 +336,8 @@ void loadMap() {
 	if (monsters == NULL) {blnError = true; return;}
 }
 /**********************************************************************************************************************************************/
-char CheckVerison(const char *ConfigVerison) {
-	unit P_MajorNum, P_MinorNum, P_PatchNum;
-	unit C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(version,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
-	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
-	//printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);
-	//printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);
-	if (P_MajorNum != C_MajorNum) {return NEWCONFIG;}
-	else if (P_MinorNum != C_MinorNum) {return PROMPTUSER;}
-	else {return USECONFIG;}
-}
-/**********************************************************************************************************************************************/
 void KillMonster(uchar xplace, uchar yplace) {
-	for (unit i = 0; i < intNumMonsters; i++) {
+	for (uint i = 0; i < intNumMonsters; i++) {
 		if (monsters[i].x == xplace && monsters[i].y == yplace) {
 			monsters[i].living = false;
 		}
