@@ -3,6 +3,22 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [3.0.0] - 2015-08-04
+
+### Changed
+	
+	* Made several variable defined at the start of the code to make them easier to change.
+		These include:
+		* Map Height
+		* Map Width
+		* Max Player Steps (Cannot be greater than 65535)
+		* Players per Generation (Cannot be less than 10)
+		* Sleep Time
+
+	* Mario.h - a basic header to clean up the main code
+	
+	* Base map moved to Mario.h
+	
 ## [2.1.0] - 2015-08-03
 
 ### Added
