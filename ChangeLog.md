@@ -3,6 +3,26 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [3.1.0] - 2015-08-04
+
+### Added
+
+	* Multiple jumps allowed; it is configurable
+	
+	* Configurable Jump height
+
+### Changed
+
+	* How player falling is handled.
+	
+	* Config functions split into its own .cpp
+	
+	* Changed Monster symbol from '?' to 'O'
+
+### Fixed
+
+	* Bug where all fitnesses were displayed as 0 because I was restarting the map before I recorded the fitness -_-
+	
 ## [3.0.0] - 2015-08-04
 
 ### Changed
