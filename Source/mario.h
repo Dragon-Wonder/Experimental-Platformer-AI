@@ -2,7 +2,8 @@
 #define MARIO_HEADER_CALLED
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERISON "v3.0.0"
+#define PROGRAM_VERISON "v3.1.0"
+#define DEBUG_MODE const bool blnDebugMode = false;
 #define ErrorCheck if (blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 //Defines that are to allow certain aspects to be changed easier.
@@ -11,7 +12,9 @@
 #define Map_Width 217
 #define Max_Player_Steps 1000
 #define Players_Per_Generation 40
-#define Sleep_Time 65
+#define Sleep_Time 70
+#define Max_Jump_Count 2
+#define Jump_Height 2
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being return and thier meaning
 #define DEAD 'D'
@@ -23,16 +26,15 @@
 //Structures for varies uses
 
 struct generation {
-	double fitness;
+	float fitness;
 	unsigned char direction[Max_Player_Steps];
 };
 
 struct player {
 	unsigned char x;
 	unsigned char y;
-	double fitness;
+	float fitness;
 	unsigned char direction[Max_Player_Steps];
-	bool falling;
 };
 
 struct monster {
@@ -44,9 +46,10 @@ struct monster {
 
 enum dir {
 	dirNone = 0,
-	dirUp,
-	dirLeft,
-	dirRight
+	dirUp, //1
+	dirLeft, //2
+	dirRight, //3
+	dirDown //4
 };
 
 enum tile {
@@ -61,30 +64,30 @@ typedef struct generation GEN;
 typedef struct player PLYR;
 typedef struct monster MNSTR;
 typedef unsigned char uchar;
-typedef unsigned int unit;
+typedef unsigned int uint;
 /**********************************************************************************************************************************************/
-//Function prototypes
-
-unsigned char GenerateRandomNumber(unsigned char, unsigned char);
+//Function prototypes in Mario.cpp
+uchar GenerateRandomNumber(uchar, uchar);
 void restartmap(void);
 void nextplayer(void);
 void showmap(void);
 void generateNewPlayer(int);
-void generateNewGenPlayer(unsigned int);
-double getfitness(unsigned int);
+void generateNewGenPlayer(uint);
+float getfitness(uint);
 char moveplayer(int);
 void getbestplayers(void);
-void CheckConfigFile(void);
-unsigned char PickBestPlayer(void);
+uchar PickBestPlayer(void);
 void moveMonsters(void);
 void loadMap(void);
-char CheckVerison(const char *);
-void KillMonster(unsigned char, unsigned char);
+void KillMonster(uchar, uchar);
 void startCurses(void);
 void endCurses(void);
 /**********************************************************************************************************************************************/
-//Basemap should have array sizes of 14x217
-extern const unsigned char basemap[Map_Height][Map_Width] = {{1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+//Function prototypes in Config.cpp
+void CheckConfigFile(void);
+char CheckVerison(const char *);
+/**********************************************************************************************************************************************/
+const unsigned char basemap[Map_Height][Map_Width] = {{1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0},
