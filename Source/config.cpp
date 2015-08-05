@@ -6,8 +6,6 @@
 /**********************************************************************************************************************************************/
 #include "platformer.h"
 /**********************************************************************************************************************************************/
-#define ConfigFileName "Config.ini"
-/**********************************************************************************************************************************************/
 DEBUG_MODE
 /**********************************************************************************************************************************************/
 const char* version = PROGRAM_VERISON; //PROGRAM_VERISON is define in mario.h
@@ -32,8 +30,8 @@ char CheckVerison(const char *ConfigVerison) {
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
 	sscanf(version,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
 	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
-	//printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);
-	//printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);
+	if (blnDebugMode) {printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);}
+	if (blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
 	if (P_MajorNum != C_MajorNum) {return NEWCONFIG;}
 	else if (P_MinorNum != C_MinorNum) {return PROMPTUSER;}
 	else {return USECONFIG;}
@@ -163,5 +161,4 @@ void CheckConfigFile(){
 		fclose(ConfigFile);
 	}
 }
-
 /**********************************************************************************************************************************************/
