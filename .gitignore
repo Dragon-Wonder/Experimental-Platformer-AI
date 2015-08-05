@@ -26,3 +26,12 @@
 *.exe
 *.out
 *.app
+
+# Log file
+*.log
+
+# Config File
+*.ini
+
+# Resource Files
+*.res

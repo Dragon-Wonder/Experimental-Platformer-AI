@@ -3,6 +3,59 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [3.3.0] - 2015-08-05
+
+### Added
+
+	* More comments to (hopefully) better explain stuff
+
+### Changed
+	
+	* The icon (like 3 times because I can't decide what I want)
+	
+	* File version numbering changed slightly in boilerplate
+		For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER]
+		This is mostly just when I am working on the new rc. It won't be
+		reflected in the Product Verison which will still follow [MAJOR].[MINOR].[PATCH]
+		
+	* Boilerplate.rc around to make changes to it easier to do.
+	
+	* Easier to change log name
+	
+	* Generation number added to log
+	
+	* At the end of a generation a line is made in the log to help divide them easier
+	
+	* Log name from "log.txt" to "player.log"
+		This so that now that I have GitHub on my computer I can set it
+		to ignore *.log rather than *.txt
+		
+	* How "Mating" is done to make the New generation
+	
+### Fixed
+
+	* It just occured to me that the program does not log the last player of a generation
+		so I fixed that.
+
+## [3.2.0] - 2015-08-04
+
+### Changed
+
+	* Player gets fitness boost for killing a monster
+	
+	* Monster from "O" to "+"
+	
+	* Name from Mario to Platformer!
+		(Please don't sue me Nintendo!)
+	
+### Added
+
+	* Coins (are "O")
+	
+	* Score for player. Goes up after collectings coins, and killing monsters.
+		Weighs into fitness (I did this because under hard mode these actions would not effect fitness)
+
+
 ## [3.1.0] - 2015-08-04
 
 ### Added
@@ -21,7 +74,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Fixed
 
-	* Bug where all fitnesses were displayed as 0 because I was restarting the map before I recorded the fitness -_-
+	* Bug where all fitnesses were displayed as 0 because I was 
+		restarting the map before I recorded the fitness -_-
 	
 ## [3.0.0] - 2015-08-04
 
