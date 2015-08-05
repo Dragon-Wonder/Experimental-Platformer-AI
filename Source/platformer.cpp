@@ -6,7 +6,7 @@
 #include <windows.h>
 //#include <ncurses.h>
 /**********************************************************************************************************************************************/
-#include "mario.h"
+#include "platformer.h"
 /**********************************************************************************************************************************************/
 using namespace std;
 /**********************************************************************************************************************************************/
@@ -160,6 +160,7 @@ void nextplayer(){
 	pastplayers[numplayers].fitness = player.fitness;
 	if(blnLogging) {fprintf(logfile,"Player: %2d, Fitness: %2.2f",numplayers,player.fitness);}
 	player.fitness = 0.00f;
+	player.score = 0;
 	for (int i = 0; i < Max_Player_Steps; i++){
 		pastplayers[numplayers].direction[i] = player.direction[i];
 		if(blnLogging) {
@@ -174,14 +175,16 @@ void nextplayer(){
 /**********************************************************************************************************************************************/
 void showmap(){
 	Sleep(Sleep_Time);
-	for (uchar i = 0; i < Map_Height; i++) {printf("\n");}
+	//for (uchar i = 0; i < Map_Height; i++) {printf("\n");}
+	printf("\n\n\n\n");
 	for(uchar y = 0; y < Map_Height; y++){
 		for(uchar x = player.x - 5; x < player.x + 73; x++){
 			if (map[y][x] == tileSpace) {printf(" ");}
 			else if (map[y][x] == tileWall) {printf("█");}
 			else if (map[y][x] == tilePlayer) {printf("@");}
 			else if (map[y][x] == tilePole) {printf("║");}
-			else if (map[y][x] == tileMonster) {printf("O");}
+			else if (map[y][x] == tileMonster) {printf("+");}
+			else if (map[y][x] == tileCoin) {printf("O");}
 			else {printf("#");}
 		}
 		printf("\n");
@@ -202,6 +205,7 @@ void generateNewGenPlayer(uint GenerationInputs){
 /**********************************************************************************************************************************************/
 float getfitness(uint step){
 	float temp = 0.00f;
+	temp += (player.score) / 800.0;
 	temp += (5.0/2.0)*(player.x - 6.0);
 	temp += (player.x + player.y) / 6.0;
 	temp += (12.0 - player.y) / 4.0;
@@ -232,15 +236,16 @@ char moveplayer(int stepnum){
 	if (player.y == Map_Height - 1 && playerfalling) {return DEAD;}
 	if (playerfalling) {tempy ++;}
 	if (map[tempy][tempx] == tileMonster) {
-		if (playerfalling) {KillMonster(tempx,tempy);}
+		if (playerfalling) {KillMonster(tempx,tempy); player.score += MonsKill_Points;}
 		else {return DEAD;}
 	}
 	if (map[tempy][tempx] == tileWall){
-		if (map[tempy][player.x] == tileSpace) {tempx = player.x;}
-		else if (map[player.y][tempx] == tileSpace) {tempy = player.y;}
-		else if (map[tempy + 1][tempx] == tileSpace) {tempy += 1;}
+		if (map[tempy][player.x] != tileWall) {tempx = player.x;}
+		else if (map[player.y][tempx] != tileWall) {tempy = player.y;}
+		else if (map[tempy + 1][tempx] != tileWall) {tempy += 1;}
 		else {tempy = player.y; tempx = player.x;}
 	}
+	if (map[tempy][tempx] == tileCoin) {player.score += Coin_Points;}
 	map[player.y][player.x] = tileSpace;
 	map[tempy][tempx] = tilePlayer;
 	player.x = tempx;
