@@ -76,6 +76,7 @@ int main()
 		}
 		if(blnShowMap) {showmap();}
 	}
+	nextplayer(); //For the last player of the generation.
 	getbestplayers();
 	ErrorCheck
 	if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
@@ -99,6 +100,7 @@ int main()
 			}
 			if(blnShowMap) {showmap();}
 		}
+		nextplayer(); //For the last player of the generation.
 		getbestplayers();
 		ErrorCheck
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
@@ -124,6 +126,7 @@ int main()
 			}
 			if(blnShowMap) {showmap();}
 		}
+		nextplayer(); //For the last player of the generation.
 		getbestplayers();
 		ErrorCheck
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
@@ -176,7 +179,7 @@ void nextplayer(){
 			else if (player.direction[i] == dirDown) {fprintf(logfile, " ↓");}
 		}
 	}
-	if (blnLogging && (numplayers == Players_Per_Generation - 1)) {
+	if (blnLogging && (numplayers == Players_Per_Generation)) {
 		fprintf(logfile,"\n");
 		for (uint j = 0; j < Max_Player_Steps + 42; j++) {fprintf(logfile,"=");}
 	}
