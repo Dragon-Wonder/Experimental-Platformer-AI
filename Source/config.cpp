@@ -4,7 +4,9 @@
 #include <time.h>
 #include <fstream>
 /**********************************************************************************************************************************************/
-#include "mario.h"
+#include "platformer.h"
+/**********************************************************************************************************************************************/
+#define ConfigFileName "Config.ini"
 /**********************************************************************************************************************************************/
 DEBUG_MODE
 /**********************************************************************************************************************************************/
@@ -42,10 +44,10 @@ void CheckConfigFile(){
 	char chrConfigVerison;
 	int intTempBool;
 	int intValuesScanned;
-	bool blnFileExists = fileexists("MarioConfig.ini");
+	bool blnFileExists = fileexists(ConfigFileName);
 	if (blnFileExists){
 		printf("Config File Found, loading values\n");
-		ConfigFile = fopen("MarioConfig.ini","r");
+		ConfigFile = fopen(ConfigFileName,"r");
 		fgets(chrTempString,50,ConfigFile);
 		fgets(chrTempString,50,ConfigFile);
 		chrConfigVerison = CheckVerison(chrTempString);
@@ -137,7 +139,7 @@ void CheckConfigFile(){
 	if (chrConfigVerison == NEWCONFIG) {
 		//New config will be made.
 		printf("Config File not found it will be created!\n");
-		ConfigFile = fopen("MarioConfig.ini","w");
+		ConfigFile = fopen(ConfigFileName,"w");
 		fprintf(ConfigFile,"Config File for the program.\n");
 		fprintf(ConfigFile,"%s\n",version);
 		fprintf(ConfigFile,"First Generation Steps: 50\n");
