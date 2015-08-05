@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Changed
 	
-	* The icon
+	* The icon (like 3 times because I can't decide what I want)
 	
 	* File version numbering changed slightly in boilerplate
 		For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER]
@@ -21,6 +21,11 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	* Generation number added to log
 	
 	* At the end of a generation a line is made in the log to help divide them easier
+	
+### Fixed
+
+	* It just occured to me that the program does not log the last player of a generation
+		so I fixed that.
 
 ## [3.2.0] - 2015-08-04
 
