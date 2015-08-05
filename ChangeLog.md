@@ -3,7 +3,11 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [3.3.0] - 2015-08-05
+## [3.3.0] - 2015-08-05
+
+### Added
+
+	* More comments to (hopefully) better explain stuff
 
 ### Changed
 	
@@ -21,6 +25,12 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	* Generation number added to log
 	
 	* At the end of a generation a line is made in the log to help divide them easier
+	
+	* Log name from "log.txt" to "player.log"
+		This so that now that I have GitHub on my computer I can set it
+		to ignore *.log rather than *.txt
+		
+	* How "Mating" is done to make the New generation
 	
 ### Fixed
 

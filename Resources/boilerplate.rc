@@ -2,11 +2,11 @@
 #include <windows.h>
 /**********************************************************************************************************************************************/
 //Verison numbering updated with the file.
-#define VER_FILEVERSION 3,3,0,11
+#define VER_FILEVERSION 3,3,0,21
 #define VER_PRODUCTVERSION "3.3.0"
 /**********************************************************************************************************************************************/
 //If this is not commented out it marks that this file verison was not meant to be publicly released.
-#define PRIVATE
+//#define PRIVATE
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain"
