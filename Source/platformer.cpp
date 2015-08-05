@@ -68,7 +68,7 @@ int main()
 	//First Generation of players
 	for (numplayers = 0; numplayers < Players_Per_Generation; numplayers ++){
 		if (numplayers != 0) {nextplayer();} //For every player besides the first one record the player before them
-		for (uint i = 0; i < InputFirstGen; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);} //Generate random directions for the player
+		for (uint i = 0; i < InputFirstGen; i++) {player.direction[i] = (uint)(rand() % (dirRight + 1) + dirUp);} //Generate random directions for the player
 		ErrorCheck
 		for(uint step = 0; step < InputFirstGen; step++){
 			moveMonsters();
@@ -150,16 +150,6 @@ int main()
 	return 0;
 }
 /**********************************************************************************************************************************************/
-uchar GenerateRandomNumber(uchar Min, uchar Max){
-	uchar temprand = 0;
-	int inters = 0;
-	do{
-		inters ++;
-		temprand = (rand() % (Max - Min)) + Min;
-	} while (inters <= rand() % 1000);
-	return temprand;
-}
-/**********************************************************************************************************************************************/
 void restartmap(){
 	//Restarts the map by restating tiles, monster locations, and player location
 	for(uchar y = 0; y < Map_Height; y++){for(uchar x = 0; x < Map_Width; x++){map[y][x] = basemap[y][x];}}
@@ -238,13 +228,13 @@ void generateNewGenPlayer(uint GenerationInputs){
 		RandSection = (rand() % (GenerationInputs - StepNum)/2) + StepNum;
 		if (blnDebugMode) {printf("Player: %d Section of %d\n",RandPlayer,RandSection);}
 		for (uint i = StepNum; i < RandSection; i ++) {
-			if ( (uint)(rand() % 100) < intPercentMutationChance) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
+			if ( (uint)(rand() % 100) < intPercentMutationChance) {player.direction[i] =  (uint)(rand() % (dirRight + 1) + dirUp);}
 			else {player.direction[i] = bestplayers[RandPlayer].direction[i];}
 		}
 		StepNum += RandSection;
 	} while (StepNum < GenerationInputs);
 	if (GenerationInputs + InputGenIncrease < Max_Player_Steps) {
-		for (uint i = GenerationInputs; i < GenerationInputs + InputGenIncrease; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
+		for (uint i = GenerationInputs; i < GenerationInputs + InputGenIncrease; i++) {player.direction[i] = (uint)(rand() % (dirRight + 1) + dirUp);}
 	}
 }
 /**********************************************************************************************************************************************/
@@ -335,7 +325,7 @@ void getbestplayers(){
 /**********************************************************************************************************************************************/
 uchar PickBestPlayer(){
 	//Makes it so Number 1 is more likely to be randomly selected, followed by number 2 and so on.
-	uchar RandomNumber = GenerateRandomNumber(0,100);
+	uchar RandomNumber = (uint)(rand() % 100);
 	if (RandomNumber < 20) {return 0;}
 	else if (RandomNumber < 35) {return 1;}
 	else if (RandomNumber < 50) {return 2;}

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [3.4.0] - 2015-08-05
+
+### Removed
+
+	* Generate Random Number Function as it was quite useless
+
+
 ## [3.3.0] - 2015-08-05
 
 ### Added

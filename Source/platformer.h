@@ -2,7 +2,7 @@
 #define PLATFORMER_HEADER_CALLED
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERISON "v3.3.0"
+#define PROGRAM_VERISON "v3.4.0"
 #define DEBUG_MODE const bool blnDebugMode = false;
 #define ErrorCheck if (blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
@@ -71,11 +71,11 @@ enum tile {
 typedef struct generation GEN;
 typedef struct player PLYR;
 typedef struct monster MNSTR;
+//Ahh laziness at its finest
 typedef unsigned char uchar;
 typedef unsigned int uint;
 /**********************************************************************************************************************************************/
 //Function prototypes in Platformer.cpp
-uchar GenerateRandomNumber(uchar, uchar);
 void restartmap(void);
 void nextplayer(void);
 void showmap(void);
