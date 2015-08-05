@@ -1,33 +1,60 @@
-1 VERSIONINFO
-FILEVERSION    	3,2,0,0
-PRODUCTVERSION 	3,2,0,0
+/**********************************************************************************************************************************************/
+#include <windows.h>
+/**********************************************************************************************************************************************/
+//Verison numbering updated with the file.
+#define VER_FILEVERSION 3,3,0,9
+#define VER_PRODUCTVERSION "3.3.0"
+/**********************************************************************************************************************************************/
+//If this is not commented out it marks that this file verison was not meant to be publicly released.
+#define PRIVATE
+/**********************************************************************************************************************************************/
+//General stuff that should need to be changed
+#define VER_COMPANYNAME_STR "Public Domain"
+#define VER_FILEDESCRIPTION_STR "An Experiment into a self-learning AI trying to teach itself a simple version of platformer"
+#define VER_FILENAME_STR "Platformer-Experiment"
+#define VER_ORIGINALFILENAME_STR "PlatformerExperiment.exe"
+#define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"
+#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Experimental-Platformer-AI"
+/**********************************************************************************************************************************************/
+//If Private is define above, indicting that it was a build not meant to be released define these variables
+#ifndef PRIVATE
+	#define VER_DEBUG 0
+	#define VER_PRIVATEBUILD 0
+	#define VER_PRERELEASE 0
+#else
+	#define VER_DEBUG VS_FF_DEBUG
+	#define VER_PRIVATEBUILD VS_FF_PRIVATEBUILD
+	#define VER_PRERELEASE VS_FF_PRERELEASE
+#endif
+/**********************************************************************************************************************************************/
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION    	VER_FILEVERSION
+PRODUCTVERSION 	VER_FILEVERSION
+FILEFLAGSMASK	VS_FFI_FILEFLAGSMASK
+FILEFLAGS		(VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG)
+FILEOS			VOS__WINDOWS32
+FILETYPE		VFT_APP
+FILESUBTYPE		VFT2_UNKNOWN
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040904E4"
         BEGIN
-            VALUE "CompanyName","Public Domain"
-            VALUE "FileDescription","An Experiment into a self-learning AI trying to teach itself a simple version of platformer"
-            VALUE "FileVersion","3.2.0-beta"
-            VALUE "InternalName","PlatformerExperiment"
-            VALUE "LegalCopyright","http://unlicense.org"
-            VALUE "OriginalFilename","PlatformerExperiment.exe"
-            VALUE "ProductName","Platformer Experiment"
-            VALUE "ProductVersion","3.2.0"
-			VALUE "Comments", "Source Code found at: https://github.com/GamerMan7799/Experimental-Platformer-AI"
+            VALUE "CompanyName",		VER_COMPANYNAME_STR
+            VALUE "FileDescription",	VER_FILEDESCRIPTION_STR
+            VALUE "FileVersion",		VER_PRODUCTVERSION
+            VALUE "InternalName",		VER_FILENAME_STR
+            VALUE "LegalCopyright",		VER_LEGALCOPYRIGHT_STR
+            VALUE "OriginalFilename",	VER_ORIGINALFILENAME_STR
+            VALUE "ProductName",		VER_FILENAME_STR
+            VALUE "ProductVersion",		VER_PRODUCTVERSION
+			VALUE "Comments", 			VER_COMMENTS_STR
         END
     END
 
     BLOCK "VarFileInfo"
     BEGIN
-        /* The following line should only be modified for localized versions.     */
-        /* It consists of any number of WORD,WORD pairs, with each pair           */
-        /* describing a language,codepage combination supported by the file.      */
-        /*                                                                        */
-        /* For example, a file might have values "0x409,1252" indicating that it  */
-        /* supports English language (0x409) in the Windows ANSI codepage (1252). */
-
         VALUE "Translation", 0x409, 1252
-
     END
 END
+/**********************************************************************************************************************************************/
