@@ -1,5 +1,5 @@
-#ifndef Platformer_HEADER_CALLED
-#define Platformer_HEADER_CALLED
+#ifndef PLATFORMER_HEADER_CALLED
+#define PLATFORMER_HEADER_CALLED
 /**********************************************************************************************************************************************/
 //Best not to change these.
 #define PROGRAM_VERISON "v3.3.0"
