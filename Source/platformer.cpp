@@ -40,7 +40,6 @@ uint intGenerationSteps = 50;
 //bool curses_started = false;
 /**********************************************************************************************************************************************/
 FILE* logfile;
-//FILE* mapFile;
 /**********************************************************************************************************************************************/
 int main() 
 {
@@ -58,7 +57,9 @@ int main()
 	
 	char playerstatus = 0;
 	if(blnShowMap) {showmap();}
-	if (blnLogging) { logfile = fopen("log.txt","w"); fclose(logfile);}
+	if (blnLogging) { /*Opens log file to clear it */logfile = fopen(LogFileName,"w"); fclose(logfile);}
+	
+	//First Generation of players
 	for (numplayers = 0; numplayers < Players_Per_Generation; numplayers ++){
 		if (numplayers != 0) {nextplayer();}
 		for (uint i = 0; i < InputFirstGen; i++) {player.direction[i] = GenerateRandomNumber(dirUp, dirRight + 1);}
@@ -78,6 +79,8 @@ int main()
 	getbestplayers();
 	ErrorCheck
 	if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
+	
+	//The Growth generation. Each Generation will have more steps until whatever the maxium steps is set as
 	while (intGenerationSteps + InputGenIncrease <= Max_Player_Steps){
 		numplayers = 0;
 		generationNum++;
@@ -101,28 +104,31 @@ int main()
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 		intGenerationSteps += InputGenIncrease;
 	}
+	
+	//Generations past growth.
 	for (uint j = 0; j < intGensPastGrowth; j++){
 		numplayers = 0;
 		generationNum++;
 		for (numplayers = 0; numplayers < Players_Per_Generation; numplayers ++){
 			if (numplayers != 0) {nextplayer();}
-			generateNewGenPlayer(intGenerationSteps);
+			generateNewGenPlayer(Max_Player_Steps);
 			ErrorCheck
-			for(uint step = 0; step < intGenerationSteps; step++){
+			for(uint step = 0; step < Max_Player_Steps; step++){
 				moveMonsters();
 				playerstatus = moveplayer(step);
 				if(blnShowMap) {showmap();}
 				if(playerstatus == DEAD) {
-					for (uint j = step; j < intGenerationSteps; j++) {player.direction[j] = dirNone;}
-					step = intGenerationSteps;
+					for (uint j = step; j < Max_Player_Steps; j++) {player.direction[j] = dirNone;}
+					step = Max_Player_Steps;
 				}
 			}
-			if(blnShowMap) {showmap(); getchar();}
+			if(blnShowMap) {showmap();}
 		}
 		getbestplayers();
 		ErrorCheck
 		if (!(blnShowMap)) {printf("Best Player fitnesses are:\n"); for (uchar j = 0; j < 10; j++) {printf("%2.3f\n",bestplayers[j].fitness);}}
 	}
+	
 	printf("\nDone!\n");
 	free(monsters);
 	free(basemonsters);
@@ -155,10 +161,10 @@ void restartmap(){
 }
 /**********************************************************************************************************************************************/
 void nextplayer(){
-	if(blnLogging) {logfile = fopen("log.txt","a");}
+	if(blnLogging) {logfile = fopen(LogFileName,"a");}
 	if(blnDebugMode) {printf("Player finished with fitness = %2.3f\n",player.fitness);}
 	pastplayers[numplayers].fitness = player.fitness;
-	if(blnLogging) {fprintf(logfile,"Player: %2d, Fitness: %2.2f",numplayers,player.fitness);}
+	if(blnLogging) {fprintf(logfile,"Generation: %2d, Player: %2d, Fitness: %2.2f",generationNum + 1,numplayers,player.fitness);}
 	player.fitness = 0.00f;
 	player.score = 0;
 	for (int i = 0; i < Max_Player_Steps; i++){
@@ -167,7 +173,12 @@ void nextplayer(){
 			if (player.direction[i] == dirUp) {fprintf(logfile, " ↑");}
 			else if (player.direction[i] == dirLeft) {fprintf(logfile, " ←");}
 			else if (player.direction[i] == dirRight) {fprintf(logfile, " →");}
+			else if (player.direction[i] == dirDown) {fprintf(logfile, " ↓");}
 		}
+	}
+	if (blnLogging && (numplayers == Players_Per_Generation - 1)) {
+		fprintf(logfile,"\n");
+		for (uint j = 0; j < Max_Player_Steps + 42; j++) {fprintf(logfile,"=");}
 	}
 	if(blnLogging) {fprintf(logfile,"\n"); fclose(logfile);}
 	restartmap();
@@ -210,7 +221,7 @@ float getfitness(uint step){
 	temp += (player.x + player.y) / 6.0;
 	temp += (12.0 - player.y) / 4.0;
 	if (player.x > 204) {temp += 200.0;}
-	if(blnHardMode) {temp -= (step / 50.0);}
+	if(blnHardMode) {temp -= (step / 80.0);}
 	return temp;
 }
 /**********************************************************************************************************************************************/
