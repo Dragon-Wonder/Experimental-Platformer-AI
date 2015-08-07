@@ -3,12 +3,26 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [3.4.0] - 2015-08-05
+## UNRELEASED/WIP [4.0.0] - 2015-08-07 
+
+### Notes
+
+	* This verison has a completely rewritten code; I'll to remeber the major things that
+		are different but I may have forgotten stuff.
 
 ### Removed
 
 	* Generate Random Number Function as it was quite useless
 
+### Changed
+
+	* 
+	
+### Added
+
+	* Classes for Config, Player, Generation, and Map
+	
+	* 
 
 ## [3.3.0] - 2015-08-05
 
