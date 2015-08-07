@@ -9,6 +9,15 @@
 int main(void) {
 	Config Cnfg;
 	Cnfg.Check();
+	ErrorCheck
+	
+	Map m;
+	m.load();
+	ErrorCheck
+	m.restart();
+	ErrorCheck
+	m.show();
+	getchar();
 	
 	Entity plyr;
 	plyr.start();

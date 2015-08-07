@@ -142,3 +142,38 @@ char Map::move(uchar direction) {
 	return LIVING;
 }
 /**********************************************************************************************************************************************/
+void Map::load(void) {
+	//Finds player and monster on the map, and place them in base stats used
+	//when restarting the map.
+	Entity enty;
+	Map::numMonsters = 0;
+	for (uint y = 0; y < Map_Height; y++) {
+		for (uint x = 0; x < Map_Width; x++) {
+			if (Map::basemap[y][x] == tilePlayer) {
+				Map::baseplayer.x = x;
+				Map::baseplayer.y = y;
+			}
+			else if (Map::basemap[y][x] == tileMonster) {
+				Map::numMonsters++;
+				if (Map::numMonsters == 1) {
+					Map::basemonsters = (MNSTR*)malloc(sizeof(MNSTR) * 1);
+					if (Map::basemonsters == NULL) {Global::blnError = true; return;}
+					Map::basemonsters[0].x = x;
+					Map::basemonsters[0].y = y;
+					Map::basemonsters[0].living = true;
+					Map::basemonsters[0].movingright = false;
+				} else {
+					Map::basemonsters = (MNSTR*)realloc(Map::basemonsters,sizeof(MNSTR) * Map::numMonsters);
+					if (Map::basemonsters == NULL) {Global::blnError = true;}
+					Map::basemonsters[Map::numMonsters - 1].x = x;
+					Map::basemonsters[Map::numMonsters - 1].y = y;
+					Map::basemonsters[Map::numMonsters - 1].living = true;
+					Map::basemonsters[Map::numMonsters - 1].movingright = false;
+				}
+			}
+		}
+	}
+	enty.monsters = (MNSTR*) malloc (sizeof(MNSTR)* Map::numMonsters);
+	if (enty.monsters == NULL) {Global::blnError = true; return;}
+}
+/**********************************************************************************************************************************************/

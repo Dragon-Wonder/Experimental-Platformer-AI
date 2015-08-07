@@ -4,7 +4,7 @@
 #include <cstdio>
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERISON "v4.0.0"
+#define PROGRAM_VERISON "v4.0.0-alpha.2"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 //Defines that are to allow certain aspects to be changed easier.
@@ -70,6 +70,7 @@ typedef unsigned int uint;
 //Globals
 namespace Global {
 	const bool blnDebugMode = false;
+	bool blnError = false;
 	//const char* programverison = PROGRAM_VERISON;
 };
 /**********************************************************************************************************************************************/
