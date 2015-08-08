@@ -13,7 +13,6 @@
 #define Map_Width 217
 #define Max_Player_Steps 1000
 #define Players_Per_Generation 40
-#define Sleep_Time 65
 #define Max_Jump_Count 2
 #define Jump_Height 2
 #define Coin_Points 100
@@ -66,6 +65,7 @@ typedef struct creature MNSTR;
 //Ahh laziness at its finest
 typedef unsigned char uchar;
 typedef unsigned int uint;
+typedef unsigned long ulong;
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {

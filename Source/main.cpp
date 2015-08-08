@@ -21,6 +21,7 @@ int main(void) {
 	
 	Entity plyr;
 	plyr.start();
+	ErrorCheck
 	
 	getchar();
 	return 1;

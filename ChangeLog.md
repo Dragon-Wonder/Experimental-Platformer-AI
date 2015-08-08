@@ -9,18 +9,31 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 	* This verison has a completely rewritten code; I'll to remeber the major things that
 		are different but I may have forgotten stuff.
+		
+	* The main point of this rewrite was to improve the structre of the code so later changes are 
+		easier as opposed to adding a bunch of new features.
 
 ### Removed
 
 	* Generate Random Number Function as it was quite useless
+	
+	* Windows.h library requirement
+	
+	* Removed unneeded libraries (?)
+		I think I got rid of old libraries but I'm not sure
+		Again with the rewrite I'm not sure.
 
 ### Changed
 
-	* 
+	* Spilt the program into a lot more .cpp to better orgainze everything
+	
+	* Change complier from Cygwin to MinGW
+	
+	* Changed the icon (same author just different coloring)
 	
 ### Added
 
-	* Classes for Config, Player, Generation, and Map
+	* Classes
 	
 	* 
 
