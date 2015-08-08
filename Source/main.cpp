@@ -11,6 +11,9 @@ int main(void) {
 	Cnfg.Check();
 	ErrorCheck
 	
+	if (Cnfg.values.blnAppendTime) {srand(time(NULL) + Cnfg.values.uintSeed);}
+	else {srand(Cnfg.values.uintSeed);}
+	
 	Map m;
 	m.load();
 	ErrorCheck

@@ -22,6 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	* Removed unneeded libraries (?)
 		I think I got rid of old libraries but I'm not sure
 		Again with the rewrite I'm not sure.
+		
+	* The weight of the player with the highest fitness be selected more often.
 
 ### Changed
 

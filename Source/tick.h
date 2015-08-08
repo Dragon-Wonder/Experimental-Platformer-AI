@@ -7,7 +7,7 @@
 /**********************************************************************************************************************************************/
 class Tick {
 	private: 
-		
+		//Change the fps to whatever goal fps you want.
 		const uchar fps = 20;
 	
 		void sleep(ulong);

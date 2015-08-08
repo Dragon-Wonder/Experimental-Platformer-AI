@@ -34,11 +34,13 @@ class Map {
 		
 			
 		
-		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
+		
 		MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
 	public:
 		uchar map[Map_Height][Map_Height];
 		uchar numMonsters;
+		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
+		
 		
 		char move(uchar);
 		void load(void);
