@@ -1,9 +1,11 @@
 /**********************************************************************************************************************************************/
 #include "map.h"
 #include "config.h"
+#include "tick.h"
 /**********************************************************************************************************************************************/
 void Map::show(void) {
 	Entity enty;
+	Tick tick; 
 	printf("\n\n\n\n");
 	for (uint y = 0; y < Map_Height; y++) {
 		for (int x = enty.player.x - 5; x < enty.player.x + 73; x++) {
@@ -35,6 +37,7 @@ void Map::show(void) {
 		printf("\n");
 	}//end for y
 	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", enty.genNum,enty.playerNum + 1,enty.player.fitness);
+	tck.wait(); //waits for the time needed.
 }
 /**********************************************************************************************************************************************/
 void Map::restart(void) {

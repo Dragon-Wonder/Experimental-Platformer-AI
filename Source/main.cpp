@@ -1,10 +1,12 @@
 /**********************************************************************************************************************************************/
-
+//The main function, most of the acuatual program is found in Entity.cpp under start. 
+//So see there for most of the funtions.
 /**********************************************************************************************************************************************/
 #include "main.h"
 #include "map.h"
 #include "config.h"
 #include "entity.h"
+#include "tick.h"
 /**********************************************************************************************************************************************/
 int main(void) {
 	Config Cnfg;
@@ -26,7 +28,13 @@ int main(void) {
 	plyr.start();
 	ErrorCheck
 	
+	printf("\nDone\n");
+	//Clear dynamic memory used to prevent
+	//Memory leaks
+	free(m.basemonsters);
+	free(plyr.monsters);
+	
 	getchar();
-	return 1;
+	return 0;
 }
 /**********************************************************************************************************************************************/

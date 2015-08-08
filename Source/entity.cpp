@@ -1,11 +1,97 @@
 /**********************************************************************************************************************************************/
 #include "entity.h"
+#include "config.h"
 /**********************************************************************************************************************************************/
 /*
 This will hold everything related to the entites that have to be kept track of including the players, monsters, past players, etc...
 Later on we might spilt up players and monsters but since monsters only need to be stored at the moment I didn't see a need to make them
 their own .cpp
 */
+/**********************************************************************************************************************************************/
+void Entity::start(void) {
+	//Starts the entire loop.
+	Config Cnfg;
+	Map m;
+	
+	if (Cnfg.values.blnLogging) {/*Open log file to clear it*/ Entity::logFile = fopen(Entity::FileName,"w"); flclose(Entity::logFile);}
+	
+	char chrPlayerStatus = 0;
+	Entity::uintGenSteps = 0;
+	Entity::genNum = 1;
+	
+	//First Generation
+	for (Entity::playerNum = 0; Entity::playerNum < Players_Per_Generation; Entity::playerNum++) {
+		Entity::makeplayer();
+		for (uint step = 0; step < Cnfg.values.uintFirstGen; step++) {
+			chrPlayerStatus = m.move(Entity::player.direction[step]);
+			if (Cnfg.values.blnShowMap) {m.show();}
+			if (chrPlayerStatus == DEAD) {
+				//If the player dies clear the rest of thier directions (disabled) and end the loop.
+				//for (uint j = step; j < Cnfg.values.uintFirstGen; j++) {Entity::player.direction[j] = dirNone;}
+				step = Cnfg.values.uintFirstGen;
+			} //end if dead
+		} //End for steps
+		Entity::nextplayer();
+		if (Cnfg.values.blnShowMap) {m.show();}
+	}//end for first gen
+	
+	Entity::getBest();
+	if(!(Cnfg.values.blnShowMap)) {
+		printf("Best Players are:\n");
+		for (uint k = 0; k < 10; k++) {printf("%2.3f\n",Entity::bestplayers[k].fitness);}
+	}
+	
+	uintGenSteps += Cnfg.values.uintFirstGen;
+	
+	//Growth Generation
+	while (uintGenSteps + Cnfg.values.uintGenIncrease <= Max_Player_Steps) {
+		Entity::genNum ++;
+		for (Entity::playerNum = 0; Entity::playerNum < Players_Per_Generation; Entity::playerNum++) {
+			Entity::makeplayer();
+			for (uint step = 0; step < uintGenSteps + Cnfg.values.uintGenIncrease; step++) {
+				chrPlayerStatus = m.move(Entity::player.direction[step]);
+				if (Cnfg.values.blnShowMap) {m.show();}
+				if (chrPlayerStatus == DEAD) {
+					//If the player dies clear the rest of thier directions (disabled) and end the loop.
+					//for (uint j = step; j < uintGenSteps + Cnfg.values.uintGenIncrease; j++) {Entity::player.direction[j] = dirNone;}
+					step = uintGenSteps + Cnfg.values.uintGenIncrease;
+				} //end if dead
+			}//end for steps
+			Entity::nextplayer();
+			if (Cnfg.values.blnShowMap) {m.show();}
+		} //end for players
+		Entity::getBest();
+		if(!(Cnfg.values.blnShowMap)) {
+			printf("Best Players are:\n");
+			for (uint k = 0; k < 10; k++) {printf("%2.3f\n",Entity::bestplayers[k].fitness);}
+		}
+		uintGenSteps += Cnfg.values.uintGenIncrease;
+	}//end while loop
+	
+	//Steady Generations
+	for (uint i = 0; i < Cnfg.values.uintGensPastGrowth; i++) {
+		Entity::genNum ++;
+		for (Entity::playerNum = 0; Entity::playerNum < Players_Per_Generation; Entity::playerNum++) {
+			Entity::makeplayer();
+			for (uint step = 0; step < Max_Player_Steps; step++) {
+				chrPlayerStatus = m.move(Entity::player.direction[step]);
+				if (Cnfg.values.blnShowMap) {m.show();}
+				if (chrPlayerStatus == DEAD) {
+					//If the player dies clear the rest of thier directions (disabled) and end the loop.
+					//for (uint j = step; j < Max_Player_Steps; j++) {Entity::player.direction[j] = dirNone;}
+					step = Max_Player_Steps;
+				} //end if dead
+			}//end for steps
+			Entity::nextplayer();
+			if (Cnfg.values.blnShowMap) {m.show();}
+		} //end for players
+		Entity::getBest();
+		if(!(Cnfg.values.blnShowMap)) {
+			printf("Best Players are:\n");
+			for (uint k = 0; k < 10; k++) {printf("%2.3f\n",Entity::bestplayers[k].fitness);}
+		}
+	}//end for loop	
+}
 /**********************************************************************************************************************************************/
 void Entity::nextplayer(void) {
 	//Records the last player into the array of players, and logs directions to file if that is enabled.
@@ -81,7 +167,7 @@ void Entity::makeplayer(void) {
 	uchar uchrRandPlayer;
 	uint uRandSection, uTempStep = 0;
 	
-	if (genNum == 0) { //First Generation
+	if (genNum == 1) { //First Generation
 		for (uint i = 0; i < Cnfg.values.uintFirstGen) {Entity::player.direction[i] = (uchar)(rand() % (dirRight + 1) + dirUp);}
 	} else { //Growth Phase & Steady phase
 		do {
@@ -117,5 +203,37 @@ float Entity::getFitness(void) {
 	if (Entity::player.x > 204) {temp += 200.0;}
 	if (cnfg.values.blnHardMode) {temp -= uintStepNum / 80.0;}
 	return temp;
+}
+/**********************************************************************************************************************************************/
+void Entity::getBest(void) {
+	//Gets best players in a generation.
+	float fTempfit = 0;
+	uchar uchrBestNum = 0;
+	for (uchar j = 0; j < 10; j ++) {
+		fTempfit = 0.00f;
+		uchrBestNum = 0;
+		for (uchar i = 0; i < Players_Per_Generation; i++) {
+			if (Entity::pastplayers[i].fitness > fTempfit;) {fTempfit = Entity::pastplayers[i].fitness; uchrBestNum = i;}
+		}
+		
+		Entity::bestplayers[j].fitness = Entity::pastplayers[uchrBestNum].fitness;
+		for (uint m = 0; m < Max_Player_Steps; m++) {
+			Entity::bestplayers[j].direction[m] = Entity::pastplayers[uchrBestNum].direction[m];
+		}
+		Entity::pastplayers[uchrBestNum].fitness = 0.00f; //set fitness to 0 so they are recorded again.
+	}
+}
+/**********************************************************************************************************************************************/
+void Entity::killMonster(uchar xplace,uchar yplace) {
+	//Finds monster at specificed place and kills them.
+	//We don't have to worry about replace the tile they are in with empty
+	//Because the player will be replace them.
+	Map m;
+	
+	for (uchar i = 0; i < m.numMonsters; i++) {
+		if (Entity::monsters[i].x == xplace && Entity::monsters[i].y == yplace) {
+			Entity::monsters[i].living = false;
+		}
+	}
 }
 /**********************************************************************************************************************************************/
