@@ -1,6 +1,7 @@
 /**********************************************************************************************************************************************/
 #include "entity.h"
 #include "config.h"
+#include "map.h"
 /**********************************************************************************************************************************************/
 /*
 This will hold everything related to the entites that have to be kept track of including the players, monsters, past players, etc...
@@ -13,7 +14,7 @@ void Entity::start(void) {
 	Config Cnfg;
 	Map m;
 	
-	if (Cnfg.values.blnLogging) {/*Open log file to clear it*/ Entity::logFile = fopen(Entity::FileName,"w"); flclose(Entity::logFile);}
+	if (Cnfg.values.blnLogging) {/*Open log file to clear it*/ Entity::logFile = fopen(Entity::FileName,"w"); fclose(Entity::logFile);}
 	
 	char chrPlayerStatus = 0;
 	Entity::uintGenSteps = 0;
@@ -96,8 +97,9 @@ void Entity::start(void) {
 void Entity::nextplayer(void) {
 	//Records the last player into the array of players, and logs directions to file if that is enabled.
 	Config cnfg;
+	Map m;
 	if (cnfg.values.blnLogging) {Entity::logFile = fopen(Entity::FileName,"a");} //Open log file in append mode.
-	if (Gloabl::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",Entity::player.fitness);}
+	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",Entity::player.fitness);}
 	
 	Entity::pastplayers[Entity::playerNum].fitness = Entity::player.fitness;
 	if (cnfg.values.blnLogging) {fprintf(Entity::logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",Entity::genNum + 1,Entity::playerNum + 1,Entity::player.fitness);}
@@ -142,7 +144,7 @@ void Entity::nextplayer(void) {
 		} //End of if last gen player
 		fclose(Entity::logFile);
 	} //end of if logging
-	Map::restart();
+	m.restart();
 }
 /**********************************************************************************************************************************************/
 void Entity::makeplayer(void) {
@@ -168,12 +170,12 @@ void Entity::makeplayer(void) {
 	uint uRandSection, uTempStep = 0;
 	
 	if (genNum == 1) { //First Generation
-		for (uint i = 0; i < Cnfg.values.uintFirstGen) {Entity::player.direction[i] = (uchar)(rand() % (dirRight + 1) + dirUp);}
+		for (uint i = 0; i < Cnfg.values.uintFirstGen; i++) {Entity::player.direction[i] = (uchar)(rand() % (dirRight + 1) + dirUp);}
 	} else { //Growth Phase & Steady phase
 		do {
 			uchrRandPlayer = rand() % 10;
 			uRandSection = (uint)(rand() % ((Entity::uintGenSteps - uTempStep) / 2) + uTempStep);
-			if (Gloabl::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
+			if (Global::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
 			for (uint j = uTempStep; j < uRandSection; j++) {
 				if ((uint)(rand() % 100) < Cnfg.values.uintMutationChance) {Entity::player.direction[j] = (uchar)(rand() % (dirRight + 1) + dirUp);}
 				else {Entity::player.direction[j] = Entity::bestplayers[uchrRandPlayer].direction[j];}
@@ -182,7 +184,7 @@ void Entity::makeplayer(void) {
 		} while (uTempStep < uintGenSteps);
 		
 		if (uintGenSteps + Cnfg.values.uintGenIncrease < Max_Player_Steps) {
-			for (uint k = 0; k < uintGenSteps + Cnfg.values.uintGenIncrease; k++) {Entity::player.direction[i] = (uchar)(rand() % (dirRight + 1) + dirUp);}
+			for (uint k = 0; k < uintGenSteps + Cnfg.values.uintGenIncrease; k++) {Entity::player.direction[k] = (uchar)(rand() % (dirRight + 1) + dirUp);}
 		}
 	}
 }
@@ -213,7 +215,7 @@ void Entity::getBest(void) {
 		fTempfit = 0.00f;
 		uchrBestNum = 0;
 		for (uchar i = 0; i < Players_Per_Generation; i++) {
-			if (Entity::pastplayers[i].fitness > fTempfit;) {fTempfit = Entity::pastplayers[i].fitness; uchrBestNum = i;}
+			if (Entity::pastplayers[i].fitness > fTempfit) {fTempfit = Entity::pastplayers[i].fitness; uchrBestNum = i;}
 		}
 		
 		Entity::bestplayers[j].fitness = Entity::pastplayers[uchrBestNum].fitness;

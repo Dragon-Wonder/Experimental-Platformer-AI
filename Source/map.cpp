@@ -37,7 +37,7 @@ void Map::show(void) {
 		printf("\n");
 	}//end for y
 	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", enty.genNum,enty.playerNum + 1,enty.player.fitness);
-	tck.wait(); //waits for the time needed.
+	tick.wait(); //waits for the time needed.
 }
 /**********************************************************************************************************************************************/
 void Map::restart(void) {

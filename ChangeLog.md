@@ -37,7 +37,9 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 	* Classes
 	
-	* 
+	* Tick with universal "sleep"
+	
+	
 
 ## [3.3.0] - 2015-08-05
 

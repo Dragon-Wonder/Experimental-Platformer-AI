@@ -8,6 +8,13 @@
 #include "entity.h"
 #include "tick.h"
 /**********************************************************************************************************************************************/
+//Globals
+namespace Global {
+	const bool blnDebugMode = false;
+	bool blnError = false;
+	//const char* programverison = PROGRAM_VERISON;
+};
+/**********************************************************************************************************************************************/
 int main(void) {
 	Config Cnfg;
 	Cnfg.Check();
