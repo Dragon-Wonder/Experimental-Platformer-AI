@@ -1,4 +1,4 @@
-Credit for the Icon I use goes to [Daniele De Santis] (http://www.iconarchive.com/artist/danieledesantis.html).
+Credit for the Icon I use goes to [Daniele De Santis] (http://www.danieledesantis.net/).
 
 You can find the orginal [Here](http://www.iconarchive.com/show/playstation-flat-icons-by-danieledesantis/playstation-circle-dark-icon.html).
 
