@@ -10,12 +10,13 @@
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
-	const bool blnDebugMode = false;
+	const bool blnDebugMode = true;
 	bool blnError = false;
 	//const char* programverison = PROGRAM_VERISON;
 };
 /**********************************************************************************************************************************************/
 int main(void) {
+	Entity plyr;
 	Config Cnfg;
 	Cnfg.Check();
 	ErrorCheck
@@ -23,16 +24,22 @@ int main(void) {
 	if (Cnfg.values.blnAppendTime) {srand(time(NULL) + Cnfg.values.uintSeed);}
 	else {srand(Cnfg.values.uintSeed);}
 	
+	plyr.genNum = 0;
+	plyr.playerNum = 0;
+	
 	Map m;
 	m.load();
+	if (Global::blnDebugMode) {printf("Map loaded\n");}
 	ErrorCheck
 	m.restart();
+	if (Global::blnDebugMode) {printf("Map Restarted\n");}
 	ErrorCheck
 	m.show();
 	getchar();
 	
-	Entity plyr;
+	
 	plyr.start();
+	if (Global::blnDebugMode) {printf("Generations finished.\n");}
 	ErrorCheck
 	
 	printf("\nDone\n");

@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED/WIP [4.0.0] - 2015-08-07 
+## UNRELEASED [4.0.0] - 2015-08-08 
 
 ### Notes
 
@@ -39,8 +39,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	
 	* Tick with universal "sleep"
 	
+	* More debug messages.
 	
-
 ## [3.3.0] - 2015-08-05
 
 ### Added

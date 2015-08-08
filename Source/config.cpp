@@ -127,20 +127,20 @@ void Config::load(void) {
 void Config::Check(void) {
 	char chrTempString[50], chrConfigVerison;
 	
-	if (Config::exists() != true) {
+	if (exists() != true) {
 		printf("Config file was not found; creating now one\n");
-		Config::make();
+		make();
 	} else {
 		configFile = fopen(ConfigFileName,"r");
 		printf("Config file found; loading values\n");
 		fgets(chrTempString,50,configFile);
 		fgets(chrTempString,50,configFile);
-		chrConfigVerison = Config::verisonCheck(chrTempString);
+		chrConfigVerison = verisonCheck(chrTempString);
 		
 		if (chrConfigVerison == NEWCONFIG) {
 			printf("Current config file out of date. Making new one.\n");
 			fclose(configFile);
-			Config::make();
+			make();
 		}
 		else if (chrConfigVerison == PROMPTUSER) {
 			printf("\nThe config file you are using has a different Minor Version than the program.\n");
@@ -154,11 +154,11 @@ void Config::Check(void) {
 					case 'Y' :
 					case 'y' :
 						fclose(configFile);
-						Config::make();
+						make();
 						break;
 					case 'n' :
 					case 'N' :
-						Config::load();
+						load();
 						break;
 					default :
 						//At some point I'll need to add a go back and propmt again
@@ -167,7 +167,7 @@ void Config::Check(void) {
 						break;
 				};
 			} while (chrConfigVerison != 'n' || chrConfigVerison != 'N' || chrConfigVerison != 'Y' || chrConfigVerison != 'y');
-		} else { Config::load();}
+		} else { load();}
 	}
 }
 /**********************************************************************************************************************************************/

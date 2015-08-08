@@ -19,9 +19,9 @@ void Tick::wait(void) {
 	all the other functions of the program and there is also the rounding. But
 	it should be close enough to not matter
 	*/
-	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / Tick::fps);}
+	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / fps);}
 	
-	Tick::sleep(ulngSleepTime);
+	sleep(ulngSleepTime);
 }
 /**********************************************************************************************************************************************/
 void Tick::sleep(ulong milliseconds) {

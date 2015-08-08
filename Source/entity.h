@@ -27,6 +27,8 @@ class Entity {
 		
 		void start(void);
 		void killMonster(uchar,uchar);
+		void allocateMonsters(uchar);
+		void placeBaseMonsters(uchar, uchar, uchar);
 };
 
 /**********************************************************************************************************************************************/
