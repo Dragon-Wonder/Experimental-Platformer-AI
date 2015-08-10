@@ -5,6 +5,7 @@
 #include "entity.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 /**********************************************************************************************************************************************/
 enum tile {
 	tileSpace = 0, 
@@ -36,9 +37,6 @@ class Map {
 	public:
 		//Default Constructor
 		Map();
-
-		//Default Destructor
-		~Map();
 		
 		//Members
 		uchar map[Map_Height][Map_Height];

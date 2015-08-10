@@ -7,8 +7,9 @@ void Map::show(void) {
 	Entity enty;
 	Tick tick; 
 	printf("\n\n\n\n");
-	for (uint y = 0; y < Map_Height; y++) {
-		for (int x = enty.player.x - 5; x < enty.player.x + 73; x++) {
+	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",enty.player.x,enty.player.y);}
+	for (uchar y = 0; y < Map_Height; y++) {
+		for (uchar x = enty.player.x - 5; x < enty.player.x + 73; x++) {
 			switch (map[y][x]) {
 				case tileSpace :
 					printf(" ");
@@ -59,35 +60,34 @@ void Map::restart(void) {
 	so I'll change it later.
 	*/
 	
-	/*for (uchar i = 0; i < numMonsters; i++) {
+	for (uchar i = 0; i < numMonsters; i++) {
 		//Pointers are a pain
+		//pMonster = &enty.monsters[i];
+		//pMonster->[i]->x = basemonsters[i].x;
+		//pMonster->[i]->y = basemonsters[i].y;
+		//pMonster->[i]->living = basemonsters[i].living;
+		//pMonster->[i]->movingright = basemonsters[i].movingright;
+		//*enty.monsters[i].x = basemonsters[i].x;
+		//*enty.monsters[i].y = basemonsters[i].y;
+		//*enty.monsters[i].living = basemonsters[i].living;
+		//*enty.monsters[i].movingright = basemonsters[i].movingright;
+		//enty.placeBaseMonsters(i,basemonsters[i].x,basemonsters[i].y);
 		
-		
-		//pMonster = &enty.monsters[i]; 
-
-		pMonster->[i]->x = basemonsters[i].x;
-		pMonster->[i]->y = basemonsters[i].y;
-		pMonster->[i]->living = basemonsters[i].living;
-		pMonster->[i]->movingright = basemonsters[i].movingright;
-
-		*enty.monsters[i].x = basemonsters[i].x;
-		*enty.monsters[i].y = basemonsters[i].y;
-		*enty.monsters[i].living = basemonsters[i].living;
-		*enty.monsters[i].movingright = basemonsters[i].movingright;
-		
-		
-		enty.placeBaseMonsters(i,basemonsters[i].x,basemonsters[i].y);
+		enty.monsters[i].x = basemonsters[i].x;
+		enty.monsters[i].y = basemonsters[i].y;
+		enty.monsters[i].living = true;
+		enty.monsters[i].movingright = false;
 		
 		if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 	}
-	*/
+	
 	
 	if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
 	
-	//enty.player.x = baseplayer.x;
-	//enty.player.y = baseplayer.y;
-	enty.player.x = 5;
-	enty.player.y = 11;
+	enty.player.x = baseplayer.x;
+	enty.player.y = baseplayer.y;
+	//enty.player.x = 5;
+	//enty.player.y = 11;
 	enty.player.score = 0;
 	enty.player.fitness = 0.00f;
 	
@@ -219,10 +219,7 @@ void Map::load(void) {
 	if (Global::blnError) {printf("Could not allocate the memory!\n"); return;}
 }
 /**********************************************************************************************************************************************/
-Map::Map() {	
-}
-/**********************************************************************************************************************************************/
-Map::~Map() {
-	free(basemonsters);
+Map::Map() {
+	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/

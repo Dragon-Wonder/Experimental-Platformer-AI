@@ -16,6 +16,7 @@ Config::Config() {
 	values.uintGensPastGrowth = 10;
 	values.uintMutationChance = 15;
 	values.uintSeed = 12345;
+	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/
 bool Config::exists(void) {

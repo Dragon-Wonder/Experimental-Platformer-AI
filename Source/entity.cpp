@@ -10,21 +10,16 @@ their own .cpp
 */
 /**********************************************************************************************************************************************/
 Entity::Entity() {
+	if (Global::blnDebugMode) {printf("Entity Constructor called.\n");}
 	//Default Constructor
 	genNum = 0;
 	playerNum = 0;
 	uintGenSteps = 0;
 	
-	player.x = 0;
-	player.y = 0;
+	player.x = 5;
+	player.y = 11;
 	player.fitness = 0.00f;
 	player.score = 0;
-	
-}
-/**********************************************************************************************************************************************/
-Entity::~Entity() {
-	//Default destructor
-	free(monsters);
 }
 /**********************************************************************************************************************************************/
 void Entity::start(void) {
