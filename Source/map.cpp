@@ -32,7 +32,6 @@ void Map::show(void) {
 					printf("#");
 					break;
 			}; //end switch
-			
 		}//end for x
 		printf("\n");
 	}//end for y
@@ -65,14 +64,12 @@ void Map::restart(void) {
 		
 		
 		//pMonster = &enty.monsters[i]; 
-		/*
+
 		pMonster->[i]->x = basemonsters[i].x;
 		pMonster->[i]->y = basemonsters[i].y;
 		pMonster->[i]->living = basemonsters[i].living;
 		pMonster->[i]->movingright = basemonsters[i].movingright;
-		*/
-		
-		/*
+
 		*enty.monsters[i].x = basemonsters[i].x;
 		*enty.monsters[i].y = basemonsters[i].y;
 		*enty.monsters[i].living = basemonsters[i].living;
@@ -220,5 +217,8 @@ void Map::load(void) {
 	
 	enty.allocateMonsters(numMonsters);
 	if (Global::blnError) {printf("Could not allocate the memory!\n"); return;}
+}
+/**********************************************************************************************************************************************/
+Map::Map() {	
 }
 /**********************************************************************************************************************************************/

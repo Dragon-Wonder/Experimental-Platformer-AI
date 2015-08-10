@@ -3,14 +3,14 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.0] - 2015-08-08 
+## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-10 
 
 ### Notes
 
-	* This verison has a completely rewritten code; I'll to remeber the major things that
+	* This version has a completely rewritten code; I'll to remember the major things that
 		are different but I may have forgotten stuff.
 		
-	* The main point of this rewrite was to improve the structre of the code so later changes are 
+	* The main point of this rewrite was to improve the structure of the code so later changes are 
 		easier as opposed to adding a bunch of new features.
 
 ### Removed
@@ -23,11 +23,11 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 		I think I got rid of old libraries but I'm not sure
 		Again with the rewrite I'm not sure.
 		
-	* The weight of the player with the highest fitness be selected more often.
+	* The increase chance of the player with the highest fitness being selected over the other players.
 
 ### Changed
 
-	* Spilt the program into a lot more .cpp to better orgainze everything
+	* Spilt the program into a lot more .cpp to better organize everything
 	
 	* Change complier from Cygwin to MinGW
 	
@@ -40,6 +40,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	* Tick with universal "sleep"
 	
 	* More debug messages.
+	
+	* More comments.
 	
 ## [3.3.0] - 2015-08-05
 
@@ -54,7 +56,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	* File version numbering changed slightly in boilerplate
 		For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER]
 		This is mostly just when I am working on the new rc. It won't be
-		reflected in the Product Verison which will still follow [MAJOR].[MINOR].[PATCH]
+		reflected in the Product Version which will still follow [MAJOR].[MINOR].[PATCH]
 		
 	* Boilerplate.rc around to make changes to it easier to do.
 	
@@ -72,7 +74,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	
 ### Fixed
 
-	* It just occured to me that the program does not log the last player of a generation
+	* It just occurred to me that the program does not log the last player of a generation
 		so I fixed that.
 
 ## [3.2.0] - 2015-08-04
@@ -90,7 +92,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 	* Coins (are "O")
 	
-	* Score for player. Goes up after collectings coins, and killing monsters.
+	* Score for player. Goes up after collecting coins, and killing monsters.
 		Weighs into fitness (I did this because under hard mode these actions would not effect fitness)
 
 
@@ -175,13 +177,13 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Added
 
-	* Verison Number added to Config file
+	* Version Number added to Config file
 
 ### Fixed
 
 	* Monster movement is no longer randomly
 	
-		* Hopefully to improve suvivabilty between generations
+		* Hopefully to improve survivability between generations
 
 
 ## [1.1.2] - 2015-08-01 - [YANKED]
@@ -194,13 +196,13 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Fixed
 
-	* Increase wait dealy from 20 to 65 so updating is not so jarring.
+	* Increase wait delay from 20 to 65 so updating is not so jarring.
 
 ## [1.1.0] - 2015-07-31
 
 ### Added
 
-	* Wait betweent show map: 20 ms
+	* Wait between show map: 20 ms
 	
 ### Changed
 

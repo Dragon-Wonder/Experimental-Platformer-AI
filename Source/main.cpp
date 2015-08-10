@@ -24,9 +24,6 @@ int main(void) {
 	if (Cnfg.values.blnAppendTime) {srand(time(NULL) + Cnfg.values.uintSeed);}
 	else {srand(Cnfg.values.uintSeed);}
 	
-	plyr.genNum = 0;
-	plyr.playerNum = 0;
-	
 	Map m;
 	m.load();
 	if (Global::blnDebugMode) {printf("Map loaded\n");}

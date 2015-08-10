@@ -1,6 +1,10 @@
 /**********************************************************************************************************************************************/
 #include "config.h"
 /**********************************************************************************************************************************************/
+/* 
+This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
+*/
+/**********************************************************************************************************************************************/
 bool Config::exists(void) {
 	//Returns true or false if config file exists
 	std::ifstream infile(FileName);
@@ -8,6 +12,7 @@ bool Config::exists(void) {
 }
 /**********************************************************************************************************************************************/
 void Config::make(void) {
+	//Makes the config file
 	configFile = fopen(FileName,"w");
 	printf("Config File will now be created!\n");
 	
@@ -25,6 +30,7 @@ void Config::make(void) {
 	fprintf(configFile,"Append Time: 1\n");
 	fclose(configFile);
 	
+	//These are just the default values I use when testing the program.
 	values.blnLogging = true;
 	values.blnShowMap = false;
 	values.blnAppendTime = true;
@@ -55,38 +61,40 @@ char Config::verisonCheck(const char *ConfigVerison) {
 }
 /**********************************************************************************************************************************************/
 void Config::load(void) {
+	//Loads all of the config values
+	
 	char chrTempString[50];
 	int intTempBool, intValuesScanned;
 	//Get the First Generation Input from config
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %d",&values.uintFirstGen);
 	if (intValuesScanned < 1) {printf("ERROR!"); values.uintFirstGen = 100;}
-	printf("First Gen Steps \t \t %2d\n",values.uintFirstGen);
+	if(Global::blnDebugMode) {printf("First Gen Steps \t \t %2d\n",values.uintFirstGen);}
 	
 	//Get Amount the inputs increase by each generation
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %d",&values.uintGenIncrease);
 	if (intValuesScanned < 1) {printf("ERROR!"); values.uintGenIncrease = 100;}
-	printf("Generation Increase \t \t %2d\n",values.uintGenIncrease);
+	if(Global::blnDebugMode) {printf("Generation Increase \t \t %2d\n",values.uintGenIncrease);}
 	
 	//Get the number of generations past growth
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&values.uintGensPastGrowth);
 	if (intValuesScanned < 1) {printf("ERROR!"); values.uintGensPastGrowth = 10;}
-	printf("Gens Past Growth \t \t %u\n",values.uintGensPastGrowth);
+	if(Global::blnDebugMode) {printf("Gens Past Growth \t \t %u\n",values.uintGensPastGrowth);}
 	
 	//Get the percent chance of mutation
 	//Should I make this a float?
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %u", &values.uintMutationChance);
 	if (intValuesScanned < 1) {printf("ERROR!"); values.uintMutationChance = 15;}
-	printf("Percent Mutation Chance \t %u\n",values.uintMutationChance);	
+	if(Global::blnDebugMode) {printf("Percent Mutation Chance \t %u\n",values.uintMutationChance);}	
 	
 	//Get if there is logging
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d", &intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
-	printf("Log to file \t \t \t %d\n",intTempBool);
+	if(Global::blnDebugMode) {printf("Log to file \t \t \t %d\n",intTempBool);}
 	if(intTempBool == 1) {values.blnLogging = true;}
 	else {values.blnLogging = false;}
 	
@@ -94,7 +102,7 @@ void Config::load(void) {
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	printf("Hard mode \t \t \t %u\n",intTempBool);
+	if(Global::blnDebugMode) {printf("Hard mode \t \t \t %u\n",intTempBool);}
 	if(intTempBool == 1) {values.blnHardMode = true;}
 	else {values.blnHardMode = false;}
 	
@@ -102,7 +110,7 @@ void Config::load(void) {
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	printf("Show Map Update \t \t %d\n",intTempBool);
+	if(Global::blnDebugMode) {printf("Show Map Update \t \t %d\n",intTempBool);}
 	if(intTempBool == 1) {values.blnShowMap = true;}
 	else {values.blnShowMap = false;}		
 	
@@ -110,13 +118,13 @@ void Config::load(void) {
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString,"%*s %*s [%u]", &values.uintSeed);
 	if (intValuesScanned < 1) {printf("ERROR!"); values.uintSeed = 0;}
-	printf("Random Seed \t \t \t %d\n",values.uintSeed);
+	if(Global::blnDebugMode) {printf("Random Seed \t \t \t %d\n",values.uintSeed);}
 	
 	//Check if append time
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
-	printf("Append Time \t \t \t %u\n",intTempBool);
+	if(Global::blnDebugMode) {printf("Append Time \t \t \t %u\n",intTempBool);}
 	if(intTempBool == 1) {values.blnAppendTime = true;}
 	else {values.blnAppendTime = false;}
 	
@@ -153,21 +161,21 @@ void Config::Check(void) {
 				{
 					case 'Y' :
 					case 'y' :
+						//Replace the config file
 						fclose(configFile);
 						make();
 						break;
 					case 'n' :
 					case 'N' :
+						//Load the config file
 						load();
 						break;
 					default :
-						//At some point I'll need to add a go back and propmt again
-						//But you know, bigger and badder things await
 						printf("\nUnknown answer; try again.\n");
 						break;
-				};
+				}; //end switch
 			} while (chrConfigVerison != 'n' || chrConfigVerison != 'N' || chrConfigVerison != 'Y' || chrConfigVerison != 'y');
 		} else { load();}
-	}
+	} //end if exists
 }
 /**********************************************************************************************************************************************/

@@ -3,14 +3,20 @@
 /**********************************************************************************************************************************************/
 #include <cstdio>
 /**********************************************************************************************************************************************/
+/*
+This is the main header and defines many values, and structures that are used a lot of other places in the code, so this header should be refrenced by
+all the cpps
+*/
+/**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERISON "v4.0.0-beta.2"
+#define PROGRAM_VERISON "v4.0.0-beta.3"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 //Defines that are to allow certain aspects to be changed easier.
 //They can be changed without any issue.
 #define Map_Height 14
 #define Map_Width 217
+#define Goal_FPS 20
 #define Max_Player_Steps 1000
 #define Players_Per_Generation 40
 #define Max_Jump_Count 2

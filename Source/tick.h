@@ -7,14 +7,18 @@
 /**********************************************************************************************************************************************/
 class Tick {
 	private: 
-		//Change the fps to whatever goal fps you want.
-		const uchar fps = 20;
+		//Members
+		uchar fps;
 	
+		//Functions
 		void sleep(ulong);
 		
 	public:
-	
-		void wait(void);
+		//Default Construcator
+		Tick();
+		
+		//Functions
+		void wait(void); //Call this to activate the wait
 	
 };
 /**********************************************************************************************************************************************/

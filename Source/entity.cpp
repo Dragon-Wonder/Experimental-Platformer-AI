@@ -9,6 +9,13 @@ Later on we might spilt up players and monsters but since monsters only need to 
 their own .cpp
 */
 /**********************************************************************************************************************************************/
+Entity::Entity() {
+	//Default Constructor
+	genNum = 0;
+	playerNum = 0;
+	uintGenSteps = 0;
+}
+/**********************************************************************************************************************************************/
 void Entity::start(void) {
 	//Starts the entire loop.
 	Config Cnfg;

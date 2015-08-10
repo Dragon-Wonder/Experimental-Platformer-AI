@@ -19,18 +19,21 @@ struct ConfigValues {
 /**********************************************************************************************************************************************/
 class Config {
 	private:
+		//Members
 		const char* FileName = ConfigFileName;
-		
-		
 		FILE* configFile;
+		
+		//Functions
 		char verisonCheck(const char *ConfigVerison);
 		bool exists(void);
 		void make(void);
 		void load(void);
 		
 	public:
+		//Members
 		struct ConfigValues values;
 		
+		//Functions
 		void Check(void);
 };
 /**********************************************************************************************************************************************/
