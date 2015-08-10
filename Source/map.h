@@ -37,6 +37,9 @@ class Map {
 		//Default Constructor
 		Map();
 
+		//Default Destructor
+		~Map();
+		
 		//Members
 		uchar map[Map_Height][Map_Height];
 		uchar numMonsters;

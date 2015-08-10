@@ -5,6 +5,19 @@
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
 /**********************************************************************************************************************************************/
+Config::Config() {
+	//Set the values as some default value.
+	values.blnLogging = true;
+	values.blnShowMap = false;
+	values.blnAppendTime = true;
+	values.blnHardMode = false;
+	values.uintFirstGen = 100;
+	values.uintGenIncrease = 100;
+	values.uintGensPastGrowth = 10;
+	values.uintMutationChance = 15;
+	values.uintSeed = 12345;
+}
+/**********************************************************************************************************************************************/
 bool Config::exists(void) {
 	//Returns true or false if config file exists
 	std::ifstream infile(FileName);

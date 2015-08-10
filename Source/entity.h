@@ -25,6 +25,9 @@ class Entity {
 		//Default Constructor
 		Entity();
 	
+		//Default Destructor
+		~Entity();
+		
 		//Members
 		PLYR player;
 		MNSTR *monsters;

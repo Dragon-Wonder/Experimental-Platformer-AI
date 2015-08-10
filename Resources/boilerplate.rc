@@ -2,8 +2,8 @@
 #include <windows.h>
 /**********************************************************************************************************************************************/
 //Verison numbering updated with the file.
-#define VER_FILEVERSION 4,0,0,32
-#define VER_PRODUCTVERSION "4.0.0-beta.3"
+#define VER_FILEVERSION 4,0,0,36
+#define VER_PRODUCTVERSION "4.0.0-beta.4"
 /**********************************************************************************************************************************************/
 //If this is not commented out it marks that this file verison was not meant to be publicly released.
 #define PRIVATE

@@ -35,3 +35,6 @@
 
 # Resource Files
 *.res
+
+# Stackdump
+*.stackdump

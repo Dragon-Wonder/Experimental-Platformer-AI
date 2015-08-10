@@ -5,6 +5,8 @@
 
 ::Delete the old .exe if it exists
 IF EXIST Platformer-Experiment.exe del /F Platformer-Experiment.exe
+::Delete Stackdump if it exists (so as to not confuse me later)
+IF EXIST Platformer-Experiment.exe.stackdump del /F Platformer-Experiment.exe.stackdump
 ::Move to the Resources directory
 cd %~dp0Resources
 ::Complie the resource files of the icon and boilerplate

@@ -30,6 +30,9 @@ class Config {
 		void load(void);
 		
 	public:
+		//Default Constructor
+		Config();
+	
 		//Members
 		struct ConfigValues values;
 		

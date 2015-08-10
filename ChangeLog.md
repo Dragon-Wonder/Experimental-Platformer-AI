@@ -43,6 +43,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	
 	* More comments.
 	
+	* Makefile for Linux builds.
+	
+	* Complie.bat for MinGW Windows builds.
+	
 ## [3.3.0] - 2015-08-05
 
 ### Added

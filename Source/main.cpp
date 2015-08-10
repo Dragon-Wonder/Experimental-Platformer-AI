@@ -42,8 +42,8 @@ int main(void) {
 	printf("\nDone\n");
 	//Clear dynamic memory used to prevent
 	//Memory leaks
-	free(m.basemonsters);
-	free(plyr.monsters);
+	plyr.~Entity();
+	m.~Map();
 	
 	getchar();
 	return 0;
