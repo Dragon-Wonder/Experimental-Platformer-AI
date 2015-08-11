@@ -22,6 +22,7 @@ void Tick::wait(void) {
 	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / fps);}
 	
 	sleep(ulngSleepTime);
+	Clock --;
 }
 /**********************************************************************************************************************************************/
 void Tick::sleep(ulong milliseconds) {
@@ -48,5 +49,6 @@ void Tick::sleep(ulong milliseconds) {
 Tick::Tick() {
 	if (Global::blnDebugMode) {printf("Tick Constructor called.\n");}
 	fps = Goal_FPS;
+	Clock = Time_Limit;
 }
 /**********************************************************************************************************************************************/

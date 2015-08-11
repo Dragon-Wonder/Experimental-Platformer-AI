@@ -45,6 +45,9 @@ will likely remove these and dynamically allocate the map size for you.
 
 //The points the player gets for killing a monster
 #define MonsKill_Points 500
+
+//How many ticks to complete the level
+#define Time_Limit 10000
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
 #define ConfigFileName "Config.ini"

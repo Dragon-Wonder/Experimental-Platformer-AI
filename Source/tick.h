@@ -17,6 +17,9 @@ class Tick {
 		//Default Constructor
 		Tick();
 		
+		//Members
+		uint Clock;
+		
 		//Functions
 		void wait(void); //Call this to activate the wait
 	

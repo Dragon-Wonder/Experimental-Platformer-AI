@@ -6,8 +6,8 @@ Improvements to the code as made as [Issues] (https://github.com/GamerMan7799/Ex
 
 ## Todo
 
-* Add a brief manual describing what the config file options do, as well as a how to use file.
+~~* Add a brief manual describing what the config file options do, as well as a how to use file.~~ 2015-08-11
 
-~~* Change the Read me so its not so off putting~~
+~~* Change the Read me so its not so off putting~~ 2015-08-10
 
 

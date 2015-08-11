@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-10 
+## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-11 
 
 ### Notes
 
@@ -46,12 +46,13 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Makefile for Linux builds.
 
-* Complie.bat for MinGW Windows builds.
+* Compile.bat for MinGW Windows builds.
 
 * Debug Folder with some debug scripts
 
 * Documentation Folder for documentation
 
+* Basic countdown that will later be a time limit if we decide to implement
 
 
 ## [3.3.0] - 2015-08-05
@@ -64,10 +65,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * The icon (like 3 times because I can't decide what I want)
 
-* File version numbering changed slightly in boilerplate
-	For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER]
-	This is mostly just when I am working on the new rc. It won't be
-	reflected in the Product Version which will still follow [MAJOR].[MINOR].[PATCH]
+* File version numbering changed slightly in boilerplate 
+	For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER] 
+	This is mostly just when I am working on the new RC. It won't be 
+	reflected in the Product Version which will still follow [MAJOR].[MINOR].[PATCH] 
 
 * Boilerplate.rc around to make changes to it easier to do.
 
