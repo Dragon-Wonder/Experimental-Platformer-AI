@@ -9,7 +9,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERISON "v4.0.0-beta.5"
+#define PROGRAM_VERSION "v4.0.0-beta.6"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -48,7 +48,7 @@ will likely remove these and dynamically allocate the map size for you.
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
 #define ConfigFileName "Config.ini"
-#define LogFileName "player.log"
+#define LogFileName "Player.log"
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
 #define DEAD 'D'
@@ -98,8 +98,8 @@ typedef unsigned long ulong;
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
-	extern const bool blnDebugMode;
-	extern bool blnError;
+	extern const bool blnDebugMode; //Holds if in debug mode or not. Causes more messages to appear in the console
+	extern bool blnError; //if there was an error; then the program will exit when it checks this.
 	//char* programverison;
 };
 /**********************************************************************************************************************************************/

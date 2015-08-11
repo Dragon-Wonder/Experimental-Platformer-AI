@@ -26,7 +26,7 @@ void Tick::wait(void) {
 /**********************************************************************************************************************************************/
 void Tick::sleep(ulong milliseconds) {
 	/*Since sleep is usually an OS specific command I made this functions
-	To work as a "sleep" but it doesn't function as a true sleep becuase the 
+	To work as a "sleep" but it doesn't function as a true sleep because the 
 	CPU is still being used, but whatever. It "stops" the program for a bit
 	which was its point so its gonna stay until I find something better.*/
 	

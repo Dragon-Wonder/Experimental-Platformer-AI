@@ -1,6 +1,6 @@
 /**********************************************************************************************************************************************/
-//The main function, most of the acuatual program is found in Entity.cpp under start. 
-//So see there for most of the funtions.
+//The main function, most of the actual program is found in Entity.cpp under start. 
+//So see there for most of the functions.
 /**********************************************************************************************************************************************/
 #include "main.h"
 #include "map.h"
@@ -10,17 +10,18 @@
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
-	const bool blnDebugMode = true;
-	bool blnError = false;
-	//const char* programverison = PROGRAM_VERISON;
+	const bool blnDebugMode = true; //Holds if in debug mode or not. Causes more messages to appear in the console.
+	bool blnError = false; //if there was an error; then the program will exit when it checks this.
+	//const char* programverison = PROGRAM_VERSION;
 };
 /**********************************************************************************************************************************************/
 int main(void) {
 	Entity plyr;
 	Config Cnfg;
-	Cnfg.Check();
-	ErrorCheck
+	Cnfg.Check(); //Load the config file's values
+	ErrorCheck 
 	
+	//Seed rand as defined in the config options.
 	if (Cnfg.values.blnAppendTime) {srand(time(NULL) + Cnfg.values.uintSeed);}
 	else {srand(Cnfg.values.uintSeed);}
 	

@@ -56,7 +56,7 @@ void Map::restart(void) {
 	A quick note. I hate pointers I've never fully figured them out, and I kept
 	having the program crash and burn no matter what I did, so I added placeBaseMonsters 
 	and placeBasePlayer as a work around. But I need to change this to be proper pointers
-	allocateMonsters proply also doesn't need to exist but I made it when I was debugging.
+	allocateMonsters probably also doesn't need to exist but I made it when I was debugging.
 	so I'll change it later.
 	*/
 	

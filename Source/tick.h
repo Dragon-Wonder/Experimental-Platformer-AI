@@ -14,7 +14,7 @@ class Tick {
 		void sleep(ulong);
 		
 	public:
-		//Default Construcator
+		//Default Constructor
 		Tick();
 		
 		//Functions

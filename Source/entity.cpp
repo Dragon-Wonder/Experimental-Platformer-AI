@@ -4,7 +4,7 @@
 #include "map.h"
 /**********************************************************************************************************************************************/
 /*
-This will hold everything related to the entites that have to be kept track of including the players, monsters, past players, etc...
+This will hold everything related to the entities that have to be kept track of including the players, monsters, past players, etc...
 Later on we might spilt up players and monsters but since monsters only need to be stored at the moment I didn't see a need to make them
 their own .cpp
 */
@@ -40,7 +40,7 @@ void Entity::start(void) {
 			chrPlayerStatus = m.move(player.direction[step]);
 			if (Cnfg.values.blnShowMap) {m.show();}
 			if (chrPlayerStatus == DEAD) {
-				//If the player dies clear the rest of thier directions (disabled) and end the loop.
+				//If the player dies clear the rest of their directions (disabled) and end the loop.
 				//for (uint j = step; j < Cnfg.values.uintFirstGen; j++) {player.direction[j] = dirNone;}
 				step = Cnfg.values.uintFirstGen;
 			} //end if dead
@@ -66,7 +66,7 @@ void Entity::start(void) {
 				chrPlayerStatus = m.move(player.direction[step]);
 				if (Cnfg.values.blnShowMap) {m.show();}
 				if (chrPlayerStatus == DEAD) {
-					//If the player dies clear the rest of thier directions (disabled) and end the loop.
+					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < uintGenSteps + Cnfg.values.uintGenIncrease; j++) {player.direction[j] = dirNone;}
 					step = uintGenSteps + Cnfg.values.uintGenIncrease;
 				} //end if dead
@@ -91,7 +91,7 @@ void Entity::start(void) {
 				chrPlayerStatus = m.move(player.direction[step]);
 				if (Cnfg.values.blnShowMap) {m.show();}
 				if (chrPlayerStatus == DEAD) {
-					//If the player dies clear the rest of thier directions (disabled) and end the loop.
+					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < Max_Player_Steps; j++) {player.direction[j] = dirNone;}
 					step = Max_Player_Steps;
 				} //end if dead
@@ -149,7 +149,7 @@ void Entity::nextplayer(void) {
 	if (cnfg.values.blnLogging) {
 		fprintf(logFile, "\n");
 		if (playerNum + 1 == Players_Per_Generation) {
-			//If this is the last player add a line to better seperate the different generations
+			//If this is the last player add a line to better separate the different generations
 			//in the log file. The line will be as long as the longest possible string of directions
 			
 			for (uint j = 0; j < 2* Max_Player_Steps + 42; j++) {fprintf(logFile, "=");}
@@ -168,14 +168,14 @@ void Entity::makeplayer(void) {
 	This changes how it makes the player.
 
 	If its in the First phase. It will just generate rand directions for the player until it hits 
-	the cap specificed in the config file. With directions being Up, Right or Left (down does nothing at the moment)
+	the cap specified in the config file. With directions being Up, Right or Left (down does nothing at the moment)
 	
 	During the growth phase and steady phases:
 	First it generates a random number that it uses as a reference to a player in the best player array
 	Next it randomly generates a Number that is the amount of steps it will take from that player 
 	(I tried to make it so it wouldn't be more than half of the last generation's inputs)
-	It will then go back and reapeat getting a new player and new section number until it has filled the direcitons
-	with however many steps the last generation took. If the generation is increasing (by being less than the maxium)
+	It will then go back and repeat getting a new player and new section number until it has filled the directions
+	with however many steps the last generation took. If the generation is increasing (by being less than the maximum)
 	then it will generate random directions until full.
 	*/
 	Config Cnfg;
@@ -240,7 +240,7 @@ void Entity::getBest(void) {
 }
 /**********************************************************************************************************************************************/
 void Entity::killMonster(uchar xplace,uchar yplace) {
-	//Finds monster at specificed place and kills them.
+	//Finds monster at specified place and kills them.
 	//We don't have to worry about replace the tile they are in with empty
 	//Because the player will be replace them.
 	Map m;

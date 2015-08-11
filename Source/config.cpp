@@ -31,7 +31,7 @@ void Config::make(void) {
 	printf("Config File will now be created!\n");
 	
 	fprintf(configFile,"Config File for the program.\n");
-	fprintf(configFile,"%s\n",PROGRAM_VERISON);
+	fprintf(configFile,"%s\n",PROGRAM_VERSION);
 	
 	fprintf(configFile,"First Generation Steps: 100\n");
 	fprintf(configFile,"Generation Increase: 100\n");
@@ -57,10 +57,10 @@ void Config::make(void) {
 }
 /**********************************************************************************************************************************************/
 char Config::verisonCheck(const char *ConfigVerison) {
-	//This checks the verison number written at the top of the config file
-	//against the internal verison number of the program.
+	//This checks the version number written at the top of the config file
+	//against the internal version number of the program.
 	//If it finds a Major revision change the config HAS to be replaced.
-	//A Minor revision will result in a propmt to the user about if it should be replaced.
+	//A Minor revision will result in a prompt to the user about if it should be replaced.
 	//And if only a patch change is found then it will just use the old config
 	//Lastly if no change is found then use the config of course
 	uint P_MajorNum, P_MinorNum, P_PatchNum;

@@ -32,9 +32,9 @@ If you have any questions or a suggestions or improvement please feel free to le
 
 ### Windows
 
-You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you should just be able to run this as is (if 4.0.0+ older editions require extra files included in the download).
+You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you should just be able to run this as is (if 4.0.0+; older editions require extra files included in the download).
 
-If you wish to compile it yourself you can use the Compile.bat file if you have MinGW on your computer or you can use the compile.sh in the Debug folder if you have Cygwin.
+If you wish to compile it yourself you can use the Compile.bat file if you have MinGW on your computer or you can use the Compile.sh in the Debug folder if you have Cygwin.
 
 Any other complier you wish will work these are just the ones I've used and made script to help with the compiling.
 	
@@ -49,6 +49,6 @@ I don't know your on your own. Sorry.
 ## Using the Project
 
 Most of the program will just run by itself because as stated it is meant to be an AI program. When the program is first launched it will create a config file called "Config.ini".
-You can change values in this file to change how the program runs. You should read the [manual] (http://google.com) Note that this is not done at this time.
+You can change values in this file to change how the program runs. You should read the manual, under documentation.
 
 
