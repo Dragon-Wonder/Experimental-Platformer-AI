@@ -9,7 +9,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERSION "v4.0.0-beta.6"
+#define PROGRAM_VERSION "v4.0.0-beta.7"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -47,7 +47,7 @@ will likely remove these and dynamically allocate the map size for you.
 #define MonsKill_Points 500
 
 //How many ticks to complete the level
-#define Time_Limit 10000
+#define Time_Limit 1000
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
 #define ConfigFileName "Config.ini"

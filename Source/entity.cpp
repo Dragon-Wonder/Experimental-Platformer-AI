@@ -115,7 +115,7 @@ void Entity::nextplayer(void) {
 	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",player.fitness);}
 	
 	pastplayers[playerNum].fitness = player.fitness;
-	if (cnfg.values.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",genNum + 1,playerNum + 1,player.fitness);}
+	if (cnfg.values.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",genNum,playerNum + 1,player.fitness);}
 	
 	player.fitness = 0.00f;
 	player.score = 0;
@@ -211,7 +211,7 @@ float Entity::getFitness(void) {
 	Config cnfg;
 	Map m;
 	float temp = 0.00f;
-	temp += (player.score) / 800.0;
+	temp += (player.score) / 250.0;
 	temp += (5.0/2.0) * (player.x - m.baseplayer.x);
 	temp += (player.x + player.y) / 6.0;
 	temp += (m.baseplayer.y - player.y) / 4.0;

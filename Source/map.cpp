@@ -8,6 +8,7 @@ void Map::show(void) {
 	Tick tick; 
 	printf("\n\n\n\n");
 	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",enty.player.x,enty.player.y);}
+	printf("Time Remaining: %d\n",tick.Clock);
 	for (uchar y = 0; y < Map_Height; y++) {
 		for (uchar x = enty.player.x - 5; x < enty.player.x + 73; x++) {
 			switch (map[y][x]) {
@@ -72,13 +73,13 @@ void Map::restart(void) {
 		//*enty.monsters[i].living = basemonsters[i].living;
 		//*enty.monsters[i].movingright = basemonsters[i].movingright;
 		//enty.placeBaseMonsters(i,basemonsters[i].x,basemonsters[i].y);
-		
+		/*
 		enty.monsters[i].x = basemonsters[i].x;
 		enty.monsters[i].y = basemonsters[i].y;
 		enty.monsters[i].living = true;
 		enty.monsters[i].movingright = false;
 		
-		if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
+		if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}*/
 	}
 	
 	
@@ -106,7 +107,7 @@ char Map::move(uchar direction) {
 	if (playerfalling == false) {jumpcount = 0;}
 	
 	//Move monsters first, to see if player dies and we can then skip the restart
-	for (uchar i = 0; i < numMonsters; i++) {
+	/*for (uchar i = 0; i < numMonsters; i++) {
 		if (enty.monsters[i].living) {
 			tempx = enty.monsters[i].x;
 			tempy = enty.monsters[i].y;
@@ -127,6 +128,7 @@ char Map::move(uchar direction) {
 			if(enty.monsters[i].living == false) {map[enty.monsters[i].y][enty.monsters[i].x] = tileSpace;}
 		}
 	} //End of for monsters
+	*/
 	
 	//Now the player can move.
 	

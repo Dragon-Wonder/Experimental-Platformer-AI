@@ -65,7 +65,7 @@ char Config::verisonCheck(const char *ConfigVerison) {
 	//Lastly if no change is found then use the config of course
 	uint P_MajorNum, P_MinorNum, P_PatchNum;
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(PROGRAM_VERISON,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
+	sscanf(PROGRAM_VERSION,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
 	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
 	if (Global::blnDebugMode) {printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);}
 	if (Global::blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
