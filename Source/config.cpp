@@ -19,6 +19,10 @@ Config::Config() {
 	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/
+Config::~Config() {
+	if(Global::blnDebugMode) {printf("Config Destructor called.\n");}
+}
+/**********************************************************************************************************************************************/
 bool Config::exists(void) {
 	//Returns true or false if config file exists
 	std::ifstream infile(FileName);

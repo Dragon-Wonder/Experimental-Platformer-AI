@@ -16,6 +16,7 @@ class Tick {
 	public:
 		//Default Constructor
 		Tick();
+		~Tick();
 		
 		//Members
 		uint Clock;

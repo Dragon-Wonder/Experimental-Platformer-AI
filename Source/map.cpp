@@ -73,13 +73,13 @@ void Map::restart(void) {
 		//*enty.monsters[i].living = basemonsters[i].living;
 		//*enty.monsters[i].movingright = basemonsters[i].movingright;
 		//enty.placeBaseMonsters(i,basemonsters[i].x,basemonsters[i].y);
-		/*
+		
 		enty.monsters[i].x = basemonsters[i].x;
 		enty.monsters[i].y = basemonsters[i].y;
 		enty.monsters[i].living = true;
 		enty.monsters[i].movingright = false;
 		
-		if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}*/
+		if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 	}
 	
 	
@@ -87,8 +87,6 @@ void Map::restart(void) {
 	
 	enty.player.x = baseplayer.x;
 	enty.player.y = baseplayer.y;
-	//enty.player.x = 5;
-	//enty.player.y = 11;
 	enty.player.score = 0;
 	enty.player.fitness = 0.00f;
 	
@@ -107,28 +105,29 @@ char Map::move(uchar direction) {
 	if (playerfalling == false) {jumpcount = 0;}
 	
 	//Move monsters first, to see if player dies and we can then skip the restart
-	/*for (uchar i = 0; i < numMonsters; i++) {
-		if (enty.monsters[i].living) {
-			tempx = enty.monsters[i].x;
-			tempy = enty.monsters[i].y;
-			if (enty.monsters[i].movingright) {tempx ++;}
-			else {tempx--;}
-			
-			if (map[tempy][tempx] == tileSpace) {
-				map[tempy][enty.monsters[i].x] = tileSpace;
-				map[tempy][tempx] = tileMonster;
-				enty.monsters[i].x = tempx;
+	if (enty.monsters != NULL) {
+		for (uchar i = 0; i < numMonsters; i++) {
+			if (enty.monsters[i].living) {
+				tempx = enty.monsters[i].x;
+				tempy = enty.monsters[i].y;
+				if (enty.monsters[i].movingright) {tempx ++;}
+				else {tempx--;}
+				
+				if (map[tempy][tempx] == tileSpace) {
+					map[tempy][enty.monsters[i].x] = tileSpace;
+					map[tempy][tempx] = tileMonster;
+					enty.monsters[i].x = tempx;
+				}
+				else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
+				else if (map[tempy][tempx] == tileWall) {enty.monsters[i].movingright = !(enty.monsters[i].movingright);}
+				
+				//Because I don't want to have to deal with monsters falling, if the space below a monster is space 
+				//kill the monster.
+				if (map[tempy+1][enty.monsters[i].x] == tileSpace ) {enty.monsters[i].living = false;}
+				if(enty.monsters[i].living == false) {map[enty.monsters[i].y][enty.monsters[i].x] = tileSpace;}
 			}
-			else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
-			else if (map[tempy][tempx] == tileWall) {enty.monsters[i].movingright = !(enty.monsters[i].movingright);}
-			
-			//Because I don't want to have to deal with monsters falling, if the space below a monster is space 
-			//kill the monster.
-			if (map[tempy+1][enty.monsters[i].x] == tileSpace ) {enty.monsters[i].living = false;}
-			if(enty.monsters[i].living == false) {map[enty.monsters[i].y][enty.monsters[i].x] = tileSpace;}
-		}
-	} //End of for monsters
-	*/
+		} //End of for monsters
+	} //End if not NULL
 	
 	//Now the player can move.
 	
@@ -223,5 +222,9 @@ void Map::load(void) {
 /**********************************************************************************************************************************************/
 Map::Map() {
 	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
+}
+/**********************************************************************************************************************************************/
+Map::~Map() {
+	if(Global::blnDebugMode) {printf("Map Destructor called.\n");}
 }
 /**********************************************************************************************************************************************/

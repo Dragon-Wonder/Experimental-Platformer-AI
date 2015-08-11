@@ -32,7 +32,8 @@ class Config {
 	public:
 		//Default Constructor
 		Config();
-	
+		~Config();
+		
 		//Members
 		struct ConfigValues values;
 		

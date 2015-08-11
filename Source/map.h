@@ -37,6 +37,7 @@ class Map {
 	public:
 		//Default Constructor
 		Map();
+		~Map();
 		
 		//Members
 		uchar map[Map_Height][Map_Height];

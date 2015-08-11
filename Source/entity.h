@@ -24,6 +24,7 @@ class Entity {
 	public :
 		//Default Constructor
 		Entity();
+		~Entity();
 		
 		//Members
 		PLYR player;

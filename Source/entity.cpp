@@ -22,6 +22,10 @@ Entity::Entity() {
 	player.score = 0;
 }
 /**********************************************************************************************************************************************/
+Entity::~Entity() {
+	if(Global::blnDebugMode) {printf("Entity Destructor called.\n");}
+}
+/**********************************************************************************************************************************************/
 void Entity::start(void) {
 	//Starts the entire loop.
 	Config Cnfg;
@@ -38,6 +42,7 @@ void Entity::start(void) {
 		makeplayer();
 		for (uint step = 0; step < Cnfg.values.uintFirstGen; step++) {
 			chrPlayerStatus = m.move(player.direction[step]);
+			player.fitness = getFitness();
 			if (Cnfg.values.blnShowMap) {m.show();}
 			if (chrPlayerStatus == DEAD) {
 				//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -53,6 +58,7 @@ void Entity::start(void) {
 	if(!(Cnfg.values.blnShowMap)) {
 		printf("Best Players are:\n");
 		for (uint k = 0; k < 10; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
+		if (Global::blnDebugMode) {getchar();}
 	}
 	
 	uintGenSteps += Cnfg.values.uintFirstGen;
@@ -64,6 +70,7 @@ void Entity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < uintGenSteps + Cnfg.values.uintGenIncrease; step++) {
 				chrPlayerStatus = m.move(player.direction[step]);
+				player.fitness = getFitness();
 				if (Cnfg.values.blnShowMap) {m.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -78,6 +85,7 @@ void Entity::start(void) {
 		if(!(Cnfg.values.blnShowMap)) {
 			printf("Best Players are:\n");
 			for (uint k = 0; k < 10; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
+			if (Global::blnDebugMode) {getchar();}
 		}
 		uintGenSteps += Cnfg.values.uintGenIncrease;
 	}//end while loop
@@ -89,6 +97,7 @@ void Entity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < Max_Player_Steps; step++) {
 				chrPlayerStatus = m.move(player.direction[step]);
+				player.fitness = getFitness();
 				if (Cnfg.values.blnShowMap) {m.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -103,6 +112,7 @@ void Entity::start(void) {
 		if(!(Cnfg.values.blnShowMap)) {
 			printf("Best Players are:\n");
 			for (uint k = 0; k < 10; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
+			if (Global::blnDebugMode) {getchar();}
 		}
 	}//end for loop	
 }
@@ -112,7 +122,7 @@ void Entity::nextplayer(void) {
 	Config cnfg;
 	Map m;
 	if (cnfg.values.blnLogging) {logFile = fopen(FileName,"a");} //Open log file in append mode.
-	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",player.fitness);}
+	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",player.fitness); getchar(); }
 	
 	pastplayers[playerNum].fitness = player.fitness;
 	if (cnfg.values.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",genNum,playerNum + 1,player.fitness);}
@@ -183,21 +193,22 @@ void Entity::makeplayer(void) {
 	uint uRandSection, uTempStep = 0;
 	
 	if (genNum == 1) { //First Generation
-		for (uint i = 0; i < Cnfg.values.uintFirstGen; i++) {player.direction[i] = (uchar)(rand() % (dirRight + 1) + dirUp);}
+		for (uint i = 0; i < Cnfg.values.uintFirstGen; i++) {player.direction[i] = (uint)(rand() % (dirRight) + dirUp);}
+		for (uint i = Cnfg.values.uintFirstGen; i < Max_Player_Steps; i++ ) {player.direction[i] = dirNone;}
 	} else { //Growth Phase & Steady phase
 		do {
 			uchrRandPlayer = rand() % 10;
-			uRandSection = (uint)(rand() % ((uintGenSteps - uTempStep) / 2) + uTempStep);
+			uRandSection = (uint)(rand() % ((uintGenSteps - uTempStep)) + uTempStep);
 			if (Global::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
-			for (uint j = uTempStep; j < uRandSection; j++) {
-				if ((uint)(rand() % 100) < Cnfg.values.uintMutationChance) {player.direction[j] = (uchar)(rand() % (dirRight + 1) + dirUp);}
+			for (uint j = uTempStep; j <= uRandSection; j++) {
+				if ((uint)(rand() % 100) < Cnfg.values.uintMutationChance) {player.direction[j] = (uint)(rand() % (dirRight) + dirUp);}
 				else {player.direction[j] = bestplayers[uchrRandPlayer].direction[j];}
 			}//End for
 			uTempStep = uRandSection;
-		} while (uTempStep < uintGenSteps);
+		} while (uTempStep < uintGenSteps - 1);
 		
 		if (uintGenSteps + Cnfg.values.uintGenIncrease < Max_Player_Steps) {
-			for (uint k = 0; k < uintGenSteps + Cnfg.values.uintGenIncrease; k++) {player.direction[k] = (uchar)(rand() % (dirRight + 1) + dirUp);}
+			for (uint k = 0; k < uintGenSteps + Cnfg.values.uintGenIncrease; k++) {player.direction[k] = (uint)(rand() % (dirRight) + dirUp);}
 		}
 	}
 }
