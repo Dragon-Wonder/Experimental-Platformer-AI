@@ -42,9 +42,9 @@ Any other complier you wish will work these are just the ones I've used and made
 
 You should be able to use the Makefile or the Compile.sh script to compile the program. You shouldn't need any other files.
 
-### Macs
+### IOSX
 
-I don't know your on your own. Sorry.
+I don't know you're on your own. Sorry.
 
 ## Using the Project
 

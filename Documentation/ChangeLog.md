@@ -55,6 +55,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Basic countdown that will later be a time limit if we decide to implement
 
 
+## Old versions
+
+```
+
 ## [3.3.0] - 2015-08-05
 
 ### Added
@@ -207,11 +211,10 @@ restarting the map before I recorded the fitness -_-
 
 ### Fixed
 
-* Monster movement is no longer randomly
+* Monster movement is no longer randomly move. 
+	Hopefully to improve survivability between generations
 
-* Hopefully to improve survivability between generations
-
-
+	
 
 ## [1.1.2] - 2015-08-01 - [YANKED]
 
@@ -272,3 +275,5 @@ restarting the map before I recorded the fitness -_-
 ### Notes
 
 * Original
+
+```
