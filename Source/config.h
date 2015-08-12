@@ -11,8 +11,8 @@ struct ConfigValues {
 	bool blnAppendTime; //If time is added to the seed 
 	bool blnHardMode; //if hard mode is on. Hard mode basically makes the players die a lot more.
 	uint uintFirstGen; //How many inputs the first generation has
-	uint uintGenIncrease; //How many inputs that each generation increases by until the limit of Max_Player_Steps
-	uint uintGensPastGrowth; //How many generations take place with Max_Player_Steps
+	uint uintGenIncrease; //How many inputs that each generation increases by until the limit of DEFINED_MAX_PLAYER_STEPS
+	uint uintGensPastGrowth; //How many generations take place with DEFINED_MAX_PLAYER_STEPS
 	uint uintMutationChance; //Percent chance that when using directions from a previous player, the direction will be replace with a random one.
 	uint uintSeed; //The seed that is used with srand()
 };
@@ -20,7 +20,7 @@ struct ConfigValues {
 class Config {
 	private:
 		//Members
-		const char* FileName = ConfigFileName;
+		const char* FileName = DEFINED_CONFIG_FILE_NAME;
 		FILE* configFile;
 		
 		//Functions
@@ -35,7 +35,7 @@ class Config {
 		~Config();
 		
 		//Members
-		static struct ConfigValues values;
+		struct ConfigValues values;
 		
 		//Functions
 		void Check(void);

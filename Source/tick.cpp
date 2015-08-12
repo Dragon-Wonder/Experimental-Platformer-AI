@@ -1,12 +1,23 @@
 /**********************************************************************************************************************************************/
 #include "tick.h"
+#include "globals.h"
 /**********************************************************************************************************************************************/
 //This will hold functions related to time.
 /**********************************************************************************************************************************************/
-uint Tick::Clock;
+//Default Constructor
+Tick::Tick() {
+	if (Global::blnDebugMode) {printf("Tick Constructor called.\n");}
+	fps = DEFINED_GOAL_FPS;
+	if(Tick::Clock <= 0) {Tick::resetClock();}
+}
+/**********************************************************************************************************************************************/
+Tick::~Tick() {
+	if(Global::blnDebugMode) {printf("Tick Destructor called.\n");}
+}
 /**********************************************************************************************************************************************/
 void Tick::wait(void) {
 	static ulong ulngSleepTime;
+	
 	/*
 	Figure out how long the wait should be based on the our goal frames per second.
 	
@@ -21,10 +32,9 @@ void Tick::wait(void) {
 	all the other functions of the program and there is also the rounding. But
 	it should be close enough to not matter
 	*/
-	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / fps);}
 	
+	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / fps);}
 	sleep(ulngSleepTime);
-	Clock --;
 }
 /**********************************************************************************************************************************************/
 void Tick::sleep(ulong milliseconds) {
@@ -37,28 +47,23 @@ void Tick::sleep(ulong milliseconds) {
 	/* Code taken from http://c-for-dummies.com/blog/?p=69 */
 	
 	ulong pause;
-	
 	clock_t now, then;
 	
 	pause = milliseconds * (CLOCKS_PER_SEC/1000);
 	
 	now = then = clock();
-	
 	while ((now - then) < pause) {now = clock();}
 }
 /**********************************************************************************************************************************************/
-void Tick::resetClock() {
-	Clock = Time_Limit;
+void Tick::resetClock(void) {
+	Clock = DEFINED_TICK_LIMIT;
 }
 /**********************************************************************************************************************************************/
-//Default Constructor
-Tick::Tick() {
-	if (Global::blnDebugMode) {printf("Tick Constructor called.\n");}
-	fps = Goal_FPS;
-	if(Tick::Clock <= 0) {Tick::resetClock();}
+void Tick::decClock(void) {
+	if (Clock != 0) {Clock--;}
 }
 /**********************************************************************************************************************************************/
-Tick::~Tick() {
-	if(Global::blnDebugMode) {printf("Tick Destructor called.\n");}
+uint Tick::getClockTime(void) {
+	return Clock;
 }
 /**********************************************************************************************************************************************/

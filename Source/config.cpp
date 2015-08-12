@@ -1,11 +1,10 @@
 /**********************************************************************************************************************************************/
 #include "config.h"
+#include "globals.h"
 /**********************************************************************************************************************************************/
 /* 
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
-/**********************************************************************************************************************************************/
-struct ConfigValues Config::values;
 /**********************************************************************************************************************************************/
 Config::Config() {
 	//Set the values as some default value.
@@ -37,7 +36,7 @@ void Config::make(void) {
 	printf("Config File will now be created!\n");
 	
 	fprintf(configFile,"Config File for the program.\n");
-	fprintf(configFile,"%s\n",PROGRAM_VERSION);
+	fprintf(configFile,"%s\n",DEFINED_PROGRAM_VERSION);
 	
 	fprintf(configFile,"First Generation Steps: 100\n");
 	fprintf(configFile,"Generation Increase: 100\n");
@@ -71,7 +70,7 @@ char Config::verisonCheck(const char *ConfigVerison) {
 	//Lastly if no change is found then use the config of course
 	uint P_MajorNum, P_MinorNum, P_PatchNum;
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(PROGRAM_VERSION,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
+	sscanf(DEFINED_PROGRAM_VERSION,"v%u.%u.%u",&P_MajorNum,&P_MinorNum,&P_PatchNum);
 	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
 	if (Global::blnDebugMode) {printf("\nProgram: v %u %u %u \n",P_MajorNum,P_MinorNum,P_PatchNum);}
 	if (Global::blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
@@ -159,7 +158,7 @@ void Config::Check(void) {
 		printf("Config file was not found; creating now one\n");
 		make();
 	} else {
-		configFile = fopen(ConfigFileName,"r");
+		configFile = fopen(DEFINED_CONFIG_FILE_NAME,"r");
 		printf("Config file found; loading values\n");
 		fgets(chrTempString,50,configFile);
 		fgets(chrTempString,50,configFile);

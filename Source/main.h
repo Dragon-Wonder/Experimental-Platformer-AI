@@ -9,7 +9,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define PROGRAM_VERSION "v4.0.0-beta.7"
+#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.8"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -18,40 +18,43 @@ You should note that if you change this you have to change the base map under ma
 size or you will most likely run into a lot of issues. Later verisons where you can simply load your own map
 will likely remove these and dynamically allocate the map size for you.
 */
-#define Map_Height 14
-#define Map_Width 217
+#define DEFINED_MAP_HEIGHT 14
+#define DEFINED_MAP_WIDTH 217
 /**********************************************************************************************************************************************/
 //Defines that are to allow certain aspects to be changed easier.
 //They can be changed without any issue.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define Goal_FPS 20
+#define DEFINED_GOAL_FPS 20
 
 //The most steps a single player can take
-#define Max_Player_Steps 1000
+#define DEFINED_MAX_PLAYER_STEPS 1000
 
 //The number of players in each generation
-#define Players_Per_Generation 40
+#define DEFINED_PLAYERS_PER_GEN 40
 
 //How many jumps the player has
-#define Max_Jump_Count 2
+#define DEFINED_MAX_JUMP_COUNT 2
 
 //How high the player will jump
-#define Jump_Height 2
+#define DEFINED_JUMP_HEIGHT 2
 
 //The points the player gets for collecting a coin
-#define Coin_Points 100
+#define DEFINED_COIN_WORTH 100
 
 //The points the player gets for killing a monster
-#define MonsKill_Points 500
+#define DEFINED_MONS_KILL_POINTS 500
 
 //How many ticks to complete the level
-#define Time_Limit 1000
+#define DEFINED_TICK_LIMIT 5000
+
+//How many best players are called at the end of each generation
+#define DEFINED_BEST_PLAYER_NUM 10
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
-#define ConfigFileName "Config.ini"
-#define LogFileName "Player.log"
+#define DEFINED_CONFIG_FILE_NAME "Config.ini"
+#define DEFINED_LOG_FILE_NAME "Player.log"
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
 #define DEAD 'D'
@@ -64,7 +67,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 struct generation {
 	float fitness;
-	unsigned char direction[Max_Player_Steps];
+	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
 };
 
 struct person {
@@ -72,7 +75,7 @@ struct person {
 	unsigned char y;
 	float fitness;
 	unsigned int score;
-	unsigned char direction[Max_Player_Steps];
+	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
 };
 
 struct creature {
@@ -98,12 +101,5 @@ typedef struct creature MNSTR;
 typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;
-/**********************************************************************************************************************************************/
-//Globals
-namespace Global {
-	extern const bool blnDebugMode; //Holds if in debug mode or not. Causes more messages to appear in the console
-	extern bool blnError; //if there was an error; then the program will exit when it checks this.
-	//char* programverison;
-};
 /**********************************************************************************************************************************************/
 #endif 

@@ -14,11 +14,11 @@ class Entity {
 		void makeplayer(void);
 		
 		//Members
-		static uint uintStepNum;
-		static GEN pastplayers[Players_Per_Generation];
-		static GEN bestplayers[10];
-		static uint uintGenSteps;
-		const char* FileName = LogFileName;
+		uint uintStepNum;
+		GEN pastplayers[DEFINED_PLAYERS_PER_GEN];
+		GEN bestplayers[DEFINED_BEST_PLAYER_NUM];
+		uint uintGenSteps;
+		const char* FileName = DEFINED_LOG_FILE_NAME;
 		FILE* logFile;
 	
 	public :
@@ -27,10 +27,10 @@ class Entity {
 		~Entity();
 		
 		//Members
-		static PLYR player;
-		static MNSTR *monsters;
-		static uchar genNum;
-		static uchar playerNum;
+		PLYR player;
+		MNSTR *monsters;
+		uchar genNum;
+		uchar playerNum;
 		
 		//Functions
 		void start(void);
@@ -38,7 +38,6 @@ class Entity {
 		void allocateMonsters(uchar);
 		void placeBaseMonsters(uchar, uchar, uchar);
 };
-
 /**********************************************************************************************************************************************/
 #endif
 
