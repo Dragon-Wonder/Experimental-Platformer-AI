@@ -35,7 +35,7 @@ class Config {
 		~Config();
 		
 		//Members
-		struct ConfigValues values;
+		static struct ConfigValues values;
 		
 		//Functions
 		void Check(void);

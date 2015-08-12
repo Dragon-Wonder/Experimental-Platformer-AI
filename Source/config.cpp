@@ -5,6 +5,8 @@
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
 /**********************************************************************************************************************************************/
+struct ConfigValues Config::values;
+/**********************************************************************************************************************************************/
 Config::Config() {
 	//Set the values as some default value.
 	values.blnLogging = true;

@@ -40,10 +40,10 @@ class Map {
 		~Map();
 		
 		//Members
-		uchar map[Map_Height][Map_Height];
-		uchar numMonsters;
-		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
-		MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
+		static uchar map[Map_Height][Map_Height];
+		static uchar numMonsters;
+		static PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
+		static MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
 		
 		//Functions
 		char move(uchar);

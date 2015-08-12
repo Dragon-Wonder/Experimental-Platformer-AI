@@ -19,10 +19,11 @@ class Tick {
 		~Tick();
 		
 		//Members
-		uint Clock;
+		static uint Clock;
 		
 		//Functions
 		void wait(void); //Call this to activate the wait
+		void resetClock(void);
 	
 };
 /**********************************************************************************************************************************************/

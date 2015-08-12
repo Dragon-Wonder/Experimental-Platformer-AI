@@ -9,6 +9,15 @@ Later on we might spilt up players and monsters but since monsters only need to 
 their own .cpp
 */
 /**********************************************************************************************************************************************/
+uint Entity::uintStepNum;
+GEN Entity::pastplayers[Players_Per_Generation];
+GEN Entity::bestplayers[10];
+uint Entity::uintGenSteps;
+PLYR Entity::player;
+MNSTR *Entity::monsters;
+uchar Entity::genNum;
+uchar Entity::playerNum;
+/**********************************************************************************************************************************************/
 Entity::Entity() {
 	if (Global::blnDebugMode) {printf("Entity Constructor called.\n");}
 	//Default Constructor

@@ -14,10 +14,10 @@ class Entity {
 		void makeplayer(void);
 		
 		//Members
-		uint uintStepNum;
-		GEN pastplayers[Players_Per_Generation];
-		GEN bestplayers[10];
-		uint uintGenSteps;
+		static uint uintStepNum;
+		static GEN pastplayers[Players_Per_Generation];
+		static GEN bestplayers[10];
+		static uint uintGenSteps;
 		const char* FileName = LogFileName;
 		FILE* logFile;
 	
@@ -27,10 +27,10 @@ class Entity {
 		~Entity();
 		
 		//Members
-		PLYR player;
-		MNSTR *monsters;
-		uchar genNum;
-		uchar playerNum;
+		static PLYR player;
+		static MNSTR *monsters;
+		static uchar genNum;
+		static uchar playerNum;
 		
 		//Functions
 		void start(void);
