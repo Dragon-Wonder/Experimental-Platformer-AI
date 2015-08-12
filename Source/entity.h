@@ -20,15 +20,16 @@ class Entity {
 		uint uintGenSteps;
 		const char* FileName = DEFINED_LOG_FILE_NAME;
 		FILE* logFile;
-	
+		
+		PLYR player;
+		MNSTR *monsters;
+		
 	public :
 		//Default Constructor
 		Entity();
 		~Entity();
 		
 		//Members
-		PLYR player;
-		MNSTR *monsters;
 		uchar genNum;
 		uchar playerNum;
 		
@@ -36,7 +37,12 @@ class Entity {
 		void start(void);
 		void killMonster(uchar,uchar);
 		void allocateMonsters(uchar);
-		void placeBaseMonsters(uchar, uchar, uchar);
+		
+		MNSTR getMonster(uchar);
+		void setMonster(uchar, MNSTR);
+		
+		PLYR getPlayer(void);
+		void setPlayer(PLYR);
 };
 /**********************************************************************************************************************************************/
 #endif

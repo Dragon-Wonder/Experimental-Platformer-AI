@@ -198,3 +198,50 @@ void Config::Check(void) {
 	} //end if exists
 }
 /**********************************************************************************************************************************************/
+Configures Config::getvalues(void) {
+	return values;
+}
+/**********************************************************************************************************************************************/
+uint Config::getvalues(uchar Spot) {
+	//Returns just one value from the config.
+	//Useful when I don't need ALL the values.
+	switch (Spot) {
+		case cnfgLogging :
+			if (values.blnLogging) {return 1;}
+			else {return 0;}
+			break;
+		case cnfgShowMap :
+			if (values.blnShowMap) {return 1;}
+			else {return 0;}
+			break;
+		case cnfgAppendTime :
+			if (values.blnAppendTime) {return 1;}
+			else {return 0;}
+			break;
+		case cnfgHardMode :
+			if (values.blnHardMode) {return 1;}
+			else {return 0;}
+			break;
+		case cnfgFirstGen :
+			return values.uintFirstGen;
+			break;
+		case cnfgGenIncrease :
+			return values.uintGenIncrease;
+			break;
+		case cnfgGensPastGrowth :
+			return values.uintGensPastGrowth;
+			break;
+		case cnfgMutationChance :
+			return values.uintMutationChance;
+			break;
+		case cnfgSeed :
+			return values.uintSeed;
+			break;
+		default :
+			return 0;
+			break;
+	}; //end switch
+	
+	return 9999;
+}
+/**********************************************************************************************************************************************/

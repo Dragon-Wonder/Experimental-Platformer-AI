@@ -9,7 +9,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.8"
+#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.9"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -71,8 +71,8 @@ struct generation {
 };
 
 struct person {
-	unsigned char x;
-	unsigned char y;
+	unsigned int x;
+	unsigned int y;
 	float fitness;
 	unsigned int score;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];

@@ -3,13 +3,13 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-11 
+## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-12
 
 ### Notes
 
 * This version has a completely rewritten code; I'll to remember the major things that are different but I may have forgotten stuff.
 
-* The main point of this rewrite was to improve the structure of the code so later changes are  easier as opposed to adding a bunch of new features.
+* The main point of this rewrite was to improve the structure of the code so later changes are easier as opposed to adding a bunch of new features.
 
 ### Removed
 
@@ -20,7 +20,6 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Removed unneeded libraries (?) I think I got rid of old libraries but I'm not sure Again with the rewrite I'm not sure.
 
 * The increase chance of the player with the highest fitness being selected over the other players.
-
 
 ### Changed
 
@@ -52,7 +51,9 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Documentation Folder for documentation
 
-* Basic countdown that will later be a time limit if we decide to implement
+* Count down that will kill player when it reaches 0.
+
+* Define of Best Players
 
 
 ## Old versions

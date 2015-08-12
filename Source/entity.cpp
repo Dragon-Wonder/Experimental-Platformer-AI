@@ -17,10 +17,11 @@ Entity::Entity() {
 	playerNum = 0;
 	uintGenSteps = 0;
 	
-	player.x = 5;
-	player.y = 11;
+	player.x = 1;
+	player.y = 1;
 	player.fitness = 0.00f;
 	player.score = 0;
+	
 }
 /**********************************************************************************************************************************************/
 Entity::~Entity() {
@@ -31,7 +32,9 @@ Entity::~Entity() {
 void Entity::start(void) {
 	//Starts the entire loop.
 	
-	if (Global::Cnfg.values.blnLogging) {/*Open log file to clear it*/ logFile = fopen(FileName,"w"); fclose(logFile);}
+	Configures CnfgValues;
+	CnfgValues = Global::Cnfg.getvalues();
+	if (CnfgValues.blnLogging) {/*Open log file to clear it*/ logFile = fopen(FileName,"w"); fclose(logFile);}
 	
 	char chrPlayerStatus = 0;
 	uintGenSteps = 0;
@@ -40,65 +43,65 @@ void Entity::start(void) {
 	//First Generation
 	for (playerNum = 0; playerNum < DEFINED_PLAYERS_PER_GEN; playerNum++) {
 		makeplayer();
-		for (uint step = 0; step < Global::Cnfg.values.uintFirstGen; step++) {
+		for (uint step = 0; step < CnfgValues.uintFirstGen; step++) {
 			chrPlayerStatus = Global::Course.move(player.direction[step]);
 			player.fitness = getFitness();
-			if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+			if (CnfgValues.blnShowMap) {Global::Course.show();}
 			if (chrPlayerStatus == DEAD) {
 				//If the player dies clear the rest of their directions (disabled) and end the loop.
 				//for (uint j = step; j < Global::Cnfg.values.uintFirstGen; j++) {player.direction[j] = dirNone;}
-				step = Global::Cnfg.values.uintFirstGen;
+				step = CnfgValues.uintFirstGen;
 			} //end if dead
 		} //End for steps
 		nextplayer();
-		if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+		if (CnfgValues.blnShowMap) {Global::Course.show();}
 	}//end for first gen
 	
 	getBest();
-	if(!(Global::Cnfg.values.blnShowMap)) {
+	if(!(CnfgValues.blnShowMap)) {
 		printf("Best Players are:\n");
 		for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
 		if (Global::blnDebugMode) {getchar();}
 	}
 	
-	uintGenSteps += Global::Cnfg.values.uintFirstGen;
+	uintGenSteps += CnfgValues.uintFirstGen;
 	
 	//Growth Generation
-	while (uintGenSteps + Global::Cnfg.values.uintGenIncrease <= DEFINED_MAX_PLAYER_STEPS) {
+	while (uintGenSteps +CnfgValues.uintGenIncrease <= DEFINED_MAX_PLAYER_STEPS) {
 		genNum ++;
 		for (playerNum = 0; playerNum < DEFINED_PLAYERS_PER_GEN; playerNum++) {
 			makeplayer();
-			for (uint step = 0; step < uintGenSteps + Global::Cnfg.values.uintGenIncrease; step++) {
+			for (uint step = 0; step < uintGenSteps + CnfgValues.uintGenIncrease; step++) {
 				chrPlayerStatus = Global::Course.move(player.direction[step]);
 				player.fitness = getFitness();
-				if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+				if (CnfgValues.blnShowMap) {Global::Course.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < uintGenSteps + Global::Cnfg.values.uintGenIncrease; j++) {player.direction[j] = dirNone;}
-					step = uintGenSteps + Global::Cnfg.values.uintGenIncrease;
+					step = uintGenSteps + CnfgValues.uintGenIncrease;
 				} //end if dead
 			}//end for steps
 			nextplayer();
-			if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+			if (CnfgValues.blnShowMap) {Global::Course.show();}
 		} //end for players
 		getBest();
-		if(!(Global::Cnfg.values.blnShowMap)) {
+		if(!(CnfgValues.blnShowMap)) {
 			printf("Best Players are:\n");
 			for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
 			if (Global::blnDebugMode) {getchar();}
 		}
-		uintGenSteps += Global::Cnfg.values.uintGenIncrease;
+		uintGenSteps += CnfgValues.uintGenIncrease;
 	}//end while loop
 	
 	//Steady Generations
-	for (uint i = 0; i < Global::Cnfg.values.uintGensPastGrowth; i++) {
+	for (uint i = 0; i < CnfgValues.uintGensPastGrowth; i++) {
 		genNum ++;
 		for (playerNum = 0; playerNum < DEFINED_PLAYERS_PER_GEN; playerNum++) {
 			makeplayer();
 			for (uint step = 0; step < DEFINED_MAX_PLAYER_STEPS; step++) {
 				chrPlayerStatus = Global::Course.move(player.direction[step]);
 				player.fitness = getFitness();
-				if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+				if (CnfgValues.blnShowMap) {Global::Course.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < DEFINED_MAX_PLAYER_STEPS; j++) {player.direction[j] = dirNone;}
@@ -106,10 +109,10 @@ void Entity::start(void) {
 				} //end if dead
 			}//end for steps
 			nextplayer();
-			if (Global::Cnfg.values.blnShowMap) {Global::Course.show();}
+			if (CnfgValues.blnShowMap) {Global::Course.show();}
 		} //end for players
 		getBest();
-		if(!(Global::Cnfg.values.blnShowMap)) {
+		if(!(CnfgValues.blnShowMap)) {
 			printf("Best Players are:\n");
 			for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",bestplayers[k].fitness);}
 			if (Global::blnDebugMode) {getchar();}
@@ -118,19 +121,23 @@ void Entity::start(void) {
 }
 /**********************************************************************************************************************************************/
 void Entity::nextplayer(void) {
+	
+	Configures CnfgValues;
+	CnfgValues = Global::Cnfg.getvalues();
+	
 	//Records the last player into the array of players, and logs directions to file if that is enabled.
-	if (Global::Cnfg.values.blnLogging) {logFile = fopen(FileName,"a");} //Open log file in append mode.
+	if (CnfgValues.blnLogging) {logFile = fopen(FileName,"a");} //Open log file in append mode.
 	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",player.fitness); getchar(); }
 	
 	pastplayers[playerNum].fitness = player.fitness;
-	if (Global::Cnfg.values.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",genNum,playerNum + 1,player.fitness);}
+	if (CnfgValues.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",genNum,playerNum + 1,player.fitness);}
 	
 	player.fitness = 0.00f;
 	player.score = 0;
 	
 	for (uint i = 0; i < DEFINED_MAX_PLAYER_STEPS; i++) {
 		pastplayers[playerNum].direction[i] = player.direction[i];
-		if (Global::Cnfg.values.blnLogging) {
+		if (CnfgValues.blnLogging) {
 			switch (player.direction[i]) {
 				case dirNone :
 					//Do nothing
@@ -154,7 +161,7 @@ void Entity::nextplayer(void) {
 		}// End logging if
 	}//end for
 	
-	if (Global::Cnfg.values.blnLogging) {
+	if (CnfgValues.blnLogging) {
 		fprintf(logFile, "\n");
 		if (playerNum + 1 == DEFINED_PLAYERS_PER_GEN) {
 			//If this is the last player add a line to better separate the different generations
@@ -186,26 +193,30 @@ void Entity::makeplayer(void) {
 	with however many steps the last generation took. If the generation is increasing (by being less than the maximum)
 	then it will generate random directions until full.
 	*/
+	
+	Configures CnfgValues;
+	CnfgValues = Global::Cnfg.getvalues();
+	
 	uchar uchrRandPlayer;
 	uint uRandSection, uTempStep = 0;
 	
 	if (genNum == 1) { //First Generation
-		for (uint i = 0; i < Global::Cnfg.values.uintFirstGen; i++) {player.direction[i] = (uint)(rand() % (dirRight) + dirUp);}
-		for (uint i = Global::Cnfg.values.uintFirstGen; i < DEFINED_MAX_PLAYER_STEPS; i++ ) {player.direction[i] = dirNone;}
+		for (uint i = 0; i < CnfgValues.uintFirstGen; i++) {player.direction[i] = (uint)(rand() % (dirRight) + dirUp);}
+		for (uint i = CnfgValues.uintFirstGen; i < DEFINED_MAX_PLAYER_STEPS; i++ ) {player.direction[i] = dirNone;}
 	} else { //Growth Phase & Steady phase
 		do {
 			uchrRandPlayer = rand() % DEFINED_BEST_PLAYER_NUM;
 			uRandSection = (uint)(rand() % ((uintGenSteps - uTempStep)) + uTempStep);
 			if (Global::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
 			for (uint j = uTempStep; j <= uRandSection; j++) {
-				if ((uint)(rand() % 100) < Global::Cnfg.values.uintMutationChance) {player.direction[j] = (uint)(rand() % (dirRight) + dirUp);}
+				if ((uint)(rand() % 100) < CnfgValues.uintMutationChance) {player.direction[j] = (uint)(rand() % (dirRight) + dirUp);}
 				else {player.direction[j] = bestplayers[uchrRandPlayer].direction[j];}
 			}//End for
 			uTempStep = uRandSection;
 		} while (uTempStep < uintGenSteps - 1);
 		
-		if (uintGenSteps + Global::Cnfg.values.uintGenIncrease < DEFINED_MAX_PLAYER_STEPS) {
-			for (uint k = 0; k < uintGenSteps + Global::Cnfg.values.uintGenIncrease; k++) {player.direction[k] = (uint)(rand() % (dirRight) + dirUp);}
+		if (uintGenSteps + CnfgValues.uintGenIncrease < DEFINED_MAX_PLAYER_STEPS) {
+			for (uint k = 0; k < uintGenSteps + CnfgValues.uintGenIncrease; k++) {player.direction[k] = (uint)(rand() % (dirRight) + dirUp);}
 		}
 	}
 }
@@ -216,13 +227,18 @@ float Entity::getFitness(void) {
 	the more fitness will decrease
 	Note that 204 is considered the "finish" line. 
 	*/
+	
 	float temp = 0.00f;
-	temp += (player.score) / 250.0;
-	temp += (5.0/2.0) * (player.x - Global::Course.baseplayer.x);
+	
+	PLYR PlayerBase;
+	PlayerBase = Global::Course.getbasePlayer();
+	
+	//temp += (player.score) / 250.0;
+	temp += (5.0/2.0) * (player.x - PlayerBase.x);
 	temp += (player.x + player.y) / 6.0;
-	temp += (Global::Course.baseplayer.y - player.y) / 4.0;
+	temp += (PlayerBase.y - player.y) / 4.0;
 	if (player.x > 204) {temp += 200.0;}
-	if (Global::Cnfg.values.blnHardMode) {temp -= uintStepNum / 80.0;}
+	if (Global::Cnfg.getvalues(cnfgHardMode) == 1) {temp -= uintStepNum / 80.0;}
 	return temp;
 }
 /**********************************************************************************************************************************************/
@@ -266,22 +282,32 @@ void Entity::allocateMonsters(uchar amount) {
 	if (Global::blnDebugMode) {printf("Monsters correctly allocated\n");}	
 }
 /**********************************************************************************************************************************************/
-void Entity::placeBaseMonsters(uchar num, uchar x, uchar y) {
+MNSTR Entity::getMonster(uchar num) {
+	MNSTR tempMNSTR;
 	
-	MNSTR* pMonster = &monsters[num]; 
-	
-	pMonster->x = x;
-	pMonster->y = y;
-	pMonster->living = true;
-	pMonster->movingright = false;
-		
-	
-	
-	//monsters[num]->x = x;
-	//monsters[num]->y = y;
-	//monsters[num]->living = true;
-	//monsters[num]->movingright = false;
+	tempMNSTR.x = monsters[num].x;
+	tempMNSTR.y = monsters[num].y;
+	tempMNSTR.living = monsters[num].living;
+	tempMNSTR.movingright = monsters[num].movingright;
+	return tempMNSTR;
 }
 /**********************************************************************************************************************************************/
-
-
+void Entity::setMonster(uchar num, MNSTR MonsterSet) {
+	
+	monsters[num].x = MonsterSet.x;
+	monsters[num].y = MonsterSet.y;
+	monsters[num].living = MonsterSet.living;
+	monsters[num].movingright = MonsterSet.movingright;
+}
+/**********************************************************************************************************************************************/
+PLYR Entity::getPlayer(void) {
+	return player;
+}
+/**********************************************************************************************************************************************/
+void Entity::setPlayer(PLYR PlayerSet) {
+	player.x = PlayerSet.x;
+	player.y = PlayerSet.y;
+	player.score = PlayerSet.score;
+	player.fitness = PlayerSet.fitness;
+}
+/**********************************************************************************************************************************************/

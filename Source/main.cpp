@@ -9,7 +9,7 @@
 #include "entity.h"
 #include "globals.h"
 /**********************************************************************************************************************************************/
-//Foreward Declare Classes because of issues
+//Forward Declare Classes because of issues
 class Config;
 class Entity;
 class Map;
@@ -33,8 +33,8 @@ int main(void) {
 	ErrorCheck 
 	
 	//Seed rand as defined in the config options.
-	if (Global::Cnfg.values.blnAppendTime) {srand(time(NULL) + Global::Cnfg.values.uintSeed);}
-	else {srand(Global::Cnfg.values.uintSeed);}
+	if (Global::Cnfg.getvalues(cnfgAppendTime) == 1) {srand(time(NULL) + Global::Cnfg.getvalues(cnfgSeed));}
+	else {srand(Global::Cnfg.getvalues(cnfgSeed));}
 
 	Global::Course.load();
 	if (Global::blnDebugMode) {printf("Map loaded\n");}
@@ -52,7 +52,7 @@ int main(void) {
 	
 	printf("\nDone\n");
 	
-	//Destructe everything
+	//Deconstruct all the classes.
 	Global::Cnfg.~Config();
 	Global::Enty.~Entity();
 	Global::Course.~Map();

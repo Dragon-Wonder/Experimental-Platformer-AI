@@ -16,12 +16,27 @@ struct ConfigValues {
 	uint uintMutationChance; //Percent chance that when using directions from a previous player, the direction will be replace with a random one.
 	uint uintSeed; //The seed that is used with srand()
 };
+
+enum configValueSpot {
+	cnfgLogging = 0,
+	cnfgShowMap, //1
+	cnfgAppendTime, //2
+	cnfgHardMode, //3
+	cnfgFirstGen, //4
+	cnfgGenIncrease, //5
+	cnfgGensPastGrowth, //6
+	cnfgMutationChance, //7
+	cnfgSeed //8
+};
+
+typedef struct ConfigValues Configures;
 /**********************************************************************************************************************************************/
 class Config {
 	private:
 		//Members
 		const char* FileName = DEFINED_CONFIG_FILE_NAME;
 		FILE* configFile;
+		Configures values;
 		
 		//Functions
 		char verisonCheck(const char *ConfigVerison);
@@ -34,11 +49,10 @@ class Config {
 		Config();
 		~Config();
 		
-		//Members
-		struct ConfigValues values;
-		
 		//Functions
 		void Check(void);
+		Configures getvalues(void); //Get all values
+		uint getvalues(uchar); //Get just one value (use enum above to define which one).
 };
 /**********************************************************************************************************************************************/
 #endif

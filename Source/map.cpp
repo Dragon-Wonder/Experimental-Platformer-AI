@@ -15,10 +15,20 @@ Map::~Map() {
 /**********************************************************************************************************************************************/
 void Map::show(void) {
 	printf("\n\n\n\n");
-	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",Global::Enty.player.x, Global::Enty.player.y);}
+	PLYR tempPlayer;
+	tempPlayer = Global::Enty.getPlayer();
+	uint x_start;
+	
+	
+	if (tempPlayer.x - 5 <= 0) {x_start = 0;}
+	else {x_start = tempPlayer.x - 5;}
+	
+	if (tempPlayer.x > DEFINED_MAP_WIDTH || tempPlayer.y > DEFINED_MAP_HEIGHT) {tempPlayer.x = 0; tempPlayer.y = 0;}
+	
+	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",tempPlayer.x, tempPlayer.y);}
 	printf("Time Remaining: %d\n",Global::Tock.getClockTime());
-	for (uchar y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-		for (uchar x = Global::Enty.player.x - 5; x < Global::Enty.player.x + 73; x++) {
+	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
+		for (uint x = x_start; x < tempPlayer.x + 73; x++) {
 			switch (map[y][x]) {
 				case tileSpace :
 					printf(" ");
@@ -45,7 +55,7 @@ void Map::show(void) {
 		}//end for x
 		printf("\n");
 	}//end for y
-	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", Global::Enty.genNum, Global::Enty.playerNum + 1, Global::Enty.player.fitness);
+	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", Global::Enty.genNum, Global::Enty.playerNum + 1, tempPlayer.fitness);
 	Global::Tock.wait(); //waits for the time needed.
 }
 /**********************************************************************************************************************************************/
@@ -71,34 +81,24 @@ void Map::restart(void) {
 	so I'll change it later.
 	*/
 	
+	MNSTR tempMonster;
+	
 	if (basemonsters != NULL) {
 		for (uchar i = 0; i < numMonsters; i++) {
-			//Pointers are a pain
-			//pMonster = &enty.monsters[i];
-			//pMonster->[i]->x = basemonsters[i].x;
-			//pMonster->[i]->y = basemonsters[i].y;
-			//pMonster->[i]->living = basemonsters[i].living;
-			//pMonster->[i]->movingright = basemonsters[i].movingright;
-			//*enty.monsters[i].x = basemonsters[i].x;
-			//*enty.monsters[i].y = basemonsters[i].y;
-			//*enty.monsters[i].living = basemonsters[i].living;
-			//*enty.monsters[i].movingright = basemonsters[i].movingright;
-			//enty.placeBaseMonsters(i,basemonsters[i].x,basemonsters[i].y);
 			
-			Global::Enty.monsters[i].x = basemonsters[i].x;
-			Global::Enty.monsters[i].y = basemonsters[i].y;
-			Global::Enty.monsters[i].living = true;
-			Global::Enty.monsters[i].movingright = false;
+			tempMonster.x = basemonsters[i].x;
+			tempMonster.y = basemonsters[i].y;
+			tempMonster.living = basemonsters[i].living;
+			tempMonster.movingright = basemonsters[i].movingright;
+			
+			Global::Enty.setMonster(i,tempMonster);
 			
 			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 		}
 		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
 	} else {if (Global::blnDebugMode) {printf("Base monsters equals NULL.\n");}}
 	
-	Global::Enty.player.x = baseplayer.x;
-	Global::Enty.player.y = baseplayer.y;
-	Global::Enty.player.score = 0;
-	Global::Enty.player.fitness = 0.00f;
+	Global::Enty.setPlayer(baseplayer);
 	
 	if (Global::blnDebugMode) {printf("Player reset.\n");}
 	
@@ -113,34 +113,41 @@ char Map::move(uchar direction) {
 	if (playerfalling == false) {jumpcount = 0;}
 	
 	//Move monsters first, to see if player dies and we can then skip the restart
-	if (Global::Enty.monsters != NULL) {
-		for (uchar i = 0; i < numMonsters; i++) {
-			if (Global::Enty.monsters[i].living) {
-				tempx = Global::Enty.monsters[i].x;
-				tempy = Global::Enty.monsters[i].y;
-				if (Global::Enty.monsters[i].movingright) {tempx ++;}
-				else {tempx--;}
-				
-				if (map[tempy][tempx] == tileSpace) {
-					map[tempy][Global::Enty.monsters[i].x] = tileSpace;
-					map[tempy][tempx] = tileMonster;
-					Global::Enty.monsters[i].x = tempx;
-				}
-				else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
-				else if (map[tempy][tempx] == tileWall) {Global::Enty.monsters[i].movingright = !(Global::Enty.monsters[i].movingright);}
-				
-				//Because I don't want to have to deal with monsters falling, if the space below a monster is space 
-				//kill the monster.
-				if (map[tempy+1][Global::Enty.monsters[i].x] == tileSpace ) {Global::Enty.monsters[i].living = false;}
-				if(Global::Enty.monsters[i].living == false) {map[Global::Enty.monsters[i].y][Global::Enty.monsters[i].x] = tileSpace;}
+	
+	MNSTR tempMonster;
+	
+	for (uchar i = 0; i < numMonsters; i++) {
+		tempMonster = Global::Enty.getMonster(i);
+		if (tempMonster.living) {
+			tempx = tempMonster.x;
+			tempy = tempMonster.y;
+			if (tempMonster.movingright) {tempx ++;}
+			else {tempx--;}
+			
+			if (map[tempy][tempx] == tileSpace) {
+				map[tempy][tempMonster.x] = tileSpace;
+				map[tempy][tempx] = tileMonster;
+				tempMonster.x = tempx;
 			}
-		} //End of for monsters
-	} //End if not NULL
+			else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
+			else if (map[tempy][tempx] == tileWall) {tempMonster.movingright = !(tempMonster.movingright);}
+			
+			//Because I don't want to have to deal with monsters falling, if the space below a monster is space 
+			//kill the monster.
+			if (map[tempy+1][tempMonster.x] == tileSpace ) {tempMonster.living = false;}
+			if(tempMonster.living == false) {map[tempMonster.y][tempMonster.x] = tileSpace;}
+		} //end if living
+		Global::Enty.setMonster(i,tempMonster);
+	} //End of for monsters
+
 	
 	//Now the player can move.
 	
-	tempx = Global::Enty.player.x;
-	tempy = Global::Enty.player.y;
+	PLYR tempPlayer;
+	tempPlayer = Global::Enty.getPlayer();
+	
+	tempx = tempPlayer.x;
+	tempy = tempPlayer.y;
 	
 	switch (direction) {
 		case dirLeft :
@@ -157,33 +164,35 @@ char Map::move(uchar direction) {
 			if (tempy > DEFINED_JUMP_HEIGHT && jumpcount < DEFINED_MAX_JUMP_COUNT) {tempy -= DEFINED_JUMP_HEIGHT; jumpcount++;}
 			break;
 	};
-	if (Global::Enty.player.y == DEFINED_MAP_HEIGHT - 1) {return DEAD;}//This makes the very last row of the arry a "kill plane"
+	if (tempPlayer.y == DEFINED_MAP_HEIGHT - 1) {return DEAD;}//This makes the very last row of the array a "kill plane"
 	
 	if (playerfalling) {tempy++;}
 		if (map[tempy][tempx] == tileMonster) {
 		//If the player falls on a monster kill the monster,
 		//but if the player is trying to walk into a monster kill the player
-		if (playerfalling) {Global::Enty.killMonster(tempx,tempy); Global::Enty.player.score += DEFINED_MONS_KILL_POINTS;}
+		if (playerfalling) {Global::Enty.killMonster(tempx,tempy); tempPlayer.score += DEFINED_MONS_KILL_POINTS;}
 		else {return DEAD;}
 	}
 	
 	if (map[tempy][tempx] == tileWall){
 		//This checks a few spots for an open area they can move into if they run into a wall
-		if (map[tempy][Global::Enty.player.x] != tileWall) {tempx = Global::Enty.player.x;}
-		else if (map[Global::Enty.player.y][tempx] != tileWall) {tempy = Global::Enty.player.y;}
+		if (map[tempy][tempPlayer.x] != tileWall) {tempx = tempPlayer.x;}
+		else if (map[tempPlayer.y][tempx] != tileWall) {tempy = tempPlayer.y;}
 		else if (map[tempy + 1][tempx] != tileWall) {tempy += 1;}
-		else {tempy = Global::Enty.player.y; tempx = Global::Enty.player.x;}
+		else {tempy = tempPlayer.y; tempx = tempPlayer.x;}
 	}
 	
-	if (map[tempy][tempx] == tileCoin) {Global::Enty.player.score += DEFINED_COIN_WORTH;}
-	if (tempx < baseplayer.x - 2 && Global::Cnfg.values.blnHardMode) {return DEAD;} //if the player goes too far to the left kill them.
+	if (map[tempy][tempx] == tileCoin) {tempPlayer.score += DEFINED_COIN_WORTH;}
+	if (tempx < baseplayer.x - 2 && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return DEAD;} //if the player goes too far to the left kill them.
 	
-	map[Global::Enty.player.y][Global::Enty.player.x] = tileSpace;
+	map[tempPlayer.y][tempPlayer.x] = tileSpace;
 	map[tempy][tempx] = tilePlayer;
-	Global::Enty.player.x = tempx;
-	Global::Enty.player.y = tempy;
+	tempPlayer.x = tempx;
+	tempPlayer.y = tempy;
 	
-	if ((Global::Enty.player.y == DEFINED_MAP_HEIGHT - 1) || (map[Global::Enty.player.y + 1][Global::Enty.player.x] == tileSpace)) {playerfalling = true;}
+	Global::Enty.setPlayer(tempPlayer);
+	
+	if ((tempPlayer.y == DEFINED_MAP_HEIGHT - 1) || (map[tempPlayer.y + 1][tempPlayer.x] == tileSpace)) {playerfalling = true;}
 	else {playerfalling = false;}
 	
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
@@ -203,6 +212,8 @@ void Map::load(void) {
 				if (Global::blnDebugMode) {printf("Found Player at (%d,%d).\n",x,y);}
 				baseplayer.x = x;
 				baseplayer.y = y;
+				baseplayer.fitness = 0.0;
+				baseplayer.score = 0;
 			}
 			else if (basemap[y][x] == tileMonster) {
 				numMonsters++;
@@ -229,5 +240,27 @@ void Map::load(void) {
 	
 	Global::Enty.allocateMonsters(numMonsters);
 	if (Global::blnError) {printf("Could not allocate the memory!\n"); return;}
+}
+/**********************************************************************************************************************************************/
+uchar Map::getMapCell(uint x, uint y) {
+	return map[y][x];
+}
+/**********************************************************************************************************************************************/
+void Map::setMapCell(uint x, uint y, uchar tile) {
+	map[y][x] = tile;
+}
+/**********************************************************************************************************************************************/
+PLYR Map::getbasePlayer(void) {
+	return baseplayer;
+}
+/**********************************************************************************************************************************************/
+MNSTR Map::getbaseMonster(uchar num) {
+	MNSTR tempMNSTR;
+	
+	tempMNSTR.x = basemonsters[num].x;
+	tempMNSTR.y = basemonsters[num].y;
+	tempMNSTR.living = basemonsters[num].living;
+	tempMNSTR.movingright = basemonsters[num].movingright;
+	return tempMNSTR;
 }
 /**********************************************************************************************************************************************/

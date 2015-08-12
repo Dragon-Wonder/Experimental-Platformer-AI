@@ -34,22 +34,29 @@ class Map {
 									{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 									{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 	
+		uchar map[DEFINED_MAP_HEIGHT][DEFINED_MAP_HEIGHT];
+		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
+		MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
+		
 	public:
 		//Default Constructor
 		Map();
 		~Map();
 		
 		//Members
-		uchar map[DEFINED_MAP_HEIGHT][DEFINED_MAP_HEIGHT];
 		uchar numMonsters;
-		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
-		MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
-		
+
 		//Functions
 		char move(uchar);
 		void load(void);
 		void show(void);
 		void restart(void);
+		
+		uchar getMapCell(uint,uint);
+		void setMapCell(uint,uint,uchar);
+		
+		PLYR getbasePlayer(void);
+		MNSTR getbaseMonster(uchar);
 };
 /**********************************************************************************************************************************************/
 #endif 
