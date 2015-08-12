@@ -9,7 +9,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.9"
+#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.10"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -65,25 +65,28 @@ will likely remove these and dynamically allocate the map size for you.
 /**********************************************************************************************************************************************/
 //Structures for varies uses
 
-struct generation {
-	float fitness;
-	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
-};
-
-struct person {
+struct stcLoc {
 	unsigned int x;
 	unsigned int y;
+}; //prefix = loc
+
+struct stcGeneration {
+	float fitness;
+	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
+}; //prefix = gen
+
+struct stcPlayer {
+	struct stcLoc location;
 	float fitness;
 	unsigned int score;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
-};
+}; //prefix = ply
 
-struct creature {
-	unsigned char x;
-	unsigned char y;
+struct stcMonster {
+	struct stcLoc location;
 	bool living;
 	bool movingright;
-};
+}; //prefix = mst
 
 enum dir {
 	dirNone = 0,
@@ -93,9 +96,10 @@ enum dir {
 	dirDown //4
 };
 
-typedef struct generation GEN;
-typedef struct person PLYR;
-typedef struct creature MNSTR;
+typedef struct stcGeneration GEN;
+typedef struct stcPlayer PLYR;
+typedef struct stcMonster MNSTR;
+typedef struct stcLoc LOC;
 
 //Ahh laziness at its finest
 typedef unsigned char uchar;

@@ -5,19 +5,19 @@
 #include <time.h>
 #include <cmath>
 /**********************************************************************************************************************************************/
-class Tick {
+class clsTick {
 	private: 
 		//Members
-		uchar fps;
-		uint Clock;
+		uchar uchrFPS;
+		uint uClock;
 		
 		//Functions
 		void sleep(ulong);
 		
 	public:
 		//Default Constructor
-		Tick();
-		~Tick();
+		clsTick();
+		~clsTick();
 
 		//Functions
 		void wait(void); //Call this to activate the wait

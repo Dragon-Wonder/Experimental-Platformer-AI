@@ -16,10 +16,10 @@ namespace Global {
 	//char* programverison;
 	
 	//Call all of the classes as globals so they are the same everywhere.
-	extern Config Cnfg;
-	extern Entity Enty;
-	extern Map Course;
-	extern Tick Tock;
+	extern clsConfig Cnfg;
+	extern clsEntity Enty;
+	extern clsMap Map;
+	extern clsTick Tick;
 };
 /**********************************************************************************************************************************************/
 #endif

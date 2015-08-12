@@ -5,17 +5,17 @@
 //This will hold functions related to time.
 /**********************************************************************************************************************************************/
 //Default Constructor
-Tick::Tick() {
+clsTick::clsTick() {
 	if (Global::blnDebugMode) {printf("Tick Constructor called.\n");}
-	fps = DEFINED_GOAL_FPS;
-	if(Tick::Clock <= 0) {Tick::resetClock();}
+	uchrFPS = DEFINED_GOAL_FPS;
+	if(clsTick::uClock <= 0) {clsTick::resetClock();}
 }
 /**********************************************************************************************************************************************/
-Tick::~Tick() {
+clsTick::~clsTick() {
 	if(Global::blnDebugMode) {printf("Tick Destructor called.\n");}
 }
 /**********************************************************************************************************************************************/
-void Tick::wait(void) {
+void clsTick::wait(void) {
 	static ulong ulngSleepTime;
 	
 	/*
@@ -33,11 +33,11 @@ void Tick::wait(void) {
 	it should be close enough to not matter
 	*/
 	
-	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / fps);}
+	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / uchrFPS);}
 	sleep(ulngSleepTime);
 }
 /**********************************************************************************************************************************************/
-void Tick::sleep(ulong milliseconds) {
+void clsTick::sleep(ulong milliseconds) {
 	/*Since sleep is usually an OS specific command I made this functions
 	To work as a "sleep" but it doesn't function as a true sleep because the 
 	CPU is still being used, but whatever. It "stops" the program for a bit
@@ -55,15 +55,15 @@ void Tick::sleep(ulong milliseconds) {
 	while ((now - then) < pause) {now = clock();}
 }
 /**********************************************************************************************************************************************/
-void Tick::resetClock(void) {
-	Clock = DEFINED_TICK_LIMIT;
+void clsTick::resetClock(void) {
+	uClock = DEFINED_TICK_LIMIT;
 }
 /**********************************************************************************************************************************************/
-void Tick::decClock(void) {
-	if (Clock != 0) {Clock--;}
+void clsTick::decClock(void) {
+	if (uClock != 0) {uClock--;}
 }
 /**********************************************************************************************************************************************/
-uint Tick::getClockTime(void) {
-	return Clock;
+uint clsTick::getClockTime(void) {
+	return uClock;
 }
 /**********************************************************************************************************************************************/

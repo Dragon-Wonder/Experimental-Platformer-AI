@@ -6,7 +6,7 @@
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
 /**********************************************************************************************************************************************/
-Config::Config() {
+clsConfig::clsConfig() {
 	//Set the values as some default value.
 	values.blnLogging = true;
 	values.blnShowMap = false;
@@ -20,17 +20,17 @@ Config::Config() {
 	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/
-Config::~Config() {
+clsConfig::~clsConfig() {
 	if(Global::blnDebugMode) {printf("Config Destructor called.\n");}
 }
 /**********************************************************************************************************************************************/
-bool Config::exists(void) {
+bool clsConfig::exists(void) {
 	//Returns true or false if config file exists
 	std::ifstream infile(FileName);
 	return infile.good();
 }
 /**********************************************************************************************************************************************/
-void Config::make(void) {
+void clsConfig::make(void) {
 	//Makes the config file
 	configFile = fopen(FileName,"w");
 	printf("Config File will now be created!\n");
@@ -61,7 +61,7 @@ void Config::make(void) {
 	values.uintSeed = 12345;
 }
 /**********************************************************************************************************************************************/
-char Config::verisonCheck(const char *ConfigVerison) {
+char clsConfig::verisonCheck(const char *ConfigVerison) {
 	//This checks the version number written at the top of the config file
 	//against the internal version number of the program.
 	//If it finds a Major revision change the config HAS to be replaced.
@@ -79,7 +79,7 @@ char Config::verisonCheck(const char *ConfigVerison) {
 	else {return USECONFIG;}
 }
 /**********************************************************************************************************************************************/
-void Config::load(void) {
+void clsConfig::load(void) {
 	//Loads all of the config values
 	
 	char chrTempString[50];
@@ -151,7 +151,7 @@ void Config::load(void) {
 	printf("\n\n");
 }
 /**********************************************************************************************************************************************/
-void Config::Check(void) {
+void clsConfig::Check(void) {
 	char chrTempString[50], chrConfigVerison;
 	
 	if (exists() != true) {
@@ -198,11 +198,11 @@ void Config::Check(void) {
 	} //end if exists
 }
 /**********************************************************************************************************************************************/
-Configures Config::getvalues(void) {
+Configures clsConfig::getvalues(void) {
 	return values;
 }
 /**********************************************************************************************************************************************/
-uint Config::getvalues(uchar Spot) {
+uint clsConfig::getvalues(uchar Spot) {
 	//Returns just one value from the config.
 	//Useful when I don't need ALL the values.
 	switch (Spot) {

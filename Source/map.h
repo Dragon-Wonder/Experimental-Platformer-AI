@@ -16,7 +16,7 @@ enum tile {
 	tileCoin //5
 };
 /**********************************************************************************************************************************************/
-class Map {
+class clsMap {
 	private:
 		//Members
 		const uchar basemap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -35,13 +35,13 @@ class Map {
 									{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 	
 		uchar map[DEFINED_MAP_HEIGHT][DEFINED_MAP_HEIGHT];
-		PLYR baseplayer; //The base player, which mostly just holds the x and y values where they start. 
-		MNSTR *basemonsters;//the monsters on the map while restarting (see load if this is confusing)
+		LOC locBasePlayer; //The base player, which just holds the x and y values where they start. 
+		MNSTR *pmstBaseMonsters;//the monsters on the map while restarting (see load if this is confusing)
 		
 	public:
 		//Default Constructor
-		Map();
-		~Map();
+		clsMap();
+		~clsMap();
 		
 		//Members
 		uchar numMonsters;
@@ -51,11 +51,12 @@ class Map {
 		void load(void);
 		void show(void);
 		void restart(void);
+		void playerDeath(void); //shows a short animation on player's death.
 		
 		uchar getMapCell(uint,uint);
 		void setMapCell(uint,uint,uchar);
 		
-		PLYR getbasePlayer(void);
+		LOC getbasePlayer(void);
 		MNSTR getbaseMonster(uchar);
 };
 /**********************************************************************************************************************************************/

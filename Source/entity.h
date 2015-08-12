@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 /**********************************************************************************************************************************************/
-class Entity {
+class clsEntity {
 	private :
 		//Functions
 		float getFitness(void);
@@ -15,23 +15,23 @@ class Entity {
 		
 		//Members
 		uint uintStepNum;
-		GEN pastplayers[DEFINED_PLAYERS_PER_GEN];
-		GEN bestplayers[DEFINED_BEST_PLAYER_NUM];
+		GEN genPastPlayers[DEFINED_PLAYERS_PER_GEN];
+		GEN genBestPlayers[DEFINED_BEST_PLAYER_NUM];
 		uint uintGenSteps;
 		const char* FileName = DEFINED_LOG_FILE_NAME;
 		FILE* logFile;
 		
-		PLYR player;
-		MNSTR *monsters;
+		PLYR plyPlayer;
+		MNSTR *pmstMonsters;
 		
 	public :
 		//Default Constructor
-		Entity();
-		~Entity();
+		clsEntity();
+		~clsEntity();
 		
 		//Members
-		uchar genNum;
-		uchar playerNum;
+		uchar uchrGenNum;
+		uchar uchrPlayerNum;
 		
 		//Functions
 		void start(void);
@@ -42,7 +42,7 @@ class Entity {
 		void setMonster(uchar, MNSTR);
 		
 		PLYR getPlayer(void);
-		void setPlayer(PLYR);
+		void setPlayer(LOC);
 };
 /**********************************************************************************************************************************************/
 #endif
