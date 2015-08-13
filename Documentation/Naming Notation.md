@@ -8,26 +8,30 @@ This method is slightly based on the [Hungarian Notation] (https://en.wikipedia.
 
 ## Scope
 
-| Scope         | Prefix                    | Example            |
-| ------------- |:-------------------------:|--------------------|
-| Global        | In Global Namespace or g_ | Global::blnLogging |
-| Local         | None                      | strMyString        |
-| zebra stripes | are neat                  |                    |
+| Scope         | Prefix                       | Example            |
+| ------------- |:----------------------------:|--------------------|
+| Global        | In Global Namespace or g_    | Global::blnLogging |
+| Local         | None                         | strMyString        |
+| Constant      | k                            |  kblnMyConstant    |
+| Define        | DEFINED_ (everything in caps)|  DEFINED_MAP_WIDTH |
 
 
 ## Types
 
-| Type          | Prefix  | Example            |
+| Type          | Prefix | Example            |
 | ------------- |:------:|--------------------|
 | Boolean       | bln    | blnLogging         |
 | Char          | chr    | chrNull            |
 | Float         | f      | fTempFitness       |
 | Integer       | int/ i | iValue             |
 | Unsigned Int  | uint/u | uintSeed           |
-| Float         | f      | fTempFitness       |
-| Float         | f      | fTempFitness       |
-| Float         | f      | fTempFitness       |
-| Float         | f      | fTempFitness       |
+| Unsigned Char | uchr   | uchrValue          |
+| Double        | db     | dbSomeValue        |
+| String        | str    | strMyString        |
+| Pointer       | p      | pstrStringPointer  |
+| Long          | lg     | lgLong             |
+| Unsigned Long | ulg    | ulgValue           |
+| Long Long     | llg    | llgWhyDoWeNeedThis |
 
 ## Classes / Structs
 
@@ -38,3 +42,6 @@ This method is slightly based on the [Hungarian Notation] (https://en.wikipedia.
 | Struct        | abr of struct name| plyPlayer          |
 
 The abr that should be used should be written in a comment.
+
+Also the objects that have been declared in the global namespace do not have to follow this rule.
+

@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-12
+## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-13
 
 ### Notes
 
@@ -17,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Windows.h library requirement
 
-* Removed unneeded libraries (?) I think I got rid of old libraries but I'm not sure Again with the rewrite I'm not sure.
+* Removed unneeded libraries (?) I think I got rid of old libraries; again with the rewrite I'm not sure.
 
 * The increase chance of the player with the highest fitness being selected over the other players.
 
@@ -54,6 +54,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Count down that will kill player when it reaches 0.
 
 * Define of Best Players
+
+* Naming Notation
 
 
 ## Old versions
