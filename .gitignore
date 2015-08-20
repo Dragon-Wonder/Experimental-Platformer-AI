@@ -38,3 +38,8 @@
 
 # Stackdump
 *.stackdump
+
+# Code Blocks files
+*.cbp
+*.depend
+*.layout

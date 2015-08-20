@@ -9,8 +9,9 @@ class clsTick {
 	private: 
 		//Members
 		uchar uchrFPS;
-		uint uClock;
 		ulong ulngSleepTime;
+		uint uClock;
+		
 		
 	public:
 		//Default Constructor

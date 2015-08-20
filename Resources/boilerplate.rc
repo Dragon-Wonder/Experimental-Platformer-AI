@@ -1,11 +1,8 @@
 /**********************************************************************************************************************************************/
 #include <windows.h>
+#include "../Source/version.h"
 /**********************************************************************************************************************************************/
-//Verison numbering updated with the file.
-#define VER_FILEVERSION 4,0,0,103
-#define VER_PRODUCTVERSION "4.0.0-beta.11\0"
-/**********************************************************************************************************************************************/
-//If this is not commented out it marks that this program verison was not meant to be publicly released.
+//If this is not commented out it marks that this program version was not meant to be publicly released.
 #define PRIVATE
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
@@ -28,8 +25,8 @@
 #endif
 /**********************************************************************************************************************************************/
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION    	VER_FILEVERSION
-PRODUCTVERSION 	VER_FILEVERSION
+FILEVERSION    	DEFINED_VER_MAJOR,DEFINED_VER_MINOR,DEFINED_VER_BUILD,DEFINED_VER_BUILDS_COUNT
+PRODUCTVERSION 	DEFINED_VER_MAJOR,DEFINED_VER_MINOR,DEFINED_VER_BUILD,DEFINED_VER_BUILDS_COUNT
 FILEFLAGSMASK	VS_FFI_FILEFLAGSMASK
 FILEFLAGS		(VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG)
 FILEOS			VOS__WINDOWS32
@@ -42,12 +39,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName",		VER_COMPANYNAME_STR
             VALUE "FileDescription",	VER_FILEDESCRIPTION_STR
-            VALUE "FileVersion",		VER_PRODUCTVERSION
+            VALUE "FileVersion",		DEFINED_VER_RC_FILEVERSION_STRING
             VALUE "InternalName",		VER_FILENAME_STR
             VALUE "LegalCopyright",		VER_LEGALCOPYRIGHT_STR
             VALUE "OriginalFilename",	VER_ORIGINALFILENAME_STR
             VALUE "ProductName",		VER_FILENAME_STR
-            VALUE "ProductVersion",		VER_PRODUCTVERSION
+            VALUE "ProductVersion",		DEFINED_VER_FULLVERSION_STRING
 			VALUE "Comments", 			VER_COMMENTS_STR
         END
     END
