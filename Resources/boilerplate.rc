@@ -2,9 +2,6 @@
 #include <windows.h>
 #include "../Source/version.h"
 /**********************************************************************************************************************************************/
-//If this is not commented out it marks that this program version was not meant to be publicly released.
-#define PRIVATE
-/**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain\0"
 #define VER_FILEDESCRIPTION_STR "An Experiment into a self-learning AI trying to teach itself a simple version of platformer\0"
@@ -14,7 +11,7 @@
 #define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Experimental-Platformer-AI\0"
 /**********************************************************************************************************************************************/
 //If Private is define above, indicting that it was a build not meant to be released define these variables
-#ifndef PRIVATE
+#ifndef DEFINED_BUILD_MODE_PRIVATE
 	#define VER_DEBUG 0
 	#define VER_PRIVATEBUILD 0
 	#define VER_PRERELEASE 0
@@ -25,8 +22,8 @@
 #endif
 /**********************************************************************************************************************************************/
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION    	DEFINED_VER_MAJOR,DEFINED_VER_MINOR,DEFINED_VER_BUILD,DEFINED_VER_BUILDS_COUNT
-PRODUCTVERSION 	DEFINED_VER_MAJOR,DEFINED_VER_MINOR,DEFINED_VER_BUILD,DEFINED_VER_BUILDS_COUNT
+FILEVERSION    	DEFINED_VER_RC_FILEVERSION
+PRODUCTVERSION 	DEFINED_VER_RC_FILEVERSION
 FILEFLAGSMASK	VS_FFI_FILEFLAGSMASK
 FILEFLAGS		(VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG)
 FILEOS			VOS__WINDOWS32

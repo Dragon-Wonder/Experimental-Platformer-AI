@@ -74,7 +74,7 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	//And if only a patch change is found then it will just use the old config
 	//Lastly if no change is found then use the config of course
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(ConfigVerison,"v%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
+	sscanf(ConfigVerison,"%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
 	if (Global::blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
 	if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
 	else if (DEFINED_VER_MINOR != C_MinorNum) {return PROMPTUSER;}

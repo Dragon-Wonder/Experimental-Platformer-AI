@@ -12,9 +12,15 @@
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
-	const bool blnDebugMode = true; //Holds if in debug mode or not. Causes more messages to appear in the console.
+    //Holds if in debug mode or not. Causes more messages to appear in the console.
+    //Defined in version.h
+    #ifndef DEFINED_BUILD_MODE_PRIVATE
+        const bool blnDebugMode = false;
+    #else
+        const bool blnDebugMode = true;
+    #endif // DEFINED_BUILD_MODE_PRIVATE
+
 	bool blnError = false; //if there was an error; then the program will exit when it checks this.
-	//const char* programverison = DEFINED_PROGRAM_VERSION;
 
 	//Call all of the classes as globals so they are the same everywhere.
 	clsConfig Cnfg;

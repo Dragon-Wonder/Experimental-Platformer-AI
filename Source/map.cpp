@@ -81,20 +81,21 @@ void clsMap::restart(void) {
 
 	MNSTR tempMonster;
 
-	if (pmstBaseMonsters != nullptr) {
-		for (uchar i = 0; i < numMonsters; i++) {
-
-			tempMonster.location.x = pmstBaseMonsters[i].location.x; //Program crashes here for some reason.
-			tempMonster.location.y = pmstBaseMonsters[i].location.y;
-			tempMonster.living = pmstBaseMonsters[i].living;
-			tempMonster.movingright = pmstBaseMonsters[i].movingright;
-
-			Global::Enty.setMonster(i,tempMonster);
-
-			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
-		}
-		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
-	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
+//	if (pmstBaseMonsters != nullptr) {
+//		for (uchar i = 0; i < numMonsters; i++) {
+//
+//            /* TODO (Patrick.Rye#1#08/20/15): Figure out why program crashes when accessing basemonster 0 */
+//			tempMonster.location.x = pmstBaseMonsters[i].location.x;
+//			tempMonster.location.y = pmstBaseMonsters[i].location.y;
+//			tempMonster.living = pmstBaseMonsters[i].living;
+//			tempMonster.movingright = pmstBaseMonsters[i].movingright;
+//
+//			Global::Enty.setMonster(i,tempMonster);
+//
+//			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
+//		}
+//		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
+//	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
 
 	Global::Enty.setPlayer(locBasePlayer);
 
@@ -145,7 +146,7 @@ char clsMap::move(uchar direction) {
 	if(Global::blnDebugMode) {printf("Temp Player's values, x = %d, y = %d, fitness = %3.2f, score = %d.\n",tempPlayer.location.x,tempPlayer.location.y,tempPlayer.fitness,tempPlayer.score); getchar();}
 
     /* TODO (Patrick.Rye#5#): Get rid of this line when I solve the issue of location being really high */
-	if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 0; tempPlayer.location.y = 0;}
+	if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
 
 
 	tempx = tempPlayer.location.x;
@@ -246,10 +247,7 @@ void clsMap::load(void) {
 					}
 
 					for (uchar i = 0; i < numMonsters - 1; i++) {
-						//Copy old array into the temp one.
-						//Consider using std::copy (from algorithm header)
-						//Not using right now because I don't want to add another library that
-						//I'll use one function from but will still bloat the program.
+                        /* TODO (Patrick.Rye#5#08/20/15): Consider using std::copy from algorithm library */
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
 						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
 						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
@@ -257,7 +255,7 @@ void clsMap::load(void) {
 						pTemp[i].movingright = pmstBaseMonsters[i].movingright;
 					}
 					//Delete old array as it isn't needed.
-					delete [] pmstBaseMonsters;
+					delete[] pmstBaseMonsters;
 
 					//Place newest Monster values into temp array.
 					pTemp[numMonsters - 1].location.x = x;
@@ -317,7 +315,7 @@ MNSTR clsMap::getbaseMonster(uchar num) {
 }
 /**********************************************************************************************************************************************/
 void clsMap::playerDeath(void) {
-	//Plays short death anaimation
+	//Plays short death animation
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 

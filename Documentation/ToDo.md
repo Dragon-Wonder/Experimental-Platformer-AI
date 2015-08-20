@@ -6,6 +6,8 @@ Improvements to the code can be made as [Issues] (https://github.com/GamerMan779
 
 ## Todo
 
+* Doxygen (?)
+
 * Wiki for project
 
 * Start giving document changes numbers (so commits are better than "Doc update")
