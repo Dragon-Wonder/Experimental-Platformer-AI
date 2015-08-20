@@ -81,21 +81,21 @@ void clsMap::restart(void) {
 
 	MNSTR tempMonster;
 
-//	if (pmstBaseMonsters != nullptr) {
-//		for (uchar i = 0; i < numMonsters; i++) {
-//
-//            /* TODO (Patrick.Rye#1#08/20/15): Figure out why program crashes when accessing basemonster 0 */
-//			tempMonster.location.x = pmstBaseMonsters[i].location.x;
-//			tempMonster.location.y = pmstBaseMonsters[i].location.y;
-//			tempMonster.living = pmstBaseMonsters[i].living;
-//			tempMonster.movingright = pmstBaseMonsters[i].movingright;
-//
-//			Global::Enty.setMonster(i,tempMonster);
-//
-//			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
-//		}
-//		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
-//	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
+	if (pmstBaseMonsters != nullptr) {
+		for (uchar i = 0; i < numMonsters; i++) {
+
+            /* TODO (Patrick.Rye#1#08/20/15): Figure out why program crashes when accessing basemonster 0 */
+			tempMonster.location.x = pmstBaseMonsters[i].location.x;
+			tempMonster.location.y = pmstBaseMonsters[i].location.y;
+			tempMonster.living = pmstBaseMonsters[i].living;
+			tempMonster.movingright = pmstBaseMonsters[i].movingright;
+
+			Global::Enty.setMonster(i,tempMonster);
+
+			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
+		}
+		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
+	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
 
 	Global::Enty.setPlayer(locBasePlayer);
 
@@ -143,10 +143,8 @@ char clsMap::move(uchar direction) {
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 
-	if(Global::blnDebugMode) {printf("Temp Player's values, x = %d, y = %d, fitness = %3.2f, score = %d.\n",tempPlayer.location.x,tempPlayer.location.y,tempPlayer.fitness,tempPlayer.score); getchar();}
-
     /* TODO (Patrick.Rye#5#): Get rid of this line when I solve the issue of location being really high */
-	if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
+	//if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
 
 
 	tempx = tempPlayer.location.x;

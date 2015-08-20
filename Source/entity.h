@@ -6,13 +6,14 @@
 #include <new>
 /**********************************************************************************************************************************************/
 class clsEntity {
-	private :
+	//private :
+	public:
 		//Functions
 		float getFitness(void);
 		void getBest(void);
 		void nextplayer(void);
 		void makeplayer(void);
-		
+
 		//Members
 		uint uintStepNum;
 		GEN genPastPlayers[DEFINED_PLAYERS_PER_GEN];
@@ -20,27 +21,27 @@ class clsEntity {
 		uint uintGenSteps;
 		const char* FileName = DEFINED_LOG_FILE_NAME;
 		FILE* logFile;
-		
+
 		PLYR plyPlayer;
 		MNSTR *pmstMonsters;
-		
-	public :
+
+	//public :
 		//Default Constructor
 		clsEntity();
 		~clsEntity();
-		
+
 		//Members
 		uchar uchrGenNum;
 		uchar uchrPlayerNum;
-		
+
 		//Functions
 		void start(void);
 		void killMonster(uchar,uchar);
 		void allocateMonsters(uchar);
-		
+
 		MNSTR getMonster(uchar);
 		void setMonster(uchar, MNSTR);
-		
+
 		PLYR getPlayer(void);
 		void setPlayer(LOC);
 };

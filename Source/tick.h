@@ -6,13 +6,14 @@
 #include <cmath>
 /**********************************************************************************************************************************************/
 class clsTick {
-	private:
+    public:
+	//private:
 		//Members
 		uchar uchrFPS;
 		ulong ulngSleepTime;
 		uint uClock;
 
-	public:
+	//public:
 		//Default Constructor
 		clsTick();
 		~clsTick();

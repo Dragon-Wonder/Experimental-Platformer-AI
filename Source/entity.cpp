@@ -130,7 +130,7 @@ void clsEntity::nextplayer(void) {
 
 	//Records the last player into the array of players, and logs directions to file if that is enabled.
 	if (CnfgValues.blnLogging) {logFile = fopen(FileName,"a");} //Open log file in append mode.
-	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",plyPlayer.fitness); getchar(); }
+	if (Global::blnDebugMode) {printf("Player finished with fitness: %2.3f\n",plyPlayer.fitness); }
 
 	genPastPlayers[uchrPlayerNum].fitness = plyPlayer.fitness;
 	if (CnfgValues.blnLogging) {fprintf(logFile,"Generation: %2d, Player: %2d, Fitness: %2.2f",uchrGenNum,uchrPlayerNum + 1,plyPlayer.fitness);}
@@ -313,7 +313,7 @@ void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
 }
 /**********************************************************************************************************************************************/
 PLYR clsEntity::getPlayer(void) {
-	if(Global::blnDebugMode) {printf("Get Player's values, x = %d, y = %d, fitness = %3.2f, score = %d.\n",plyPlayer.location.x,plyPlayer.location.y,plyPlayer.fitness,plyPlayer.score);}
+	//if(Global::blnDebugMode) {printf("Get Player's values, x = %d, y = %d, fitness = %3.2f, score = %d.\n",plyPlayer.location.x,plyPlayer.location.y,plyPlayer.fitness,plyPlayer.score);}
 	return plyPlayer;
 }
 /**********************************************************************************************************************************************/

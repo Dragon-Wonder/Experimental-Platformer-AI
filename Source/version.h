@@ -18,17 +18,16 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,0,0,136
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 0, 136\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.0.0-beta.12"
+#define DEFINED_VER_RC_FILEVERSION 4,0,0,140
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 0, 140\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.0.0-rc.1"
 
 //If this is not commented out then the build is meant to be a private build
 //as such it will be in debug mode.
 #define DEFINED_BUILD_MODE_PRIVATE
 
 //Software Status
-#define DEFINED_VER_STATUS  "Beta"
-#define DEFINED_VER_STATUS_SHORT  "b"
+#define DEFINED_VER_STATUS  "rc"
 
 
 #endif //__VERSION_HEADER__

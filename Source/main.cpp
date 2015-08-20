@@ -10,6 +10,12 @@
 #include "entity.h"
 #include "globals.h"
 /**********************************************************************************************************************************************/
+//General Todos
+// TODO (Patrick.Rye#1#): Move class values back to being non public
+// TODO (Patrick#1#): Fitness is messed up (all of the place then shoots up really high)
+// TODO (Patrick#1#): Fitness seems to be decreasing even when Hard Mode is off
+
+/**********************************************************************************************************************************************/
 //Globals
 namespace Global {
     //Holds if in debug mode or not. Causes more messages to appear in the console.
