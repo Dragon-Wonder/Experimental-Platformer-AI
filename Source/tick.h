@@ -10,9 +10,7 @@ class clsTick {
 		//Members
 		uchar uchrFPS;
 		uint uClock;
-		
-		//Functions
-		void sleep(ulong);
+		ulong ulngSleepTime;
 		
 	public:
 		//Default Constructor
@@ -24,7 +22,6 @@ class clsTick {
 		void resetClock(void);
 		void decClock(void); //This is so the clock will decrement even when show map is false.
 		uint getClockTime(void);
-	
 };
 /**********************************************************************************************************************************************/
 #endif

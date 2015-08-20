@@ -8,7 +8,25 @@
 clsTick::clsTick() {
 	if (Global::blnDebugMode) {printf("Tick Constructor called.\n");}
 	uchrFPS = DEFINED_GOAL_FPS;
-	if(clsTick::uClock <= 0) {clsTick::resetClock();}
+	
+	/*
+	Figure out how long the wait should be based on the our goal frames per second.
+	
+	The Sleep time will be in milliseconds and is how long each "frame" will appear on the
+	the screen before the next the one is done.	
+	
+	I did it this way so that if show map is on it doesn't update it as quickly as it can
+	leading to the console being really hard to follow.
+	The sleep allows it to look much better.
+	
+	The frames per second is also not going to be right because it doesn't account for
+	all the other functions of the program and there is also the rounding. But
+	it should be close enough to not matter.
+	*/
+	
+	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
+	if (Global::blnDebugMode) {printf("ulngSleepTime = %u\n", ulngSleepTime);} //ulngSleepTime set to 16843009 for unknown reasons.
+	if(clsTick::uClock == 0) {clsTick::resetClock();}
 }
 /**********************************************************************************************************************************************/
 clsTick::~clsTick() {
@@ -16,28 +34,7 @@ clsTick::~clsTick() {
 }
 /**********************************************************************************************************************************************/
 void clsTick::wait(void) {
-	static ulong ulngSleepTime;
 	
-	/*
-	Figure out how long the wait should be based on the our goal frames per second.
-	
-	The Sleep time will be in milliseconds and is how long each "frame" will appear on the
-	the screen before the next the one is done.
-	
-	I did it this way so that if show map is on it doesn't update it as quickly as it can
-	leading to the console being really hard to follow.
-	The sleep allows it to look much better.
-	
-	The frames per second is also not going to be right be it doesn't account for
-	all the other functions of the program and there is also the rounding. But
-	it should be close enough to not matter
-	*/
-	
-	if (ulngSleepTime == 0) {ulngSleepTime = (ulong) round(1000.0 / uchrFPS);}
-	sleep(ulngSleepTime);
-}
-/**********************************************************************************************************************************************/
-void clsTick::sleep(ulong milliseconds) {
 	/*Since sleep is usually an OS specific command I made this functions
 	To work as a "sleep" but it doesn't function as a true sleep because the 
 	CPU is still being used, but whatever. It "stops" the program for a bit
@@ -49,10 +46,12 @@ void clsTick::sleep(ulong milliseconds) {
 	ulong pause;
 	clock_t now, then;
 	
-	pause = milliseconds * (CLOCKS_PER_SEC/1000);
+	pause = ulngSleepTime * (CLOCKS_PER_SEC/1000);
 	
 	now = then = clock();
+	if (Global::blnDebugMode) {printf("Wait started for %u milliseconds.\n", ulngSleepTime);}
 	while ((now - then) < pause) {now = clock();}
+	if (Global::blnDebugMode) {printf("Wait ended.\n");}
 }
 /**********************************************************************************************************************************************/
 void clsTick::resetClock(void) {

@@ -26,7 +26,7 @@ clsEntity::clsEntity() {
 /**********************************************************************************************************************************************/
 clsEntity::~clsEntity() {
 	if(Global::blnDebugMode) {printf("Entity Destructor called.\n");}
-	free(pmstMonsters);
+	delete[] pmstMonsters;
 }
 /**********************************************************************************************************************************************/
 void clsEntity::start(void) {
@@ -278,11 +278,20 @@ void clsEntity::killMonster(uchar xplace,uchar yplace) {
 /**********************************************************************************************************************************************/
 void clsEntity::allocateMonsters(uchar amount) {
 	//Allocate memory for the monsters
-	//Possibly unneeded
+	pmstMonsters = new (std::nothrow) MNSTR [amount];
 	
-	pmstMonsters = (MNSTR*) malloc(sizeof(MNSTR) * amount);
-	if (pmstMonsters == NULL) {Global::blnError = true; return;}
-	if (Global::blnDebugMode) {printf("Monsters correctly allocated\n");}	
+	//Quick Note: the no throw is used here so that the program doesn't just end when 
+	//it cannot allocate the memory instead it checks if the pointer = nullptr
+	//which happens when allocation fails, and then runs the three lines below.
+	
+	if (pmstMonsters == nullptr) {
+		//Could not allocate the memory
+		if (Global::blnDebugMode) {printf("Monsters were not allocated\n");}
+		Global::blnError = true;
+		return;
+	} else {
+		if (Global::blnDebugMode) {printf("Monsters correctly allocated\n");}
+	}
 }
 /**********************************************************************************************************************************************/
 MNSTR clsEntity::getMonster(uchar num) {

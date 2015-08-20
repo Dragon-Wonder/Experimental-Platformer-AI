@@ -2,6 +2,7 @@
 #define __MAIN__HEADER__
 /**********************************************************************************************************************************************/
 #include <cstdio>
+#include <cstdlib>
 /**********************************************************************************************************************************************/
 /*
 This is the main header and defines many values, and structures that are used a lot of other places in the code, so this header should be refrenced by
@@ -9,7 +10,7 @@ all the cpps
 */
 /**********************************************************************************************************************************************/
 //Best not to change these.
-#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.10"
+#define DEFINED_PROGRAM_VERSION "v4.0.0-beta.11"
 #define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 /**********************************************************************************************************************************************/
 /*
@@ -47,6 +48,9 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_MONS_KILL_POINTS 500
 
 //How many ticks to complete the level
+//Considering that the "player" does a move every tick
+//This doesn't matter so long as it is greater than DEFINED_MAX_PLAYER_STEPS
+//Will be used when ported to a human verison of the game.
 #define DEFINED_TICK_LIMIT 5000
 
 //How many best players are called at the end of each generation

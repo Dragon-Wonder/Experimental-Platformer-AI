@@ -10,7 +10,7 @@ clsMap::clsMap() {
 /**********************************************************************************************************************************************/
 clsMap::~clsMap() {
 	if(Global::blnDebugMode) {printf("Map Destructor called.\n");}
-	free(pmstBaseMonsters);
+	delete[] pmstBaseMonsters;
 }
 /**********************************************************************************************************************************************/
 void clsMap::show(void) {
@@ -26,6 +26,7 @@ void clsMap::show(void) {
 	if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
 	
 	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",tempPlayer.location.x, tempPlayer.location.y);}
+	//Player x and y starting at 16843009 for unknown reasons.
 	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
@@ -62,7 +63,8 @@ void clsMap::show(void) {
 void clsMap::restart(void) {
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-			map[y][x] = basemap[y][x];
+			map[y][x] = basemap[y][x]; //Map does not appear to be set properly
+			//Add a check?
 		}
 	}
 	
@@ -73,10 +75,10 @@ void clsMap::restart(void) {
 	
 	MNSTR tempMonster;
 	
-	if (pmstBaseMonsters != NULL) {
+	if (pmstBaseMonsters != nullptr) {
 		for (uchar i = 0; i < numMonsters; i++) {
 			
-			tempMonster.location.x = pmstBaseMonsters[i].location.x;
+			tempMonster.location.x = pmstBaseMonsters[i].location.x; //Program crashes here for some reason.
 			tempMonster.location.y = pmstBaseMonsters[i].location.y;
 			tempMonster.living = pmstBaseMonsters[i].living;
 			tempMonster.movingright = pmstBaseMonsters[i].movingright;
@@ -86,7 +88,7 @@ void clsMap::restart(void) {
 			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 		}
 		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
-	} else {if (Global::blnDebugMode) {printf("Base monsters equals NULL.\n");}}
+	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
 	
 	Global::Enty.setPlayer(locBasePlayer);
 	
@@ -210,21 +212,67 @@ void clsMap::load(void) {
 			}
 			else if (basemap[y][x] == tileMonster) {
 				numMonsters++;
+				//Consider making pmstBaseMonsters a vector for easier dynamic allocation
 				if (Global::blnDebugMode) {printf("Found Monster at (%d,%d)\n",x,y);}
 				if (numMonsters == 1) {
-					pmstBaseMonsters = (MNSTR*)malloc(sizeof(MNSTR) * 1);
-					if (pmstBaseMonsters == NULL) {Global::blnError = true; return;}
+					pmstBaseMonsters = new (std::nothrow) MNSTR[1];
+					if (pmstBaseMonsters == nullptr) {
+						//Could not allocate the memory
+						Global::blnError = true;
+						return;
+					}
 					pmstBaseMonsters[0].location.x = x;
 					pmstBaseMonsters[0].location.y = y;
 					pmstBaseMonsters[0].living = true;
 					pmstBaseMonsters[0].movingright = false;
 				} else {
-					pmstBaseMonsters = (MNSTR*)realloc(pmstBaseMonsters,sizeof(MNSTR) * numMonsters);
-					if (pmstBaseMonsters == NULL) {Global::blnError = true; return;}
-					pmstBaseMonsters[numMonsters - 1].location.x = x;
-					pmstBaseMonsters[numMonsters - 1].location.y = y;
-					pmstBaseMonsters[numMonsters - 1].living = true;
-					pmstBaseMonsters[numMonsters - 1].movingright = false;
+					//Allocate a temp array to hold the old array + the new monster
+					MNSTR* pTemp = new (std::nothrow) MNSTR[numMonsters];
+					if (pTemp == nullptr) {
+						//Could not allocate the memory
+						Global::blnError = true;
+						return;
+					}
+					
+					for (uchar i = 0; i < numMonsters - 1; i++) {
+						//Copy old array into the temp one.
+						//Consider using std::copy (from algorithm header)
+						//Not using right now because I don't want to add another library that
+						//I'll use one function from but will still bloat the program.
+						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
+						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
+						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
+						pTemp[i].living = pmstBaseMonsters[i].living;
+						pTemp[i].movingright = pmstBaseMonsters[i].movingright;
+					}
+					//Delete old array as it isn't needed.
+					delete [] pmstBaseMonsters;
+					
+					//Place newest Monster values into temp array.
+					pTemp[numMonsters - 1].location.x = x;
+					pTemp[numMonsters - 1].location.y = y;
+					pTemp[numMonsters - 1].living = true;
+					pTemp[numMonsters - 1].movingright = false;					
+					
+					//Generate new Base Monster array
+					pmstBaseMonsters = new (std::nothrow) MNSTR[numMonsters];
+					if (pmstBaseMonsters == nullptr) {
+						//Could not allocate the memory
+						Global::blnError = true;
+						return;						
+					}
+					
+					for (uchar i = 0; i < numMonsters; i++) {
+						//Copy Temp Array into new array.
+						pmstBaseMonsters[i].location.x = pTemp[i].location.x;
+						pmstBaseMonsters[i].location.y = pTemp[i].location.y;
+						pmstBaseMonsters[i].living = pTemp[i].living;
+						pmstBaseMonsters[i].movingright = pTemp[i].movingright;
+					}
+					
+					//Delete Temp Array
+					delete [] pTemp;
+					
 				} //end if first or not
 			} //end if monster tile
 		} //end for width

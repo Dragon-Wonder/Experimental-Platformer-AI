@@ -4,8 +4,9 @@
 #include "main.h"
 #include "entity.h"
 #include <cstdio>
-#include <cstdlib>
+//#include <cstdlib>
 #include <cmath>
+#include <new>
 /**********************************************************************************************************************************************/
 enum tile {
 	tileSpace = 0, 
