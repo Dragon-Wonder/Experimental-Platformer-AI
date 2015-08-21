@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.0] - 2015-08-06 to 2015-08-13
+## [4.0.0] - 2015-08-21
 
 ### Notes
 
@@ -11,13 +11,13 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * The main point of this rewrite was to improve the structure of the code so later changes are easier as opposed to adding a bunch of new features.
 
+* This was one big pain of a rewrite but hopefully it'll make things easier to improve upon in the future.
+
 ### Removed
 
 * Generate Random Number Function as it was quite useless
 
 * Windows.h library requirement
-
-* Removed unneeded libraries (?) I think I got rid of old libraries; again with the rewrite I'm not sure.
 
 * The increase chance of the player with the highest fitness being selected over the other players.
 
@@ -56,6 +56,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Define of Best Players
 
 * Naming Notation
+
+* A short death animation
 
 
 ## Old versions

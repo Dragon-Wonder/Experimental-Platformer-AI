@@ -14,23 +14,17 @@ clsMap::~clsMap() {
 }
 /**********************************************************************************************************************************************/
 void clsMap::show(void) {
-
-    /* TODO (Patrick.Rye#1#): Map does not appear correctly figure out why */
-
-
 	printf("\n\n\n\n");
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 	uint x_start;
 
-
-	if (tempPlayer.location.x - 5 <= 0) {x_start = 0;}
+	//A simple check so that if the player goes to the left of the start the map will still display
+	//properly, without this it will not show up when the player goes to the left.
+	if ((int)(tempPlayer.location.x - 5) <= 0) {x_start = 0;}
 	else {x_start = tempPlayer.location.x - 5;}
 
-	if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
-
 	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",tempPlayer.location.x, tempPlayer.location.y);}
-	//Player x and y starting at 16843009 for unknown reasons.
 	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
@@ -67,13 +61,9 @@ void clsMap::show(void) {
 void clsMap::restart(void) {
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-            // TODO (Patrick.Rye#1#): Map does not seem to be properly set from basemap; ...
-            //Figure out why.
-			map[y][x] = basemap[y][x]; //Map does not appear to be set properly
-			//Add a check?
+			map[y][x] = basemap[y][x];
 		}
 	}
-
 	if (Global::blnDebugMode) {printf("Base map put into map.\n");}
 
 	Global::Tick.resetClock();
@@ -83,33 +73,27 @@ void clsMap::restart(void) {
 
 	if (pmstBaseMonsters != nullptr) {
 		for (uchar i = 0; i < numMonsters; i++) {
-
-            /* TODO (Patrick.Rye#1#08/20/15): Figure out why program crashes when accessing basemonster 0 */
 			tempMonster.location.x = pmstBaseMonsters[i].location.x;
 			tempMonster.location.y = pmstBaseMonsters[i].location.y;
 			tempMonster.living = pmstBaseMonsters[i].living;
 			tempMonster.movingright = pmstBaseMonsters[i].movingright;
-
 			Global::Enty.setMonster(i,tempMonster);
-
 			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 		}
 		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
 	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
-
 	Global::Enty.setPlayer(locBasePlayer);
-
 	if (Global::blnDebugMode) {printf("Player reset.\n");}
 }
 /**********************************************************************************************************************************************/
 char clsMap::move(uchar direction) {
-	static uchar jumpcount;
-	static bool playerfalling;
+	static uchar jumpcount; //how many times the player has jumped
+	static bool playerfalling; //if the player is falling
 	uchar tempx;
 	uchar tempy;
 	if (playerfalling == false) {jumpcount = 0;}
 
-	//Move monsters first, to see if player dies and we can then skip the restart
+	//Move monsters first, to see if player dies and we can then skip the rest
 
 	MNSTR tempMonster;
 
@@ -143,10 +127,6 @@ char clsMap::move(uchar direction) {
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 
-    /* TODO (Patrick.Rye#5#): Get rid of this line when I solve the issue of location being really high */
-	//if (tempPlayer.location.x > DEFINED_MAP_WIDTH || tempPlayer.location.y > DEFINED_MAP_HEIGHT) {tempPlayer.location.x = 5; tempPlayer.location.y = 11;}
-
-
 	tempx = tempPlayer.location.x;
 	tempy = tempPlayer.location.y;
 
@@ -160,7 +140,7 @@ char clsMap::move(uchar direction) {
 		case dirUp :
 			if (map[tempy][tempx] == tileWall) {break;}
 			//make sure that the player has enough space to make the jump or the program will attempt to reference a
-			//non-existing array spot. Also note that jumping is consider in negative direction because the top of the
+			//non-existing array spot (crashing the program). Also note that jumping is consider in negative direction because the top of the
 			//map is considered array spot 0 while the bottom is 13.
 			if (tempy > DEFINED_JUMP_HEIGHT && jumpcount < DEFINED_MAX_JUMP_COUNT) {tempy -= DEFINED_JUMP_HEIGHT; jumpcount++;}
 			break;
@@ -207,9 +187,7 @@ void clsMap::load(void) {
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 
-    /* TODO (Patrick.Rye#9#): Look into vectors for basemonsters */
-
-
+    /* TODO (GamerMan7799#9#): Look into vectors for basemonsters */
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
@@ -217,12 +195,9 @@ void clsMap::load(void) {
 				if (Global::blnDebugMode) {printf("Found Player at (%d,%d).\n",x,y);}
 				locBasePlayer.x = x;
 				locBasePlayer.y = y;
-				//locBasePlayer.fitness = 0.0f;
-				//locBasePlayer.score = 0;
 			}
 			else if (basemap[y][x] == tileMonster) {
 				numMonsters++;
-				//Consider making pmstBaseMonsters a vector for easier dynamic allocation
 				if (Global::blnDebugMode) {printf("Found Monster at (%d,%d)\n",x,y);}
 				if (numMonsters == 1) {
 					pmstBaseMonsters = new (std::nothrow) MNSTR[1];
@@ -245,7 +220,7 @@ void clsMap::load(void) {
 					}
 
 					for (uchar i = 0; i < numMonsters - 1; i++) {
-                        /* TODO (Patrick.Rye#5#08/20/15): Consider using std::copy from algorithm library */
+                        /* TODO (GamerMan7799#5#08/20/15): Consider using std::copy from algorithm library */
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
 						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
 						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
@@ -303,8 +278,8 @@ LOC clsMap::getbasePlayer(void) {
 }
 /**********************************************************************************************************************************************/
 MNSTR clsMap::getbaseMonster(uchar num) {
+	// TODO (GamerMan7799#9#): Figure out if I need to do the temp first or if I can just return
 	MNSTR tempMNSTR;
-
 	tempMNSTR.location.x = pmstBaseMonsters[num].location.x;
 	tempMNSTR.location.y = pmstBaseMonsters[num].location.y;
 	tempMNSTR.living = pmstBaseMonsters[num].living;
@@ -314,14 +289,15 @@ MNSTR clsMap::getbaseMonster(uchar num) {
 /**********************************************************************************************************************************************/
 void clsMap::playerDeath(void) {
 	//Plays short death animation
+	//only shows up if the Map::move returns DEAD
+	//The games "pauses" for a second then the player will move up
+	//3 spaces then down about 4 spaces (depending on starting point)
+	//the whole thing happens in 5 frames.
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
-
 	show();
 	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
-
 	uint tempy = tempPlayer.location.y;
-
 	for (uchar i = 0; i < 5; i++) {
 		if (i < 3) {
 			if (tempy != DEFINED_MAP_HEIGHT) { tempy--;}

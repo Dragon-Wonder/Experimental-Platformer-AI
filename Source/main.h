@@ -9,11 +9,8 @@ This is the main header and defines many values, and structures that are used a 
 all the cpps
 */
 /**********************************************************************************************************************************************/
-//Best not to change these.
-#define ErrorCheck if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
-/**********************************************************************************************************************************************/
 /*
-These defines are for the size of the map. The default is 14 high by 217 width
+These defines are for the size of the map. The default is 14 high by 217 wide
 You should note that if you change this you have to change the base map under map.h as well to the same
 size or you will most likely run into a lot of issues. Later verisons where you can simply load your own map
 will likely remove these and dynamically allocate the map size for you.
@@ -22,7 +19,7 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_MAP_WIDTH 217
 /**********************************************************************************************************************************************/
 //Defines that are to allow certain aspects to be changed easier.
-//They can be changed without any issue.
+//These can be changed without any issue.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
@@ -60,24 +57,35 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_LOG_FILE_NAME "Player.log"
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
+
+//These ones are used when returning the state of the player after it has been moved
 #define DEAD 'D'
 #define LIVING 'L'
+
+//These are used when checking the verison of the config file.
 #define NEWCONFIG 'N'
 #define USECONFIG 'U'
 #define PROMPTUSER 'P'
 /**********************************************************************************************************************************************/
 //Structures for varies uses
 
+// Location of Monster / Player
+// It is its own structure so that I can pass just the location
+// as well as for the baseplayer which only needs to hold the location.
 struct stcLoc {
 	unsigned int x;
 	unsigned int y;
 }; //prefix = loc
 
+// Structure for the storage of a generation
 struct stcGeneration {
 	float fitness;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
 }; //prefix = gen
 
+// Structure for the player, only used for the current player
+// because once they are done the imporant values are placed in 
+// the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;
 	float fitness;
@@ -85,10 +93,11 @@ struct stcPlayer {
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
 }; //prefix = ply
 
+// Structure for the monsters
 struct stcMonster {
 	struct stcLoc location;
-	bool living;
-	bool movingright;
+	bool living; //This is checked before trying to move the monster
+	bool movingright; //Keeps track of which direction they are moving
 }; //prefix = mst
 
 enum dir {

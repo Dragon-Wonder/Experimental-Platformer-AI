@@ -35,7 +35,7 @@ clsTick::~clsTick() {
 /**********************************************************************************************************************************************/
 void clsTick::wait(void) {
 
-	/*Since sleep is usually an OS specific command I made this functions
+	/*Since sleep is usually an OS specific command I made this function
 	To work as a "sleep" but it doesn't function as a true sleep because the
 	CPU is still being used, but whatever. It "stops" the program for a bit
 	which was its point so its gonna stay until I find something better.*/
@@ -51,11 +51,7 @@ void clsTick::wait(void) {
 	now = then = clock();
 	if (Global::blnDebugMode) {printf("Wait started for %lu milliseconds.\n", ulngSleepTime);}
 
-
-    /* TODO (Patrick.Rye#9#): Remove if statement when I figure out issue with time being too long */
-	if (ulngSleepTime < 1500) {
-		while ((now - then) < pause) {now = clock();}
-	}
+	while ((now - then) < pause) {now = clock();}
 	if (Global::blnDebugMode) {printf("Wait ended.\n");}
 }
 /**********************************************************************************************************************************************/

@@ -32,7 +32,8 @@ enum configValueSpot {
 typedef struct ConfigValues Configures;
 /**********************************************************************************************************************************************/
 class clsConfig {
-	private:
+	public:
+	//private:
 		//Members
 		const char* FileName = DEFINED_CONFIG_FILE_NAME;
 		FILE* configFile;
@@ -44,7 +45,7 @@ class clsConfig {
 		void make(void);
 		void load(void);
 		
-	public:
+	//public:
 		//Default Constructor
 		clsConfig();
 		~clsConfig();

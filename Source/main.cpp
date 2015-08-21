@@ -11,8 +11,9 @@
 #include "globals.h"
 /**********************************************************************************************************************************************/
 //General Todos
-// TODO (Patrick.Rye#1#): Move class values back to being non public
-// TODO (Patrick#1#): Fitness seems to be decreasing even when Hard Mode is off
+// TODO (GamerMan7799#5#): Move class values back to being non public, later.
+/* TODO (GamerMan7799#5#): Consider replacing rand / srand with another form of random generaters
+							so we don't need cstdlib anymore */
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
@@ -35,7 +36,7 @@ namespace Global {
 /**********************************************************************************************************************************************/
 int main(void) {
 	Global::Cnfg.Check(); //Load the config file's values
-	ErrorCheck
+	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 
 	//Seed rand as defined in the config options.
 	if (Global::Cnfg.getvalues(cnfgAppendTime) == 1) {srand(time(NULL) + Global::Cnfg.getvalues(cnfgSeed));}
@@ -43,25 +44,18 @@ int main(void) {
 
 	Global::Map.load();
 	if (Global::blnDebugMode) {printf("Map loaded\n");}
-	ErrorCheck
+	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 	Global::Map.restart();
 	if (Global::blnDebugMode) {printf("Map Restarted\n");}
-	ErrorCheck
+	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 	Global::Map.show();
 	getchar();
 
-
 	Global::Enty.start();
 	if (Global::blnDebugMode) {printf("Generations finished.\n");}
-	ErrorCheck
+	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 
 	printf("\nDone\n");
-
-	//Deconstruct all the classes.
-	Global::Cnfg.~clsConfig();
-	Global::Enty.~clsEntity();
-	Global::Map.~clsMap();
-	Global::Tick.~clsTick();
 
 	getchar();
 	return 0;

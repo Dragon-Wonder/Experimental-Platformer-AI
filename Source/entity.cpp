@@ -30,7 +30,8 @@ clsEntity::~clsEntity() {
 }
 /**********************************************************************************************************************************************/
 void clsEntity::start(void) {
-	//Starts the entire loop.
+	//Starts the main part of the program
+	//that will loop through each generation
 
 	Configures CnfgValues;
 	CnfgValues = Global::Cnfg.getvalues();
@@ -45,7 +46,11 @@ void clsEntity::start(void) {
 		makeplayer();
 		for (uint step = 0; step < CnfgValues.uintFirstGen; step++) {
 			chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-			plyPlayer.fitness = getFitness();
+			
+			//In hard mode player fitness is updated every frame, while when not hard mode
+			//it will only update if the new fitness value is higher than the old one.
+			if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
+			
 			if (CnfgValues.blnShowMap) {Global::Map.show();}
 			if (chrPlayerStatus == DEAD) {
 				//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -74,7 +79,11 @@ void clsEntity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < uintGenSteps + CnfgValues.uintGenIncrease; step++) {
 				chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-				plyPlayer.fitness = getFitness();
+				
+				//In hard mode player fitness is updated every frame, while when not hard mode
+				//it will only update if the new fitness value is higher than the old one.		
+				if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
+				
 				if (CnfgValues.blnShowMap) {Global::Map.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -102,7 +111,11 @@ void clsEntity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < DEFINED_MAX_PLAYER_STEPS; step++) {
 				chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-				plyPlayer.fitness = getFitness();
+				
+				//In hard mode player fitness is updated every frame, while when not hard mode
+				//it will only update if the new fitness value is higher than the old one.
+				if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
+				
 				if (CnfgValues.blnShowMap) {Global::Map.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -225,21 +238,23 @@ void clsEntity::makeplayer(void) {
 }
 /**********************************************************************************************************************************************/
 float clsEntity::getFitness(void) {
-	/* Calculates the fitness of the plyPlayer.
+	/* 
+	Calculates the fitness of the plyPlayer.
 	If it is hard mode then the longer the player takes
 	the more fitness will decrease
 	Note that 204 is considered the "finish" line.
 	*/
 
 	float temp = 0.00f;
-
+	
+	//Get the spot that the player starts at for reference
 	LOC locPlayerBase;
 	locPlayerBase = Global::Map.getbasePlayer();
 
 	temp += (plyPlayer.score) / 250.0;
 	if (plyPlayer.location.x >= locPlayerBase.x) {temp += (5.0/2.0) * (plyPlayer.location.x - locPlayerBase.x);}
-	temp += (plyPlayer.location.x + plyPlayer.location.y) / 6.0;
 	if (locPlayerBase.y >= plyPlayer.location.y) {temp += (locPlayerBase.y - plyPlayer.location.y) / 4.0;}
+	temp += (plyPlayer.location.x + plyPlayer.location.y) / 6.0;
 	if (plyPlayer.location.x > 204) {temp += 200.0;}
 	if (Global::Cnfg.getvalues(cnfgHardMode) == 1) {temp -= uintStepNum / 80.0;}
 	return temp;
@@ -260,13 +275,13 @@ void clsEntity::getBest(void) {
 		for (uint m = 0; m < DEFINED_MAX_PLAYER_STEPS; m++) {
 			genBestPlayers[j].direction[m] = genPastPlayers[uchrBestNum].direction[m];
 		}
-		genPastPlayers[uchrBestNum].fitness = 0.00f; //set fitness to 0 so they are recorded again.
+		genPastPlayers[uchrBestNum].fitness = 0.00f; //set fitness to 0 so they aren't recorded again.
 	}
 }
 /**********************************************************************************************************************************************/
 void clsEntity::killMonster(uchar xplace,uchar yplace) {
 	//Finds monster at specified place and kills them.
-	//We don't have to worry about replace the tile they are in with empty
+	//We don't have to worry about replacing the tile they are in with empty
 	//Because the player will be replace them.
 
 	for (uchar i = 0; i < Global::Map.numMonsters; i++) {
@@ -313,14 +328,11 @@ void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
 }
 /**********************************************************************************************************************************************/
 PLYR clsEntity::getPlayer(void) {
-	//if(Global::blnDebugMode) {printf("Get Player's values, x = %d, y = %d, fitness = %3.2f, score = %d.\n",plyPlayer.location.x,plyPlayer.location.y,plyPlayer.fitness,plyPlayer.score);}
 	return plyPlayer;
 }
 /**********************************************************************************************************************************************/
 void clsEntity::setPlayer(LOC Place) {
 	plyPlayer.location.x = (uint) Place.x;
 	plyPlayer.location.y = (uint) Place.y;
-	//plyPlayer.score = (uint) PlayerSet.score;
-	//plyPlayer.fitness = (float) PlayerSet.fitness;
 }
 /**********************************************************************************************************************************************/
