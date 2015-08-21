@@ -5,6 +5,11 @@
 		<Option title="Experimental-Platformer-AI" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option show_notes="0">
+			<notes>
+				<![CDATA[Use Complie-Final.bat for full releases of the program. It is smaller than the one Code Blocks makes and the version infomation shows up properly on that one.]]>
+			</notes>
+		</Option>
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/PlatformerExperiment-PRIVATE" prefix_auto="1" extension_auto="1" />
