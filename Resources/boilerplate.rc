@@ -1,23 +1,17 @@
 /**********************************************************************************************************************************************/
 #include <windows.h>
-/**********************************************************************************************************************************************/
-//Verison numbering updated with the file.
-#define VER_FILEVERSION 3,3,0,21
-#define VER_PRODUCTVERSION "3.3.0"
-/**********************************************************************************************************************************************/
-//If this is not commented out it marks that this file verison was not meant to be publicly released.
-//#define PRIVATE
+#include "../Source/version.h"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
-#define VER_COMPANYNAME_STR "Public Domain"
-#define VER_FILEDESCRIPTION_STR "An Experiment into a self-learning AI trying to teach itself a simple version of platformer"
-#define VER_FILENAME_STR "Platformer-Experiment"
-#define VER_ORIGINALFILENAME_STR "PlatformerExperiment.exe"
-#define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"
-#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Experimental-Platformer-AI"
+#define VER_COMPANYNAME_STR "Public Domain\0"
+#define VER_FILEDESCRIPTION_STR "An Experiment into a self-learning AI trying to teach itself a simple version of platformer\0"
+#define VER_FILENAME_STR "Platformer-Experiment\0"
+#define VER_ORIGINALFILENAME_STR "PlatformerExperiment.exe\0"
+#define VER_LEGALCOPYRIGHT_STR "http://unlicense.org\0"
+#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Experimental-Platformer-AI\0"
 /**********************************************************************************************************************************************/
 //If Private is define above, indicting that it was a build not meant to be released define these variables
-#ifndef PRIVATE
+#ifndef DEFINED_BUILD_MODE_PRIVATE
 	#define VER_DEBUG 0
 	#define VER_PRIVATEBUILD 0
 	#define VER_PRERELEASE 0
@@ -28,8 +22,8 @@
 #endif
 /**********************************************************************************************************************************************/
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION    	VER_FILEVERSION
-PRODUCTVERSION 	VER_FILEVERSION
+FILEVERSION    	DEFINED_VER_RC_FILEVERSION
+PRODUCTVERSION 	DEFINED_VER_RC_FILEVERSION
 FILEFLAGSMASK	VS_FFI_FILEFLAGSMASK
 FILEFLAGS		(VER_PRIVATEBUILD|VER_PRERELEASE|VER_DEBUG)
 FILEOS			VOS__WINDOWS32
@@ -42,12 +36,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName",		VER_COMPANYNAME_STR
             VALUE "FileDescription",	VER_FILEDESCRIPTION_STR
-            VALUE "FileVersion",		VER_PRODUCTVERSION
+            VALUE "FileVersion",		DEFINED_VER_RC_FILEVERSION_STRING
             VALUE "InternalName",		VER_FILENAME_STR
             VALUE "LegalCopyright",		VER_LEGALCOPYRIGHT_STR
             VALUE "OriginalFilename",	VER_ORIGINALFILENAME_STR
             VALUE "ProductName",		VER_FILENAME_STR
-            VALUE "ProductVersion",		VER_PRODUCTVERSION
+            VALUE "ProductVersion",		DEFINED_VER_FULLVERSION_STRING
 			VALUE "Comments", 			VER_COMMENTS_STR
         END
     END
