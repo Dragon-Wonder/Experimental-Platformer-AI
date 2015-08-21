@@ -3,10 +3,11 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.0] - 2015-08-21
+## UNRELEASED [4.0.1] - 2015-08-21
 
 ### Added
 
+* Debug Compile batch file as well as a final Compile batch
 
 
 

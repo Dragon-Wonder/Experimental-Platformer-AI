@@ -3,7 +3,14 @@
 :: %~dp0 is the directory the batch file is in, and it ends with a '\' so don't add it
 :: The Batch file has to stay in the main to work as it is written right now
 
+:: This will create the final program not a debug verison
+
 echo Deleting old files...
+::Delete the debug .exe if it exists
+IF EXIST Platformer-Experiment-PRIVATE.exe del /F Platformer-Experiment-PRIVATE.exe
+::Delete debug Stackdump if it exists (so as to not confuse me later)
+IF EXIST Platformer-Experiment-PRIVATE.exe.stackdump del /F Platformer-Experiment-PRIVATE.exe.stackdump
+
 ::Delete the old .exe if it exists
 IF EXIST Platformer-Experiment.exe del /F Platformer-Experiment.exe
 ::Delete Stackdump if it exists (so as to not confuse me later)
@@ -24,19 +31,19 @@ cd %~dp0Source
 echo Compiling source files...
 ::Complie each of the cpp files
 echo Compiling main.cpp...
-g++ -std=c++11 -Wall -g -c main.cpp
+g++ -std=c++11 -w -Os -O3 -c main.cpp
 
 echo Compiling config.cpp...
-g++ -std=c++11 -Wall -g -c config.cpp
+g++ -std=c++11 -w -Os -O3 -c config.cpp
 
 echo Compiling map.cpp...
-g++ -std=c++11 -Wall -g -c map.cpp
+g++ -std=c++11 -w -Os -O3 -c map.cpp
 
 echo Compiling entity.cpp...
-g++ -std=c++11 -Wall -g -c entity.cpp
+g++ -std=c++11 -w -Os -O3 -c entity.cpp
 
 echo Compiling tick.cpp...
-g++ -std=c++11 -Wall -g -c tick.cpp
+g++ -std=c++11 -w -Os -O3 -c tick.cpp
 
 ::Move back to the main directory
 cd %~dp0
@@ -45,7 +52,7 @@ echo.
 
 ::Complie everything together!
 echo Linking everything together...
-g++ -std=c++11 -Wall -g -o Platformer-Experiment.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
+g++ -std=c++11 -w -Os -O3 -o Platformer-Experiment.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
 
 echo. 
 ::Delete all the leftover parts
@@ -61,5 +68,4 @@ IF EXIST %~dp0Source\tick.o del /F %~dp0Source\tick.o
 echo. 
 
 echo Done!
-::Pause encase there was a complie error to allow user to see what the issue is.
-pause
+

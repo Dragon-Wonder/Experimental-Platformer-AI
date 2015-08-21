@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS= -std=c++11 -Wall -Wextra -Wno-unused-parameter -g
+CFLAGS= -std=c++11 -O3 -Os
 LNFLAGS=
 source=$(wildcard source/*.cpp)
 HEAD=$(wildcard source/*.h)

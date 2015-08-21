@@ -10,18 +10,18 @@
 #define DEFINED_VER_MONTH "08"
 #define DEFINED_VER_YEAR "2015"
 //I don't know what this is for, but I'll leave it for now.
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.08" 
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.08"
 
 //Standard Version Type
 #define DEFINED_VER_MAJOR  4
-#define DEFINED_VER_MINOR  1
-#define DEFINED_VER_PATCH  0
+#define DEFINED_VER_MINOR  0
+#define DEFINED_VER_PATCH  1
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,1,0,0
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 0, 0\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.1.0-rc.1"
+#define DEFINED_VER_RC_FILEVERSION 4,0,1,0
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 1, 0\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.0.1-rc.1"
 
 //If this is not commented out then the build is meant to be a private build
 //as such it will be in debug mode.
