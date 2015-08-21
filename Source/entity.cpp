@@ -6,7 +6,7 @@
 /**********************************************************************************************************************************************/
 /*
 This will hold everything related to the entities that have to be kept track of including the players, monsters, past players, etc...
-Later on we might spilt up players and monsters but since monsters only need to be stored at the moment I didn't see a need to make them
+Later on we might split up players and monsters but since monsters only need to be stored at the moment I didn't see a need to make them
 their own .cpp
 */
 /**********************************************************************************************************************************************/
@@ -46,11 +46,11 @@ void clsEntity::start(void) {
 		makeplayer();
 		for (uint step = 0; step < CnfgValues.uintFirstGen; step++) {
 			chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-			
+
 			//In hard mode player fitness is updated every frame, while when not hard mode
 			//it will only update if the new fitness value is higher than the old one.
 			if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
-			
+
 			if (CnfgValues.blnShowMap) {Global::Map.show();}
 			if (chrPlayerStatus == DEAD) {
 				//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -79,11 +79,11 @@ void clsEntity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < uintGenSteps + CnfgValues.uintGenIncrease; step++) {
 				chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-				
+
 				//In hard mode player fitness is updated every frame, while when not hard mode
-				//it will only update if the new fitness value is higher than the old one.		
+				//it will only update if the new fitness value is higher than the old one.
 				if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
-				
+
 				if (CnfgValues.blnShowMap) {Global::Map.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -111,11 +111,11 @@ void clsEntity::start(void) {
 			makeplayer();
 			for (uint step = 0; step < DEFINED_MAX_PLAYER_STEPS; step++) {
 				chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-				
+
 				//In hard mode player fitness is updated every frame, while when not hard mode
 				//it will only update if the new fitness value is higher than the old one.
 				if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
-				
+
 				if (CnfgValues.blnShowMap) {Global::Map.show();}
 				if (chrPlayerStatus == DEAD) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
@@ -238,7 +238,7 @@ void clsEntity::makeplayer(void) {
 }
 /**********************************************************************************************************************************************/
 float clsEntity::getFitness(void) {
-	/* 
+	/*
 	Calculates the fitness of the plyPlayer.
 	If it is hard mode then the longer the player takes
 	the more fitness will decrease
@@ -246,7 +246,7 @@ float clsEntity::getFitness(void) {
 	*/
 
 	float temp = 0.00f;
-	
+
 	//Get the spot that the player starts at for reference
 	LOC locPlayerBase;
 	locPlayerBase = Global::Map.getbasePlayer();

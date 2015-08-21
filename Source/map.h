@@ -60,7 +60,6 @@ class clsMap {
 		void setMapCell(uint,uint,uchar);
 
 		LOC getbasePlayer(void);
-		MNSTR getbaseMonster(uchar);
 };
 /**********************************************************************************************************************************************/
 #endif

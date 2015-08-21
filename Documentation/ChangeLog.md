@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Debug Compile batch file as well as a final Compile batch
 
+### Changed
+
+* clsConfig::exists to use the cstdio library instead of fstream
+
+### Removed
+
+* Some redundant and pointless code.
 
 
 ## Old versions
@@ -81,10 +88,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * The icon (like 3 times because I can't decide what I want)
 
-* File version numbering changed slightly in boilerplate 
-	For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER] 
-	This is mostly just when I am working on the new RC. It won't be 
-	reflected in the Product Version which will still follow [MAJOR].[MINOR].[PATCH] 
+* File version numbering changed slightly in boilerplate
+	For File Version it goes [MAJOR].[MINOR].[PATCH].[BUILD NUMBER]
+	This is mostly just when I am working on the new RC. It won't be
+	reflected in the Product Version which will still follow [MAJOR].[MINOR].[PATCH]
 
 * Boilerplate.rc around to make changes to it easier to do.
 
@@ -105,8 +112,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * It just occurred to me that the program does not log the last player of a generation
 	so I fixed that.
 
-	
-	
+
+
 ## [3.2.0] - 2015-08-04
 
 ### Changed
@@ -126,7 +133,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 	Weighs into fitness (I did this because under hard mode these actions would not effect fitness)
 
 
-	
+
 ## [3.1.0] - 2015-08-04
 
 ### Added
@@ -145,7 +152,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Fixed
 
-* Bug where all fitnesses were displayed as 0 because I was 
+* Bug where all fitnesses were displayed as 0 because I was
 restarting the map before I recorded the fitness -_-
 
 
@@ -223,10 +230,10 @@ restarting the map before I recorded the fitness -_-
 
 ### Fixed
 
-* Monster movement is no longer randomly move. 
+* Monster movement is no longer randomly move.
 	Hopefully to improve survivability between generations
 
-	
+
 
 ## [1.1.2] - 2015-08-01 - [YANKED]
 

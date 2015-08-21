@@ -27,12 +27,9 @@ clsConfig::~clsConfig() {
 /**********************************************************************************************************************************************/
 bool clsConfig::exists(void) {
 	//Returns true or false if config file exists
-
-    /* TODO (GamerMan7799#1#): Replace this with a method that doesn't need the fstream library. ...
-    So we can reduce the libraries that we need.*/
-
-	std::ifstream infile(FileName);
-	return infile.good();
+	FILE* pTempFile = fopen(FileName, "r");
+	if (pTempFile == NULL) {return false;}
+	else {return true;}
 }
 /**********************************************************************************************************************************************/
 void clsConfig::make(void) {
@@ -73,7 +70,7 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	//A Minor revision will result in a prompt to the user about if it should be replaced.
 	//And if only a patch change is found then it will just use the old config
 	//Lastly if no change is found then use the config of course
-	
+
 	// TODO (GamerMan7799#6#) : Allow the check to also check program status (beta / alpha / rc)
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
 	sscanf(ConfigVerison,"%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
@@ -178,6 +175,7 @@ void clsConfig::Check(void) {
 			printf("The config file should in theory still work with this version but I can't say for sure.\n");
 			printf("Would you like to replace the config file with a new one?\n");
 			do {
+                /* FIXME (GamerMan7799#1#): Program will still loop through saying that you entered something unknown even when you don't */
 				printf("Y or N\n> ");
 				scanf("%c",&chrConfigVerison);
 				switch (chrConfigVerison)

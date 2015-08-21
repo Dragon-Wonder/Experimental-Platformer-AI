@@ -3,12 +3,11 @@
 /**********************************************************************************************************************************************/
 #include "main.h"
 #include <cstdio>
-#include <fstream> //This is only needed to see if config file exists. I should try to find a different method that doesn't use this.
 /**********************************************************************************************************************************************/
 struct ConfigValues {
 	bool blnLogging; //If player direction will be logged to a file
 	bool blnShowMap; //if the console shows all the steps the players take
-	bool blnAppendTime; //If time is added to the seed 
+	bool blnAppendTime; //If time is added to the seed
 	bool blnHardMode; //if hard mode is on. Hard mode basically makes the players die a lot more.
 	uint uintFirstGen; //How many inputs the first generation has
 	uint uintGenIncrease; //How many inputs that each generation increases by until the limit of DEFINED_MAX_PLAYER_STEPS
@@ -38,18 +37,18 @@ class clsConfig {
 		const char* FileName = DEFINED_CONFIG_FILE_NAME;
 		FILE* configFile;
 		Configures values;
-		
+
 		//Functions
 		char verisonCheck(const char *ConfigVerison);
 		bool exists(void);
 		void make(void);
 		void load(void);
-		
+
 	//public:
 		//Default Constructor
 		clsConfig();
 		~clsConfig();
-		
+
 		//Functions
 		void Check(void);
 		Configures getvalues(void); //Get all values

@@ -28,6 +28,7 @@ void clsMap::show(void) {
 	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
+            /* FIXME (GamerMan7799#9#): Wall Tile does not appear properly on builds by Code::Blocks but are fine with other builds. */
 			switch (map[y][x]) {
 				case tileSpace :
 					printf(" ");
@@ -187,7 +188,7 @@ void clsMap::load(void) {
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 
-    /* TODO (GamerMan7799#9#): Look into vectors for basemonsters */
+    /* TODO (xPUREx#9#): Look into vectors for basemonsters */
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
@@ -275,16 +276,6 @@ void clsMap::setMapCell(uint x, uint y, uchar tile) {
 /**********************************************************************************************************************************************/
 LOC clsMap::getbasePlayer(void) {
 	return locBasePlayer;
-}
-/**********************************************************************************************************************************************/
-MNSTR clsMap::getbaseMonster(uchar num) {
-	// TODO (GamerMan7799#9#): Figure out if I need to do the temp first or if I can just return
-	MNSTR tempMNSTR;
-	tempMNSTR.location.x = pmstBaseMonsters[num].location.x;
-	tempMNSTR.location.y = pmstBaseMonsters[num].location.y;
-	tempMNSTR.living = pmstBaseMonsters[num].living;
-	tempMNSTR.movingright = pmstBaseMonsters[num].movingright;
-	return tempMNSTR;
 }
 /**********************************************************************************************************************************************/
 void clsMap::playerDeath(void) {

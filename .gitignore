@@ -40,6 +40,10 @@
 *.stackdump
 
 # Code Blocks files
-*.cbp
-*.depend
+/Project/bin/
+/Project/bin/*
+/Project/obj/
+/Project/obj/*
 *.layout
+*.depend
+
