@@ -3,6 +3,17 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## UNRELEASED [4.1.0] - 2015-08-21
+
+### Added
+
+
+
+
+## Old versions
+
+```
+
 ## [4.0.0] - 2015-08-21
 
 ### Notes
@@ -58,11 +69,6 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Naming Notation
 
 * A short death animation
-
-
-## Old versions
-
-```
 
 ## [3.3.0] - 2015-08-05
 

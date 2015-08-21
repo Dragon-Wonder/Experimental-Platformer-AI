@@ -36,7 +36,7 @@ You can download the .exe under the [Releases Tab](https://github.com/GamerMan77
 
 If you wish to compile it yourself you can use the Compile.bat file if you have MinGW on your computer or you can use the Compile.sh in the Debug folder if you have Cygwin.
 
-Any other complier you wish will work these are just the ones I've used and made script to help with the compiling.
+Any other complier you wish will work; these are just the ones I've used and made script to help with the compiling.
 	
 ### Linux
 

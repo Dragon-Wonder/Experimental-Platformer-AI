@@ -11,9 +11,10 @@
 #include "globals.h"
 /**********************************************************************************************************************************************/
 //General Todos
-// TODO (GamerMan7799#5#): Move class values back to being non public, later.
+// TODO (GamerMan7799#9#): Move class values back to being non public, later.
 /* TODO (GamerMan7799#5#): Consider replacing rand / srand with another form of random generaters
 							so we don't need cstdlib anymore */
+// TODO (xPUREx#5#): Add a short message the varies with the Software status (ex warning if using a beta or alpha)
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
