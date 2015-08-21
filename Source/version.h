@@ -18,9 +18,9 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,0,0,140
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 0, 140\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.0.0-rc.1"
+#define DEFINED_VER_RC_FILEVERSION 4,0,0,143
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 0, 143\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.0.0-rc.2"
 
 //If this is not commented out then the build is meant to be a private build
 //as such it will be in debug mode.

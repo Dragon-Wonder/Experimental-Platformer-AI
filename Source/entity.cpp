@@ -237,9 +237,9 @@ float clsEntity::getFitness(void) {
 	locPlayerBase = Global::Map.getbasePlayer();
 
 	temp += (plyPlayer.score) / 250.0;
-	temp += (5.0/2.0) * (plyPlayer.location.x - locPlayerBase.x);
+	if (plyPlayer.location.x >= locPlayerBase.x) {temp += (5.0/2.0) * (plyPlayer.location.x - locPlayerBase.x);}
 	temp += (plyPlayer.location.x + plyPlayer.location.y) / 6.0;
-	temp += (locPlayerBase.y - plyPlayer.location.y) / 4.0;
+	if (locPlayerBase.y >= plyPlayer.location.y) {temp += (locPlayerBase.y - plyPlayer.location.y) / 4.0;}
 	if (plyPlayer.location.x > 204) {temp += 200.0;}
 	if (Global::Cnfg.getvalues(cnfgHardMode) == 1) {temp -= uintStepNum / 80.0;}
 	return temp;
