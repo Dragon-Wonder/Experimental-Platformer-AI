@@ -27,6 +27,9 @@
 				<Linker>
 					<Add option="-pg -lgmon" />
 				</Linker>
+				<Environment>
+					<Variable name="BUILD_MODE" value="-DDEFINED_BUILD_MODE_PRIVATE" />
+				</Environment>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/PlatformerExperiment" prefix_auto="1" extension_auto="1" />
@@ -41,6 +44,9 @@
 				<Linker>
 					<Add option="-s" />
 				</Linker>
+				<Environment>
+					<Variable name="BUILD_MODE" value="" />
+				</Environment>
 			</Target>
 		</Build>
 		<Compiler>
@@ -70,10 +76,12 @@
 		<Unit filename="../Resources/boilerplate.rc">
 			<Option compilerVar="WINDRES" />
 			<Option weight="96" />
+			<Option compiler="gcc" use="1" buildCommand="$rescomp $file $(BUILD_MODE) -O coff $resource_output" />
 		</Unit>
 		<Unit filename="../Resources/my_icon.rc">
 			<Option compilerVar="WINDRES" />
 			<Option weight="99" />
+			<Option compiler="gcc" use="1" buildCommand="$rescomp $file -O coff $resource_output" />
 		</Unit>
 		<Unit filename="../Source/config.cpp">
 			<Option weight="2" />

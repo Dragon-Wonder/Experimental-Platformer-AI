@@ -17,6 +17,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Some redundant and pointless code.
 
+### Fixed
+
+* Private build define not properly registering in boilerplate
+
 
 ## Old versions
 

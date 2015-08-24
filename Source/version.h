@@ -4,9 +4,8 @@
 //Initially was created using Code::Blocks' auto-versifying. However
 //it kept really messing up the system I was using so I turned it off
 
-
 //Date Version Types
-#define DEFINED_VER_DATE "21"
+#define DEFINED_VER_DATE "24"
 #define DEFINED_VER_MONTH "08"
 #define DEFINED_VER_YEAR "2015"
 //I don't know what this is for, but I'll leave it for now.
@@ -19,8 +18,8 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,0,1,5
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 1, 5\0"
+#define DEFINED_VER_RC_FILEVERSION 4,0,1,10
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 0, 1, 10\0"
 #define DEFINED_VER_FULLVERSION_STRING  "4.0.1-rc.1"
 
 //If this is not commented out then the build is meant to be a private build
@@ -50,6 +49,5 @@ Software Status can be the following:
 |                   |        | best not to use versions in this state             |
 |===================|========|====================================================|
 */
-
 
 #endif //__VERSION_HEADER__

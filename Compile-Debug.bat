@@ -18,7 +18,7 @@ cd %~dp0Resources
 echo Compiling Resources...
 ::Compile the resource files of the icon and boilerplate
 windres my_icon.rc -O coff my_icon.res
-windres boilerplate.rc -O coff boilerplate.res
+windres boilerplate.rc -DDEFINED_BUILD_MODE_PRIVATE -O coff boilerplate.res
 echo.
 
 
@@ -27,19 +27,19 @@ cd %~dp0Source
 echo Compiling source files...
 ::Complie each of the cpp files
 echo Compiling main.cpp...
-g++ -std=c++11 -Wall -Wextra -g -pg -c main.cpp
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -c main.cpp
 
 echo Compiling config.cpp...
-g++ -std=c++11 -Wall -Wextra -g -pg -c config.cpp
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -c config.cpp
 
 echo Compiling map.cpp...
-g++ -std=c++11 -Wall -Wextra -g -pg -c map.cpp
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -c map.cpp
 
 echo Compiling entity.cpp...
-g++ -std=c++11 -Wall -Wextra -g -pg -c entity.cpp
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -c entity.cpp
 
 echo Compiling tick.cpp...
-g++ -std=c++11 -Wall -Wextra -g -pg -c tick.cpp
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -c tick.cpp
 
 ::Move back to the main directory
 cd %~dp0
@@ -48,7 +48,7 @@ echo.
 
 ::Complie everything together!
 echo Linking everything together...
-g++ -std=c++11 -Wall -Wextra -g -pg -o Platformer-Experiment-PRIVATE.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
+g++ -std=c++11 -Wall -Wextra -g -pg -DDEFINED_BUILD_MODE_PRIVATE -o Platformer-Experiment-PRIVATE.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
 
 echo. 
 ::Delete all the leftover parts

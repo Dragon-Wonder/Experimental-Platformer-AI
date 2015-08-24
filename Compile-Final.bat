@@ -31,19 +31,19 @@ cd %~dp0Source
 echo Compiling source files...
 ::Complie each of the cpp files
 echo Compiling main.cpp...
-g++ -std=c++11 -w -Os -O3 -c main.cpp
+g++ -std=c++11 -w -Os -s -c main.cpp
 
 echo Compiling config.cpp...
-g++ -std=c++11 -w -Os -O3 -c config.cpp
+g++ -std=c++11 -w -Os -s -c config.cpp
 
 echo Compiling map.cpp...
-g++ -std=c++11 -w -Os -O3 -c map.cpp
+g++ -std=c++11 -w -Os -s -c map.cpp
 
 echo Compiling entity.cpp...
-g++ -std=c++11 -w -Os -O3 -c entity.cpp
+g++ -std=c++11 -w -Os -s -c entity.cpp
 
 echo Compiling tick.cpp...
-g++ -std=c++11 -w -Os -O3 -c tick.cpp
+g++ -std=c++11 -w -Os -s -c tick.cpp
 
 ::Move back to the main directory
 cd %~dp0
@@ -52,7 +52,7 @@ echo.
 
 ::Complie everything together!
 echo Linking everything together...
-g++ -std=c++11 -w -Os -O3 -o Platformer-Experiment.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
+g++ -std=c++11 -w -Os -s -o Platformer-Experiment.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0Resources\my_icon.res %~dp0Resources\boilerplate.res
 
 echo. 
 ::Delete all the leftover parts
@@ -68,4 +68,3 @@ IF EXIST %~dp0Source\tick.o del /F %~dp0Source\tick.o
 echo. 
 
 echo Done!
-
