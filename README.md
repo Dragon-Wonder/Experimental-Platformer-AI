@@ -30,6 +30,31 @@ If you have any questions or a suggestions or improvement please feel free to le
 
 ## Building the Project
 
+### SDL Library
+
+In order to run the program properly you will need to download SDL2-2.0.3 or higher (I use 2.0.4 but that shouldn't matter).
+
+A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
+
+You will want to download the Runtime Binaries (if you have windows I recommend 32 bit over 64 bit; even if you have a 64 bit computer).
+
+When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
+
+You will also need to download and extract the Images.rar file provided in the release tab.
+
+```
+FolderName\
+FolderName\Platformer-Experiment.exe
+FolderName\SDL2.dll
+FolderName\Images\coin.bmp
+FolderName\Images\error.bmp
+FolderName\Images\monster.bmp
+FolderName\Images\player.bmp
+FolderName\Images\pole.bmp
+FolderName\Images\sky.bmp
+FolderName\Images\wall.bmp
+```
+
 ### Windows
 
 You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you should just be able to run this as is (if 4.0.0+; older editions require extra files included in the download).

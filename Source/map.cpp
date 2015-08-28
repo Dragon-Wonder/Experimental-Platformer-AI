@@ -1,5 +1,6 @@
 /**********************************************************************************************************************************************/
 #include "map.h"
+#include "entity.h"
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
@@ -40,7 +41,7 @@ void clsMap::show(void) {
 					printf("@");
 					break;
 				case tilePole :
-					printf("║");
+					printf("|");
 					break;
 				case tileMonster :
 					printf("+");
@@ -267,11 +268,11 @@ void clsMap::load(void) {
 }
 /**********************************************************************************************************************************************/
 uchar clsMap::getMapCell(uint x, uint y) {
-	return map[y][x];
+	return map[DEFINED_MAP_HEIGHT-y][x];
 }
 /**********************************************************************************************************************************************/
 void clsMap::setMapCell(uint x, uint y, uchar tile) {
-	map[y][x] = tile;
+	map[DEFINED_MAP_HEIGHT-y][x] = tile;
 }
 /**********************************************************************************************************************************************/
 LOC clsMap::getbasePlayer(void) {
@@ -284,6 +285,9 @@ void clsMap::playerDeath(void) {
 	//The games "pauses" for a second then the player will move up
 	//3 spaces then down about 4 spaces (depending on starting point)
 	//the whole thing happens in 5 frames.
+
+	/* TODO (GamerMan7799#2#): Update playerDeath for Screen*/
+
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 	show();

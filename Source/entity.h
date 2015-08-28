@@ -1,15 +1,16 @@
 #ifndef __ENTITY__HEADER__
 #define __ENTITY__HEADER__
 /**********************************************************************************************************************************************/
-#include "main.h"
 #include <cstdio>
 #include <new>
+/**********************************************************************************************************************************************/
+#include "main.h"
 /**********************************************************************************************************************************************/
 class clsEntity {
 	//private :
 	public:
 		//Functions
-		float getFitness(void);
+		void getFitness(void);
 		void getBest(void);
 		void nextplayer(void);
 		void makeplayer(void);
@@ -20,7 +21,7 @@ class clsEntity {
 		GEN genBestPlayers[DEFINED_BEST_PLAYER_NUM];
 		uint uintGenSteps;
 		const char* FileName = DEFINED_LOG_FILE_NAME;
-		FILE* logFile;
+        FILE* logFile;
 
 		PLYR plyPlayer;
 		MNSTR *pmstMonsters;
@@ -35,7 +36,7 @@ class clsEntity {
 		uchar uchrPlayerNum;
 
 		//Functions
-		void start(void);
+		//void start(void);
 		void killMonster(uchar,uchar);
 		void allocateMonsters(uchar);
 

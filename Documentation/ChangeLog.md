@@ -3,19 +3,26 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.0.1] - 2015-08-21
+## UNRELEASED [4.1.0] - 2015-08-28
 
 ### Added
 
 * Debug Compile batch file as well as a final Compile batch
+* SDL graphics for show map.
+* Place holder bitmaps for map tiles
 
 ### Changed
 
 * clsConfig::exists to use the cstdio library instead of fstream
+* My_Icon.rc merged into Boilerplate.rc
+* Complie batch files updated for changes.
+* Default Show Map from false to true
+* Makefile with changes.
 
 ### Removed
 
 * Some redundant and pointless code.
+* Entity Start (now everything is handled in main.cpp)
 
 ### Fixed
 

@@ -29,13 +29,13 @@ clsEntity::~clsEntity() {
 	delete[] pmstMonsters;
 }
 /**********************************************************************************************************************************************/
-void clsEntity::start(void) {
+/*void clsEntity::start(void) {
 	//Starts the main part of the program
 	//that will loop through each generation
 
 	Configures CnfgValues;
 	CnfgValues = Global::Cnfg.getvalues();
-	if (CnfgValues.blnLogging) {/*Open log file to clear it*/ logFile = fopen(FileName,"w"); fclose(logFile);}
+	if (CnfgValues.blnLogging) {logFile = fopen(FileName,"w"); fclose(logFile);}
 
 	char chrPlayerStatus = 0;
 	uintGenSteps = 0;
@@ -46,10 +46,7 @@ void clsEntity::start(void) {
 		makeplayer();
 		for (uint step = 0; step < CnfgValues.uintFirstGen; step++) {
 			chrPlayerStatus = Global::Map.move(plyPlayer.direction[step]);
-
-			//In hard mode player fitness is updated every frame, while when not hard mode
-			//it will only update if the new fitness value is higher than the old one.
-			if(CnfgValues.blnHardMode || getFitness() > plyPlayer.fitness) {plyPlayer.fitness = getFitness();}
+			Global::Enty.getFitness();
 
 			if (CnfgValues.blnShowMap) {Global::Map.show();}
 			if (chrPlayerStatus == DEAD) {
@@ -134,7 +131,7 @@ void clsEntity::start(void) {
 			if (Global::blnDebugMode) {getchar();}
 		}
 	}//end for loop
-}
+}*/
 /**********************************************************************************************************************************************/
 void clsEntity::nextplayer(void) {
 
@@ -237,7 +234,7 @@ void clsEntity::makeplayer(void) {
 	}
 }
 /**********************************************************************************************************************************************/
-float clsEntity::getFitness(void) {
+void clsEntity::getFitness(void) {
 	/*
 	Calculates the fitness of the plyPlayer.
 	If it is hard mode then the longer the player takes
@@ -257,7 +254,10 @@ float clsEntity::getFitness(void) {
 	temp += (plyPlayer.location.x + plyPlayer.location.y) / 6.0;
 	if (plyPlayer.location.x > 204) {temp += 200.0;}
 	if (Global::Cnfg.getvalues(cnfgHardMode) == 1) {temp -= uintStepNum / 80.0;}
-	return temp;
+
+	//In hard mode player fitness is updated every frame, while when not hard mode
+    //it will only update if the new fitness value is higher than the old one.
+	if (Global::Cnfg.getvalues(cnfgHardMode) == 1 || temp > plyPlayer.fitness) {plyPlayer.fitness = temp;}
 }
 /**********************************************************************************************************************************************/
 void clsEntity::getBest(void) {

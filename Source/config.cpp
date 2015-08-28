@@ -6,11 +6,13 @@
 /*
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
+
+/* TODO (GamerMan7799#6#): Config Values for Screen width and Height */
 /**********************************************************************************************************************************************/
 clsConfig::clsConfig() {
 	//Set the values as some default value.
 	values.blnLogging = true;
-	values.blnShowMap = false;
+	values.blnShowMap = true;
 	values.blnAppendTime = true;
 	values.blnHardMode = false;
 	values.uintFirstGen = 100;
@@ -46,21 +48,10 @@ void clsConfig::make(void) {
 	fprintf(configFile,"Percent Mutation Chance: 15\n");
 	fprintf(configFile,"Log to File: 1\n");
 	fprintf(configFile,"Hard mode: 0\n");
-	fprintf(configFile,"Show map on update: 0\n");
+	fprintf(configFile,"Show map on update: 1\n");
 	fprintf(configFile,"Random Seed: [12345]\n");
 	fprintf(configFile,"Append Time: 1\n");
 	fclose(configFile);
-
-	//These are just the default values I use when testing the program.
-	values.blnLogging = true;
-	values.blnShowMap = false;
-	values.blnAppendTime = true;
-	values.blnHardMode = false;
-	values.uintFirstGen = 100;
-	values.uintGenIncrease = 100;
-	values.uintGensPastGrowth = 10;
-	values.uintMutationChance = 15;
-	values.uintSeed = 12345;
 }
 /**********************************************************************************************************************************************/
 char clsConfig::verisonCheck(const char *ConfigVerison) {

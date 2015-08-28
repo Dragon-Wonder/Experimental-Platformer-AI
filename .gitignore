@@ -47,3 +47,11 @@
 *.layout
 *.depend
 
+# My stuff
+*.zip
+*.rar
+*.tmp
+/SDL2Stuff/
+/includes/
+/lib/
+

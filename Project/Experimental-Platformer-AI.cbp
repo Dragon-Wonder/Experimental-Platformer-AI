@@ -12,7 +12,8 @@
 		</Option>
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/PlatformerExperiment-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../PlatformerExperiment-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -32,7 +33,7 @@
 				</Environment>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/PlatformerExperiment" prefix_auto="1" extension_auto="1" />
+				<Option output="../PlatformerExperiment" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -50,8 +51,14 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
+			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2" />
+			<Add directory="../SDL2Stuff/lib" />
+		</Linker>
 		<Unit filename="../Documentation/ChangeLog.md">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -78,11 +85,6 @@
 			<Option weight="96" />
 			<Option compiler="gcc" use="1" buildCommand="$rescomp $file $(BUILD_MODE) -O coff $resource_output" />
 		</Unit>
-		<Unit filename="../Resources/my_icon.rc">
-			<Option compilerVar="WINDRES" />
-			<Option weight="99" />
-			<Option compiler="gcc" use="1" buildCommand="$rescomp $file -O coff $resource_output" />
-		</Unit>
 		<Unit filename="../Source/config.cpp">
 			<Option weight="2" />
 		</Unit>
@@ -100,6 +102,8 @@
 			<Option weight="6" />
 		</Unit>
 		<Unit filename="../Source/map.h" />
+		<Unit filename="../Source/screen.cpp" />
+		<Unit filename="../Source/screen.h" />
 		<Unit filename="../Source/tick.cpp">
 			<Option weight="10" />
 		</Unit>
@@ -107,7 +111,7 @@
 		<Unit filename="../Source/version.h" />
 		<Extensions>
 			<DoxyBlocks>
-				<comment_style block="0" line="0" />
+				<comment_style block="5" line="1" />
 				<doxyfile_project project_number="4.0.0.137" output_directory="deoxy" />
 				<doxyfile_build />
 				<doxyfile_warnings />
