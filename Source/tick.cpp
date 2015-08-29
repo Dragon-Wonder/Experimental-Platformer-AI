@@ -51,7 +51,7 @@ void clsTick::wait(void) {
 	now = then = clock();
 	//if (Global::blnDebugMode) {printf("Wait started for %lu milliseconds.\n", ulngSleepTime);}
 
-	while ((now - then) < pause) {now = clock();}
+	while ( (uint)abs(now - then) < pause) {now = clock();}
 	//if (Global::blnDebugMode) {printf("Wait ended.\n");}
 }
 /**********************************************************************************************************************************************/

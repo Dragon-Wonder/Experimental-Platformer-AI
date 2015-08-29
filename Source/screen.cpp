@@ -11,8 +11,8 @@ clsScreen::clsScreen() {
     //width = Global::Config.values.uintScreenWidth;
     //height = Global::Config.values.uintScreenHeight;
 
-    width = 672;
-    height = 480;
+    width = 30*pic_size;
+    height = 14*pic_size;
 
     blnWindow = false;
     blnRenderer = false;
@@ -150,7 +150,7 @@ void clsScreen::update(void) {
     for (uint y = 0; (y < Max_Height) && (y < DEFINED_MAP_HEIGHT); y++) {
         for (uint x = (tempPlayer.location.x - 5); (x < (tempPlayer.location.x + Max_Width - 5)) && (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
-            dst.x = x * pic_size;
+            dst.x = (x - tempPlayer.location.x + 5) * pic_size;
             dst.y = y * pic_size;
             //Query a texture to get its width and height
             //Since all textures are the same it doesn't matter which one we use

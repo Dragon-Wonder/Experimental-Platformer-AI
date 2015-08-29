@@ -84,7 +84,7 @@ struct stcGeneration {
 }; //prefix = gen
 
 // Structure for the player, only used for the current player
-// because once they are done the imporant values are placed in 
+// because once they are done the imporant values are placed in
 // the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;

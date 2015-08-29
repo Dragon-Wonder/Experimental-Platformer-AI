@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 			} //end if dead
 		} //End for steps
 		Global::Enty.nextplayer();
-		if (CnfgValues.blnShowMap) {Global::Map.show();}
+		//if (CnfgValues.blnShowMap) {Global::Map.show();}
 	}//end for first gen
 
 	Global::Enty.getBest();
