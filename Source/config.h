@@ -15,6 +15,8 @@ struct ConfigValues {
 	uint uintGensPastGrowth; //How many generations take place with DEFINED_MAX_PLAYER_STEPS
 	uint uintMutationChance; //Percent chance that when using directions from a previous player, the direction will be replace with a random one.
 	uint uintSeed; //The seed that is used with srand()
+	uint uintScreenWidth; //Screen width, only used if specifically called
+	uint uintScreenHeight; //Screen height, only used if specifically called.
 };
 
 enum configValueSpot {
@@ -26,7 +28,9 @@ enum configValueSpot {
 	cnfgGenIncrease, //5
 	cnfgGensPastGrowth, //6
 	cnfgMutationChance, //7
-	cnfgSeed //8
+	cnfgSeed, //8
+	cnfgScreenWidth, //9
+	cnfgScreenHeight //10
 };
 
 typedef struct ConfigValues Configures;

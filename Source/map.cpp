@@ -4,6 +4,9 @@
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
+/* TODO (GamerMan7799#9#): Do away with a set array that holds the map infomation; instead make things more dynamic so
+   that movement will be changed to be velocity based as opposed to moving one cell at a time. This is of couse because
+   we are using SDL. It will be alot of work to do this; so we should hold off until v5.0.0 */
 /**********************************************************************************************************************************************/
 clsMap::clsMap() {
 	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
@@ -14,7 +17,7 @@ clsMap::~clsMap() {
 	delete[] pmstBaseMonsters;
 }
 /**********************************************************************************************************************************************/
-void clsMap::show(void) {
+/*void clsMap::show(void) {
 	printf("\n\n\n\n");
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
@@ -29,7 +32,6 @@ void clsMap::show(void) {
 	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
-            /* FIXME (GamerMan7799#9#): Wall Tile does not appear properly on builds by Code::Blocks but are fine with other builds. */
 			switch (map[y][x]) {
 				case tileSpace :
 					printf(" ");
@@ -58,7 +60,7 @@ void clsMap::show(void) {
 	}//end for y
 	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", Global::Enty.uchrGenNum, Global::Enty.uchrPlayerNum + 1, tempPlayer.fitness);
 	Global::Tick.wait(); //waits for the time needed.
-}
+}*/
 /**********************************************************************************************************************************************/
 void clsMap::restart(void) {
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
@@ -277,34 +279,5 @@ void clsMap::setMapCell(uint x, uint y, uchar tile) {
 /**********************************************************************************************************************************************/
 LOC clsMap::getbasePlayer(void) {
 	return locBasePlayer;
-}
-/**********************************************************************************************************************************************/
-void clsMap::playerDeath(void) {
-	//Plays short death animation
-	//only shows up if the Map::move returns DEAD
-	//The games "pauses" for a second then the player will move up
-	//3 spaces then down about 4 spaces (depending on starting point)
-	//the whole thing happens in 5 frames.
-
-	/* TODO (GamerMan7799#2#): Update playerDeath for Screen*/
-
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
-	show();
-	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
-	uint tempy = tempPlayer.location.y;
-	for (uchar i = 0; i < 5; i++) {
-		if (i < 3) {
-			if (tempy != DEFINED_MAP_HEIGHT) { tempy--;}
-		} else {
-			if (tempy < DEFINED_MAP_HEIGHT - 2) {tempy+=2;}
-		}
-
-		map[tempPlayer.location.y][tempPlayer.location.x] = tileSpace;
-		map[tempy][tempPlayer.location.x] = tilePlayer;
-
-		tempPlayer.location.y = tempy;
-		show();
-	}
 }
 /**********************************************************************************************************************************************/

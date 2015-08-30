@@ -25,8 +25,10 @@ class clsScreen {
 
         void update(void);
         void cleanup(void);
+        void playerDeath(void);
 
         bool bln_SDL_started;
+
 
     private:
         SDL_Texture *player;

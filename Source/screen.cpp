@@ -4,135 +4,143 @@
 #include "config.h"
 #include "globals.h"
 /**********************************************************************************************************************************************************************/
-//These are the paths to the images needed for the program
-//They are relative to the exe
+/* TODO (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
+                           Consider hiring someone? */
 /**********************************************************************************************************************************************************************/
 clsScreen::clsScreen() {
     //width = Global::Config.values.uintScreenWidth;
     //height = Global::Config.values.uintScreenHeight;
+    if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
+                                                    //useful so if show map is disabled you don't need the images folder.
+        if (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) {width = 30*pic_size;}
+        else {width = Global::Cnfg.getvalues(cnfgScreenWidth);}
+        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = 14*pic_size;}
+        else {height = Global::Cnfg.getvalues(cnfgScreenHeight);}
 
-    width = 30*pic_size;
-    height = 14*pic_size;
-
-    blnWindow = false;
-    blnRenderer = false;
-    blnSky = blnPlayer = blnMonster = blnWall = blnPole = blnCoin = blnErrortex = false;
-    bln_SDL_started = false;
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-		bln_SDL_started = false;
-		error();
-		return;
-	} else {
-	    bln_SDL_started = true;
-	    if (Global::blnDebugMode) {printf("SDL init successful\n");}
-    }
-
-	win = SDL_CreateWindow("Experimental Platformer AI",100,100,width, height, SDL_WINDOW_SHOWN);
-	if (win == nullptr) {
-        printf("SDL Failed to create window.\n");
-        cleanup();
-        error();
-		bln_SDL_started = false;
-		return;
-	} else {
-	    blnWindow = true;
-	    if (Global::blnDebugMode) {printf("Window creation successful\n");}
-	}
-
-	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr) {
-        printf("SDL Failed to create renderer.\n");
-        cleanup();
-        error();
+        blnWindow = false;
+        blnRenderer = false;
+        blnSky = blnPlayer = blnMonster = blnWall = blnPole = blnCoin = blnErrortex = false;
         bln_SDL_started = false;
-        return;
-	} else {
-	    blnRenderer = true;
-	    if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
-    }
 
-    std::string path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "sky.bmp";
+        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+            bln_SDL_started = false;
+            error();
+            return;
+        } else {
+            bln_SDL_started = true;
+            if (Global::blnDebugMode) {printf("SDL init successful\n");}
+        }
 
-	sky = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnSky = true;
-        if (Global::blnDebugMode) {printf("Sky loading successful\n");}
-    }
+        win = SDL_CreateWindow("Experimental Platformer AI",100, 100, width, height, SDL_WINDOW_SHOWN);
+        if (win == nullptr) {
+            printf("SDL Failed to create window.\n");
+            cleanup();
+            error();
+            bln_SDL_started = false;
+            return;
+        } else {
+            blnWindow = true;
+            if (Global::blnDebugMode) {printf("Window creation successful\n");}
+        }
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "player.bmp";
+        ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        if (ren == nullptr) {
+            printf("SDL Failed to create renderer.\n");
+            cleanup();
+            error();
+            bln_SDL_started = false;
+            return;
+        } else {
+            blnRenderer = true;
+            if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
+        }
 
-    player = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnPlayer = true;
-        if (Global::blnDebugMode) {printf("Player loading successful\n");}
-    }
+        std::string path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "sky.bmp";
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "wall.bmp";
+        sky = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnSky = true;
+            if (Global::blnDebugMode) {printf("Sky loading successful\n");}
+        }
 
-    wall = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnWall = true;
-        if (Global::blnDebugMode) {printf("Wall loading successful\n");}
-    }
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "player.bmp";
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "coin.bmp";
+        player = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnPlayer = true;
+            if (Global::blnDebugMode) {printf("Player loading successful\n");}
+        }
 
-    coin = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnCoin = true;
-        if (Global::blnDebugMode) {printf("Coin loading successful\n");}
-    }
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "wall.bmp";
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "pole.bmp";
+        wall = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnWall = true;
+            if (Global::blnDebugMode) {printf("Wall loading successful\n");}
+        }
 
-    pole = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnPole = true;
-        if (Global::blnDebugMode) {printf("Pole loading successful\n");}
-    }
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "coin.bmp";
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "monster.bmp";
+        coin = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnCoin = true;
+            if (Global::blnDebugMode) {printf("Coin loading successful\n");}
+        }
 
-    monster = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnMonster = true;
-        if (Global::blnDebugMode) {printf("Monster loading successful\n");}
-    }
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "pole.bmp";
 
-    path = DEFINED_DEFAULT_IMAGE_PATH;
-    path += "error.bmp";
+        pole = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnPole = true;
+            if (Global::blnDebugMode) {printf("Pole loading successful\n");}
+        }
 
-    errortex = loadIMG(path);
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnErrortex = true;
-        if (Global::blnDebugMode) {printf("Error loading successful\n");}
-    }
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "monster.bmp";
 
-    update();
+        monster = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnMonster = true;
+            if (Global::blnDebugMode) {printf("Monster loading successful\n");}
+        }
+
+        path = DEFINED_DEFAULT_IMAGE_PATH;
+        path += "error.bmp";
+
+        errortex = loadIMG(path);
+        if (bln_SDL_started == false) {return;}
+        else {
+            blnErrortex = true;
+            if (Global::blnDebugMode) {printf("Error loading successful\n");}
+        }
+
+        update();
+    } //end if blnShowMap
 }
 /**********************************************************************************************************************************************************************/
 clsScreen::~clsScreen() {
-    cleanup();
-    SDL_Quit();
-    if (Global::blnDebugMode) {printf("SDL quit\n");}
+    if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if nothing was really loaded then don't need to clean anything up
+        cleanup();
+        SDL_Quit();
+        if (Global::blnDebugMode) {printf("SDL quit\n");}
+    } //end if show map
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::update(void) {
     PLYR tempPlayer = Global::Enty.getPlayer();
+
+    /* TODO (GamerMan7799#4#): Add the Clock to the screen */
 
     uint Max_Height, Max_Width; //Values for how far on the map the screen should render
     Max_Height = (uint) (height/pic_size);
@@ -147,11 +155,11 @@ void clsScreen::update(void) {
     SDL_Rect dst;
 
     //Start updating texture placements
-    for (uint y = 0; (y < Max_Height) && (y < DEFINED_MAP_HEIGHT); y++) {
+    for (uint y = (tempPlayer.location.y - 2); (y < (tempPlayer.location.y + Max_Height - 2)) && (y < DEFINED_MAP_HEIGHT); y++) {
         for (uint x = (tempPlayer.location.x - 5); (x < (tempPlayer.location.x + Max_Width - 5)) && (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
             dst.x = (x - tempPlayer.location.x + 5) * pic_size;
-            dst.y = y * pic_size;
+            dst.y = /*(y - tempPlayer.location.y + 10)*/ y * pic_size;
             //Query a texture to get its width and height
             //Since all textures are the same it doesn't matter which one we use
             SDL_QueryTexture(coin,NULL,NULL, &dst.w, &dst.h);
@@ -273,5 +281,31 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
     }
 
 	return tex;
+}
+/**********************************************************************************************************************************************************************/
+void clsScreen::playerDeath(void) {
+	//Plays short death animation
+	//only shows up if the Map::move returns DEAD
+	//The games "pauses" for a second then the player will move up
+	//3 spaces then down about 4 spaces (depending on starting point)
+	//the whole thing happens in 5 frames.
+
+	PLYR tempPlayer;
+	tempPlayer = Global::Enty.getPlayer();
+	//show();
+	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
+	uint tempy = tempPlayer.location.y;
+	for (uchar i = 0; i < 5; i++) {
+		if (i < 3) {
+			if (tempy != DEFINED_MAP_HEIGHT) { tempy--;}
+		} else {
+			if (tempy < DEFINED_MAP_HEIGHT - 2) {tempy+=2;}
+		}
+        Global::Map.setMapCell(tempPlayer.location.x, tempPlayer.location.y,tileSpace);
+        Global::Map.setMapCell(tempPlayer.location.x, tempy, tilePlayer);
+
+        tempPlayer.location.y = tempy;
+		update();
+	}
 }
 /**********************************************************************************************************************************************************************/

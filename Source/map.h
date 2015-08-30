@@ -52,9 +52,8 @@ class clsMap {
 		//Functions
 		char move(uchar);
 		void load(void);
-		void show(void);
+		//void show(void);
 		void restart(void);
-		void playerDeath(void); //shows a short animation on player's death.
 
 		uchar getMapCell(uint,uint);
 		void setMapCell(uint,uint,uchar);

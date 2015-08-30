@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
     Configures CnfgValues;
 	CnfgValues = Global::Cnfg.getvalues();
 
-    clsScreen Screen;
-    if (!CnfgValues.blnShowMap) {Screen.~clsScreen();}
+    clsScreen Screen; //create the screen, here so it is always called
+    if (!CnfgValues.blnShowMap) {Screen.~clsScreen();} //deconstruct the screen if we aren't updating the screen.
 
     if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 
@@ -82,11 +82,11 @@ int main(int argc, char *argv[]) {
 				//If the player dies clear the rest of their directions (disabled) and end the loop.
 				//for (uint j = step; j < Global::Cnfg.values.uintFirstGen; j++) {plyPlayer.direction[j] = dirNone;}
 				step = CnfgValues.uintFirstGen;
-				//if (CnfgValues.blnShowMap) {Global::Map.playerDeath();}
+				if (CnfgValues.blnShowMap) {Screen.playerDeath();}
 			} //end if dead
 		} //End for steps
 		Global::Enty.nextplayer();
-		//if (CnfgValues.blnShowMap) {Global::Map.show();}
+		if (CnfgValues.blnShowMap) {Screen.update();}
 	}//end for first gen
 
 	Global::Enty.getBest();
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < uintGenSteps + Global::Cnfg.values.uintGenIncrease; j++) {plyPlayer.direction[j] = dirNone;}
 					step = Global::Enty.uintGenSteps + CnfgValues.uintGenIncrease;
-					//if (CnfgValues.blnShowMap) {Global::Map.playerDeath();}
+					if (CnfgValues.blnShowMap) {Screen.playerDeath();}
 				} //end if dead
 			}//end for steps
 			Global::Enty.nextplayer();
@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
 					//If the player dies clear the rest of their directions (disabled) and end the loop.
 					//for (uint j = step; j < DEFINED_MAX_PLAYER_STEPS; j++) {plyPlayer.direction[j] = dirNone;}
 					step = DEFINED_MAX_PLAYER_STEPS;
-					//if (CnfgValues.blnShowMap) {Global::Map.playerDeath();}
+					if (CnfgValues.blnShowMap) {Screen.playerDeath();}
 				} //end if dead
 			}//end for steps
 			Global::Enty.nextplayer();

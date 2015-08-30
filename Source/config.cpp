@@ -6,8 +6,6 @@
 /*
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
-
-/* TODO (GamerMan7799#6#): Config Values for Screen width and Height */
 /**********************************************************************************************************************************************/
 clsConfig::clsConfig() {
 	//Set the values as some default value.
@@ -20,6 +18,8 @@ clsConfig::clsConfig() {
 	values.uintGensPastGrowth = 10;
 	values.uintMutationChance = 15;
 	values.uintSeed = 12345;
+	values.uintScreenHeight = 0;
+	values.uintScreenWidth = 0;
 	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/
@@ -42,15 +42,19 @@ void clsConfig::make(void) {
 	fprintf(configFile,"Config File for the program.\n");
 	fprintf(configFile,"%s\n",DEFINED_VER_FULLVERSION_STRING);
 
-	fprintf(configFile,"First Generation Steps: 100\n");
-	fprintf(configFile,"Generation Increase: 100\n");
-	fprintf(configFile,"Gens Past Growth: 10\n");
-	fprintf(configFile,"Percent Mutation Chance: 15\n");
+    //Write the config with the default values defined when the object was created.
+	fprintf(configFile,"First Generation Steps: %u\n",values.uintFirstGen);
+	fprintf(configFile,"Generation Increase: %u\n", values.uintGenIncrease);
+	fprintf(configFile,"Gens Past Growth: %u\n", values.uintGensPastGrowth);
+	fprintf(configFile,"Percent Mutation Chance: %u\n", values.uintMutationChance);
 	fprintf(configFile,"Log to File: 1\n");
 	fprintf(configFile,"Hard mode: 0\n");
 	fprintf(configFile,"Show map on update: 1\n");
-	fprintf(configFile,"Random Seed: [12345]\n");
+	fprintf(configFile,"Random Seed: [%u]\n", values.uintSeed);
 	fprintf(configFile,"Append Time: 1\n");
+	fprintf(configFile, "Only define these if the default screen size doesn't work for you, otherwise leave blank.\n");
+	fprintf(configFile, "Screen Height: 0\n");
+	fprintf(configFile, "Screen Width: 0\n");
 	fclose(configFile);
 }
 /**********************************************************************************************************************************************/
@@ -139,12 +143,30 @@ void clsConfig::load(void) {
 	if(intTempBool == 1) {values.blnAppendTime = true;}
 	else {values.blnAppendTime = false;}
 
+	//Get blank line explaining screen sizes
+	fgets(chrTempString,50,configFile);
+
+	//Get Screen Height
+	fgets(chrTempString,50,configFile);
+    intValuesScanned = sscanf(chrTempString, "%*s %*s %u", &values.uintScreenHeight);
+    if (intValuesScanned < 1) {printf("ERROR!"); values.uintScreenHeight = 0;}
+    if (Global::blnDebugMode) {printf("Screen height \t \t \t %u\n", values.uintScreenHeight);}
+
+    //Get Screen Width
+    fgets(chrTempString,50,configFile);
+    intValuesScanned = sscanf(chrTempString, "%*s %*s %u", &values.uintScreenWidth);
+    if (intValuesScanned < 1) {printf("ERROR!"); values.uintScreenWidth = 0;}
+    if (Global::blnDebugMode) {printf("Screen Width \t \t \t %u\n", values.uintScreenWidth);}
+
+
 	fclose(configFile);
 	printf("\n\n");
 }
 /**********************************************************************************************************************************************/
 void clsConfig::Check(void) {
 	char chrTempString[50], chrConfigVerison;
+	bool blnAnswered = false; //this is used for a fix for an issue I was facing.
+                          //I'll figure out a better method later.
 
 	if (exists() != true) {
 		printf("Config file was not found; creating now one\n");
@@ -166,27 +188,27 @@ void clsConfig::Check(void) {
 			printf("The config file should in theory still work with this version but I can't say for sure.\n");
 			printf("Would you like to replace the config file with a new one?\n");
 			do {
-                /* FIXME (GamerMan7799#1#): Program will still loop through saying that you entered something unknown even when you don't */
 				printf("Y or N\n> ");
 				scanf("%c",&chrConfigVerison);
-				switch (chrConfigVerison)
-				{
+				switch (chrConfigVerison) {
 					case 'Y' :
 					case 'y' :
 						//Replace the config file
 						fclose(configFile);
 						make();
+						blnAnswered = true;
 						break;
 					case 'n' :
 					case 'N' :
 						//Load the config file
 						load();
+						blnAnswered = true;
 						break;
 					default :
 						printf("\nUnknown answer; try again.\n");
 						break;
 				}; //end switch
-			} while (chrConfigVerison != 'n' || chrConfigVerison != 'N' || chrConfigVerison != 'Y' || chrConfigVerison != 'y');
+			} while (!blnAnswered);
 		} else { load();}
 	} //end if exists
 }
@@ -230,6 +252,12 @@ uint clsConfig::getvalues(uchar Spot) {
 		case cnfgSeed :
 			return values.uintSeed;
 			break;
+        case cnfgScreenHeight :
+            return values.uintScreenHeight;
+            break;
+        case cnfgScreenWidth :
+            return values.uintScreenWidth;
+            break;
 		default :
 			return 0;
 			break;
