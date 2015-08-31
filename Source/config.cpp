@@ -6,6 +6,8 @@
 /*
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
+/* TODO (Gamerman7799 the Scrub#5#): The window incorrectly grabs the screen size from the config file when the autosizer is overrided with manual variables. */
+
 /**********************************************************************************************************************************************/
 clsConfig::clsConfig() {
 	//Set the values as some default value.
