@@ -6,8 +6,6 @@
 /*
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
-/* TODO (Gamerman7799 the Scrub#5#): The window incorrectly grabs the screen size from the config file when the autosizer is overrided with manual variables. */
-
 /**********************************************************************************************************************************************/
 clsConfig::clsConfig() {
 	//Set the values as some default value.
@@ -146,13 +144,15 @@ void clsConfig::load(void) {
 	else {values.blnAppendTime = false;}
 
 	//Get blank line explaining screen sizes
+	//Need two fgets because the line is more than 50 characters long.
+	fgets(chrTempString,50,configFile);
 	fgets(chrTempString,50,configFile);
 
 	//Get Screen Height
 	fgets(chrTempString,50,configFile);
     intValuesScanned = sscanf(chrTempString, "%*s %*s %u", &values.uintScreenHeight);
     if (intValuesScanned < 1) {printf("ERROR!"); values.uintScreenHeight = 0;}
-    if (Global::blnDebugMode) {printf("Screen height \t \t \t %u\n", values.uintScreenHeight);}
+    if (Global::blnDebugMode) {printf("Screen Height \t \t \t %u\n", values.uintScreenHeight);}
 
     //Get Screen Width
     fgets(chrTempString,50,configFile);

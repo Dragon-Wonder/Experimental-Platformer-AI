@@ -7,25 +7,26 @@ This manual will quickly walk you through how to use the program.
 When you first load the program it will create a config file with the default name "Config.ini" it should look something like the example below.
 
 ```
-
 Config File for the program.
-v4.0.0
+4.1.0-beta.4
 First Generation Steps: 100
 Generation Increase: 100
 Gens Past Growth: 10
 Percent Mutation Chance: 15
 Log to File: 1
 Hard mode: 0
-Show map on update: 0
+Show map on update: 1
 Random Seed: [12345]
 Append Time: 1
-
+Only define these if the default screen size doesn't work for you, otherwise leave blank.
+Screen Height: 0
+Screen Width: 0
 ```
 
 ### Version number
 
 Under the first line you will see a line that has the version of the program that the config file was made for. If you get a new version of the program it will check this number verses its own internal number. 
-Since the versioning goes v[Major Revision].[Minor Revision].[Patch Number] the program will interpret the number differences and see if it can use the old config file or not.
+Since the versioning goes [Major Revision].[Minor Revision].[Patch Number]-[Software Status].[Status Update] the program will interpret the number differences and see if it can use the old config file or not.
 
 A Major Revision change means that it CANNOT use the old config file and a new one will be created. This is because most major revisions that we commit will have a change to the config file. 
 Either in a new item, removed item or an item was moved. If the config file is not replaced bad things could happen when the program attempts to load it.
@@ -35,6 +36,10 @@ That being said if you notice strange results or the program crashes try replaci
 
 A Patch to the program will never affect the config file unless the patch is to the config file. In this cause the program will just load the old config file. If we end up making changes to the config file 
 in a patch; then that release will say in it to delete old config files.
+
+The Software status will only appear if it is NOT a release version (such as a Beta, Alpha, or RC). The software will check this and replace the config if it doesn't match the current software status.
+
+The Status Update is an internally number we use to keep track of how far into a Software Status we are. It is meaning less to the program.
 
 ### First Generation Steps
 
@@ -92,6 +97,11 @@ This can be a 1 for true or a 0 for false. If this is true then the time will be
 program is different because unless the Random Seed & the Time are the EXACT same then all the random numbers should be different (in theory).
 
 This can be disabled as I talked about in Random Seed if don't want the random numbers to be random and instead what the numbers to come out the same.
+
+### Screen Size
+
+Here you can set a specific screen size if you need it. (This will only apply if show map is on). The program will attempt to set a screen size based on the current picture pixel size (24px by 24px), however if 
+this size doesn't work you for you can change it with this option. I only recommended changing this if you need it otherwise leave them both as 0 so the program knows to set it itself.
 
 ## Running the Program
 

@@ -20,4 +20,4 @@ Improvements to the code can be made as [Issues] (https://github.com/GamerMan779
 
 ~~* Change the Read me so its not so off putting~~ 2015-08-10
 
-* Update readme to use 2.0.4 SDL library 
+~~* Update readme to use 2.0.4 SDL library ~~ 2015-09-01

@@ -14,9 +14,9 @@ There is really no point to this entire project its mostly for my friend and I t
 
 All of this project was written from scratch by [GamerMan7799] (https://github.com/GamerMan7799) & [xPUREx](https://github.com/xPUREx) unless otherwise noted.
 
-That being said all parts of this project we own have been released to the Public Domain. (This does not apply to parts that were noted as being someone's). 
+That being said all parts of this project we own have been released to the Public Domain. (This does not apply to parts that were noted as being someone else's). 
 
-As such you may use any and all of this project however you wish; Commercially or not; modify it or not. You do not even have to give credit (though we would greatly appreciate it if you did).
+As such you may use any and/or all of this project however you wish; Commercially or not; modify it or not. You do not even have to give credit (though we would greatly appreciate it if you did).
 
 You can read more about the Public Domain Dedication [Here](http://unlicense.org/).
 
@@ -32,11 +32,13 @@ If you have any questions or a suggestions or improvement please feel free to le
 
 ### SDL Library
 
-In order to run the program properly you will need to download SDL2-2.0.3 or higher (I use 2.0.4 but that shouldn't matter).
+In order to run the program properly you will need to download SDL2-2.0.4 or higher (SDL-2.0.3 has issues that cause the program not to run correctly. You NEED 2.0.4).
 
-A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
+A link for SDL2 can be found [here] (https://www.libsdl.org/tmp/download-2.0.php).
 
 You will want to download the Runtime Binaries (if you have windows I recommend 32 bit over 64 bit; even if you have a 64 bit computer).
+
+If you are running the version in the release tab you WILL need the 32 bit version because that it how I compile it.
 
 When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
 
@@ -57,15 +59,23 @@ FolderName\Images\wall.bmp
 
 ### Windows
 
-You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you should just be able to run this as is (if 4.0.0+; older editions require extra files included in the download).
+You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you will need the SDL2 runtime binaries (see above).
 
-If you wish to compile it yourself you can use the Compile.bat file if you have MinGW on your computer or you can use the Compile.sh in the Debug folder if you have Cygwin.
+If you wish to compile it yourself you can use the Compile.bat files if you have MinGW on your computer, or you can use the Compile.sh in the Debug folder if you have Cygwin, or you can open the Code Block project file and compile it that way.
 
-Any other complier you wish will work; these are just the ones I've used and made script to help with the compiling.
+Any other complier you wish will work; these are just the ones I've used and made scripts to help with the compiling.
 	
 ### Linux
 
-You should be able to use the Makefile or the Compile.sh script to compile the program. You shouldn't need any other files.
+You should be able to use the Makefile or the Compile.sh script to compile the program. You will also need the SDL library which you can use by enter the following code into your terminal, or downloading from the link above.
+
+Ubuntu, Mint, or Debian
+
+``` 
+sudo apt-get install libsdl2-dev
+```
+
+Please note, that the above method will only give you SDL 2.0.3 which has an issue with the bmp files. If you want it to work you will have to manually install SDL 2.0.4 from the link above or wait for the complete release of SDL 2.0.4.
 
 ### IOSX
 
@@ -75,5 +85,7 @@ I don't know you're on your own. Sorry.
 
 Most of the program will just run by itself because as stated it is meant to be an AI program. When the program is first launched it will create a config file called "Config.ini".
 You can change values in this file to change how the program runs. You should read the manual, under documentation.
+
+Later on we would like to fork this project and develop a Human Controlled version of this game; but that is for a later time.
 
 

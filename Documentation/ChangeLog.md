@@ -3,13 +3,14 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.0] - 2015-08-28
+## UNRELEASED [4.1.0] - 2015-09-01
 
 ### Added
 
 * Debug Compile batch file as well as a final Compile batch
 * SDL graphics for show map.
 * Place holder bitmaps for map tiles
+* Note to ReadMe explaining that you HAVE to use SDL 2.0.4
 
 ### Changed
 
@@ -27,6 +28,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 ### Fixed
 
 * Private build define not properly registering in boilerplate
+* Prompt for using old config not working
 
 
 ## Old versions
