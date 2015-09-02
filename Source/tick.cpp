@@ -25,6 +25,7 @@ clsTick::clsTick() {
 	*/
 
 	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
+	timerStart = clock();
 	if (Global::blnDebugMode) {printf("ulngSleepTime = %lu\n", ulngSleepTime);}
 	if(clsTick::uClock == 0) {clsTick::resetClock();}
 }
@@ -44,15 +45,15 @@ void clsTick::wait(void) {
 	/* Code taken from http://c-for-dummies.com/blog/?p=69 */
 
 	ulong pause;
-	clock_t now, then;
+	clock_t now;
 
 	pause = ulngSleepTime * (CLOCKS_PER_SEC/1000);
+	now = clock();
 
-	now = then = clock();
-	//if (Global::blnDebugMode) {printf("Wait started for %lu milliseconds.\n", ulngSleepTime);}
-
-	while ( (uint)abs(now - then) < pause) {now = clock();}
-	//if (Global::blnDebugMode) {printf("Wait ended.\n");}
+    if ((uint)abs(now - timerStart) < pause) {
+        while ( (uint)abs(now - timerStart) < pause) {now = clock();}
+    }
+	startTimer();
 }
 /**********************************************************************************************************************************************/
 void clsTick::resetClock(void) {
@@ -65,5 +66,9 @@ void clsTick::decClock(void) {
 /**********************************************************************************************************************************************/
 uint clsTick::getClockTime(void) {
 	return uClock;
+}
+/**********************************************************************************************************************************************/
+void clsTick::startTimer(void) {
+    timerStart = clock();
 }
 /**********************************************************************************************************************************************/

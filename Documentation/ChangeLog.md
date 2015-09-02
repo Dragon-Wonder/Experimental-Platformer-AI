@@ -19,6 +19,11 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Complie batch files updated for changes.
 * Default Show Map from false to true
 * Makefile with changes.
+* Config Version check now also checks software status.
+* Player Death anaimation will now show when player runs out of inputs
+* Player death is now logged.
+* Player can now die from too low fitness in hard mode.
+* Tick wait is decreased the longer the rest of the program runs for
 
 ### Removed
 

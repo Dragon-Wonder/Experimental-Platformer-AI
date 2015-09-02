@@ -33,8 +33,11 @@ echo Cleaning Main Folder...
 IF EXIST %~dp0Config.ini del /F %~dp0Config.ini
 IF EXIST %~dp0gmon.out del /F %~dp0gmon.out
 IF EXIST %~dp0Images.rar del /F %~dp0Images.rar
+IF EXIST %~dp0Images.zip del /F %~dp0Images.zip
 IF EXIST %~dp0PlatformerExperiment.exe del /F %~dp0PlatformerExperiment.exe
 IF EXIST %~dp0PlatformerExperiment-PRIVATE.exe del /F %~dp0PlatformerExperiment-PRIVATE.exe
+IF EXIST %~dp0PlatformerExperiment del /F %~dp0PlatformerExperiment
+IF EXIST %~dp0PlatformerExperiment-PRIVATE del /F %~dp0PlatformerExperiment-PRIVATE
 IF EXIST %~dp0Player.log del /F %~dp0Player.log
 echo.
 

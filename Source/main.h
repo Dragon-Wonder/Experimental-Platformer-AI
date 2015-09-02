@@ -46,7 +46,7 @@ will likely remove these and dynamically allocate the map size for you.
 //How many ticks to complete the level
 //Considering that the "player" does a move every tick
 //This doesn't matter so long as it is greater than DEFINED_MAX_PLAYER_STEPS
-//Will be used when ported to a human verison of the game.
+//Will be used when ported to a human version of the game.
 #define DEFINED_TICK_LIMIT 5000
 
 //How many best players are called at the end of each generation
@@ -57,10 +57,6 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_LOG_FILE_NAME "Player.log"
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
-
-//These ones are used when returning the state of the player after it has been moved
-#define DEAD 'D'
-#define LIVING 'L'
 
 //These are used when checking the verison of the config file.
 #define NEWCONFIG 'N'

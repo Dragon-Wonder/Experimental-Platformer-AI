@@ -140,8 +140,6 @@ clsScreen::~clsScreen() {
 void clsScreen::update(void) {
     PLYR tempPlayer = Global::Enty.getPlayer();
 
-    /* TODO (GamerMan7799#4#): Add the Clock to the screen */
-
     uint Max_Height, Max_Width; //Values for how far on the map the screen should render
     Max_Height = (uint) (height/pic_size);
     Max_Width = (uint) (width/pic_size);
@@ -191,6 +189,38 @@ void clsScreen::update(void) {
         } //end for x
     } //end for y
 
+    //Now work on Making the messages that will appear on the screen
+    //Will require set up of Library SDL_TTF
+    //Which I don't want to do right now so comment it all out.
+    /*
+    std::string message;
+    TTF_Font* Sans = TTF_OpenFont("Sans.ttf",16); //Opens font and sets size
+    SDL_Color Black = {0, 0, 0}; //RGB Color that will be text color
+
+    message = Global::Tick.getClockTime + "\0";
+    SDL_Surface* surmessage = TTF_RenderText_Solid(Sans, message, Black);
+    SDL_Texture texmessage = SDL_CreateTextureFromSurface(ren, surmessage);
+
+    dst.x = 0;
+    dst.y = 0;
+    SDL_QueryTexture(texmessage,NULL,NULL, &dst.w, &dst.h);
+
+    SDL_RenderCopy(ren, texmessage, NULL, &dst);
+
+    PLYR tempPlayer = Global::Enty.getPlayer();
+    message = "Generation: " + Global::Enty.uchrGenNum + "\t Player: " + Global::Enty.uchrPlayerNum + "\t Fitness: " + tempPlayer.fitness + "\0";
+    surmessage = TTF_RenderText_Solid(Sans, message, Black);
+    SDL_Texture texmessage = SDL_CreateTextureFromSurface(ren, surmessage);
+
+    dst.x = (int)(width / 2);
+    dst.y = height - 30;
+    SDL_QueryTexture(texmessage,NULL,NULL, &dst.w, &dst.h);
+
+    SDL_RenderCopy(ren, texmessage, NULL, &dst);
+
+    SDL_DestroyTexture(texmessage);
+    SDL_FreeSurface(surmessage);
+    */
     //show renderer
     SDL_RenderPresent(ren);
     Global::Tick.wait();

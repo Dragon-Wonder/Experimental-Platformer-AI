@@ -61,18 +61,35 @@ void clsConfig::make(void) {
 char clsConfig::verisonCheck(const char *ConfigVerison) {
 	//This checks the version number written at the top of the config file
 	//against the internal version number of the program.
-	//If it finds a Major revision change the config HAS to be replaced.
+	//If it finds a difference in Software status or a Major revision change the config HAS to be replaced.
 	//A Minor revision will result in a prompt to the user about if it should be replaced.
 	//And if only a patch change is found then it will just use the old config
 	//Lastly if no change is found then use the config of course
 
-	// TODO (GamerMan7799#6#) : Allow the check to also check program status (beta / alpha / rc)
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(ConfigVerison,"%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
-	if (Global::blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
-	if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
-	else if (DEFINED_VER_MINOR != C_MinorNum) {return PROMPTUSER;}
-	else {return USECONFIG;}
+	char C_SoftwareStatus[15], P_SoftwareStatus[15];
+	sscanf(ConfigVerison,"%u.%u.%u-%s",&C_MajorNum,&C_MinorNum,&C_PatchNum,&C_SoftwareStatus);
+	sscanf(DEFINED_VER_FULLVERSION_STRING,"%*u.%*u.%*u-%s", &P_SoftwareStatus);
+	if (Global::blnDebugMode) {
+            printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
+            printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
+    }
+
+	if (P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
+            //Only need to check the first letters because none of the software statuses share a first letter.
+            //(if the release does not include anything)
+            if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
+            return NEWCONFIG;
+    } else if (DEFINED_VER_MAJOR != C_MajorNum) {
+        if (Global::blnDebugMode) {printf("Major number outdated.\n");}
+        return NEWCONFIG;
+    } else if (DEFINED_VER_MINOR != C_MinorNum) {
+        if (Global::blnDebugMode) {printf("Minor number outdated.\n");}
+        return PROMPTUSER;
+    } else {
+        if (Global::blnDebugMode) {printf("Nothing outdated.\n");}
+        return USECONFIG;
+    }
 }
 /**********************************************************************************************************************************************/
 void clsConfig::load(void) {

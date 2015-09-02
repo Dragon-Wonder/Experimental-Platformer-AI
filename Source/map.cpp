@@ -17,51 +17,6 @@ clsMap::~clsMap() {
 	delete[] pmstBaseMonsters;
 }
 /**********************************************************************************************************************************************/
-/*void clsMap::show(void) {
-	printf("\n\n\n\n");
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
-	uint x_start;
-
-	//A simple check so that if the player goes to the left of the start the map will still display
-	//properly, without this it will not show up when the player goes to the left.
-	if ((int)(tempPlayer.location.x - 5) <= 0) {x_start = 0;}
-	else {x_start = tempPlayer.location.x - 5;}
-
-	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",tempPlayer.location.x, tempPlayer.location.y);}
-	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
-	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
-			switch (map[y][x]) {
-				case tileSpace :
-					printf(" ");
-					break;
-				case tileWall :
-					printf("█");
-					break;
-				case tilePlayer :
-					printf("@");
-					break;
-				case tilePole :
-					printf("|");
-					break;
-				case tileMonster :
-					printf("+");
-					break;
-				case tileCoin :
-					printf("O");
-					break;
-				default :
-					printf("#");
-					break;
-			}; //end switch
-		}//end for x
-		printf("\n");
-	}//end for y
-	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", Global::Enty.uchrGenNum, Global::Enty.uchrPlayerNum + 1, tempPlayer.fitness);
-	Global::Tick.wait(); //waits for the time needed.
-}*/
-/**********************************************************************************************************************************************/
 void clsMap::restart(void) {
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
@@ -114,7 +69,7 @@ char clsMap::move(uchar direction) {
 				map[tempy][tempx] = tileMonster;
 				tempMonster.location.x = tempx;
 			}
-			else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
+			else if (map[tempy][tempx] == tilePlayer) {return deathMonster;}
 			else if (map[tempy][tempx] == tileWall) {tempMonster.movingright = !(tempMonster.movingright);}
 
 			//Because I don't want to have to deal with monsters falling, if the space below a monster is space
@@ -130,6 +85,8 @@ char clsMap::move(uchar direction) {
 
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
+    //Kill Player if their fitness gets too low in hard mode
+    if (tempPlayer.fitness < -5.00 && (Global::Cnfg.getvalues(cnfgHardMode) == 1) ) {return deathDecay;}
 
 	tempx = tempPlayer.location.x;
 	tempy = tempPlayer.location.y;
@@ -149,14 +106,14 @@ char clsMap::move(uchar direction) {
 			if (tempy > DEFINED_JUMP_HEIGHT && jumpcount < DEFINED_MAX_JUMP_COUNT) {tempy -= DEFINED_JUMP_HEIGHT; jumpcount++;}
 			break;
 	};
-	if (tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) {return DEAD;}//This makes the very last row of the array a "kill plane"
+	if (tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) {return deathFall;}//This makes the very last row of the array a "kill plane"
 
 	if (playerfalling) {tempy++;}
 		if (map[tempy][tempx] == tileMonster) {
 		//If the player falls on a monster kill the monster,
 		//but if the player is trying to walk into a monster kill the player
 		if (playerfalling) {Global::Enty.killMonster(tempx,tempy); tempPlayer.score += DEFINED_MONS_KILL_POINTS;}
-		else {return DEAD;}
+		else {return deathMonster;}
 	}
 
 	if (map[tempy][tempx] == tileWall){
@@ -168,7 +125,7 @@ char clsMap::move(uchar direction) {
 	}
 
 	if (map[tempy][tempx] == tileCoin) {tempPlayer.score += DEFINED_COIN_WORTH;}
-	if (tempx < locBasePlayer.x - 2 && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return DEAD;} //if the player goes too far to the left kill them.
+	if (tempx < locBasePlayer.x - 2 && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;} //if the player goes too far to the left kill them.
 
 	map[tempPlayer.location.y][tempPlayer.location.x] = tileSpace;
 	map[tempy][tempx] = tilePlayer;
@@ -182,16 +139,16 @@ char clsMap::move(uchar direction) {
 
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
 	Global::Tick.decClock();
-	if (Global::Tick.getClockTime() == 0) {return DEAD;}
+	if (Global::Tick.getClockTime() == 0) {return deathClock;}
 
-	return LIVING;
+	return statusLiving;
 }
 /**********************************************************************************************************************************************/
 void clsMap::load(void) {
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 
-    /* TODO (xPUREx#9#): Look into vectors for basemonsters */
+    /* TODO (xPUREx#5#): Look into vectors for basemonsters */
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
