@@ -50,7 +50,7 @@ void clsEntity::nextplayer(char death) {
 		if (CnfgValues.blnLogging) {
 			switch (plyPlayer.direction[i]) {
 				case dirNone :
-					//Do nothing
+					fprintf(logFile," _");
 					break;
 				case dirUp :
 					fprintf(logFile," ↑");
@@ -137,7 +137,7 @@ void clsEntity::newplayer(void) {
 	uint uRandSection, uTempStep = 0;
 
 	if (uchrGenNum == 1) { //First Generation
-		for (uint i = 0; i < CnfgValues.uintFirstGen; i++) {plyPlayer.direction[i] = (uint)(rand() % (dirRight) + dirUp);}
+		for (uint i = 0; i < CnfgValues.uintFirstGen; i++) {plyPlayer.direction[i] = (uint)(rand() % dirDown);}
 		for (uint i = CnfgValues.uintFirstGen; i < DEFINED_MAX_PLAYER_STEPS; i++ ) {plyPlayer.direction[i] = dirNone;}
 	} else { //Growth Phase & Steady phase
 		do {
@@ -145,14 +145,14 @@ void clsEntity::newplayer(void) {
 			uRandSection = (uint)(rand() % ((uintGenSteps - uTempStep)) + uTempStep);
 			if (Global::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
 			for (uint j = uTempStep; j <= uRandSection; j++) {
-				if ((uint)(rand() % 100) < CnfgValues.uintMutationChance) {plyPlayer.direction[j] = (uint)(rand() % (dirRight) + dirUp);}
+				if ((uint)(rand() % 100) < CnfgValues.uintMutationChance) {plyPlayer.direction[j] = (uint)(rand() % dirDown);}
 				else {plyPlayer.direction[j] = genBestPlayers[uchrRandPlayer].direction[j];}
 			}//End for
 			uTempStep = uRandSection;
 		} while (uTempStep < uintGenSteps - 1);
 
 		if (uintGenSteps + CnfgValues.uintGenIncrease < DEFINED_MAX_PLAYER_STEPS) {
-			for (uint k = 0; k < uintGenSteps + CnfgValues.uintGenIncrease; k++) {plyPlayer.direction[k] = (uint)(rand() % (dirRight) + dirUp);}
+			for (uint k = 0; k < uintGenSteps + CnfgValues.uintGenIncrease; k++) {plyPlayer.direction[k] = (uint)(rand() % dirDown);}
 		}
 	}
 }

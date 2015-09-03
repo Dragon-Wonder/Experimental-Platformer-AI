@@ -57,7 +57,7 @@ clsScreen::clsScreen() {
             if (Global::blnDebugMode) {printf("Window creation successful\n");}
         }
 
-        ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
         if (ren == nullptr) {
             printf("SDL Failed to create renderer.\n");
             error();
@@ -169,10 +169,15 @@ clsScreen::~clsScreen() {
 /**********************************************************************************************************************************************************************/
 void clsScreen::update(void) {
     PLYR tempPlayer = Global::Enty.getPlayer();
-
+    /* FIXME (GamerMan7799#1#): When player goes to the left the screen becomes white
+       (because it tries to reference a negative array spot). */
     uint Max_Height, Max_Width; //Values for how far on the map the screen should render
+    uint x_start; //place where x starts at
     Max_Height = (uint) (height/pic_size);
     Max_Width = (uint) (width/pic_size);
+
+    //This will cause the screen to move in different segments at a time.
+    x_start = (uint) (round (tempPlayer.location.x / Max_Width) ) * Max_Width;
 
     //clear renderer
     SDL_RenderClear(ren);
@@ -184,9 +189,9 @@ void clsScreen::update(void) {
 
     //Start updating texture placements
     for (uint y = 0; (y < (Max_Height)) && (y < DEFINED_MAP_HEIGHT); y++) {
-        for (uint x = (tempPlayer.location.x - 5); (x < (tempPlayer.location.x + Max_Width - 5)) && (x < DEFINED_MAP_WIDTH); x++) {
+        for (uint x = x_start; (x < (x_start + Max_Width)) && (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
-            dst.x = (x - tempPlayer.location.x + 5) * pic_size;
+            dst.x = x * pic_size;
             dst.y = /*(y - tempPlayer.location.y + 10)*/ y * pic_size;
             //Query a texture to get its width and height
             //Since all textures are the same it doesn't matter which one we use
@@ -331,6 +336,7 @@ void clsScreen::playerDeath(void) {
 	//3 spaces then down about 4 spaces (depending on starting point)
 	//the whole thing happens in 5 frames.
 
+    /* TODO (GamerMan7799#1#): Add tileDeadPlayer with its own image to better till when the death animation is happening */
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
 	//show();
@@ -405,10 +411,10 @@ void clsScreen::writemessage(void) {
     message = "Generation: ";
     valuesscanned = sprintf(strGenNum, "%2u", Global::Enty.uchrGenNum);
     if (valuesscanned >= 1) {message += strGenNum;}
-    message += " Player: ";
+    message += "     Player: ";
     valuesscanned = sprintf(strPlayerNum, "%3u", Global::Enty.uchrPlayerNum);
     if (valuesscanned >= 1) {message += strPlayerNum;}
-    message += " Fitness: ";
+    message += "     Fitness: ";
     valuesscanned = sprintf(strFitness, "%3.2f", tempPlayer.fitness);
    if (valuesscanned >= 1) { message += strFitness;}
     if (Global::blnDebugMode) {printf("Message written.\n");}

@@ -5,6 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ## UNRELEASED [4.1.2] - 2015-09-03
 
+### Fixed
+
+* VSnyc bug
+* Screen being jumpy as the player moves (screen is locked on the first 35 spaces until 
+	player goes to the 36th spot then it will be locked on the next 35 spaces, and so on.)
+
+### Added
+
+* Player can now to nothing! Wow!
+
 
 ## Old versions
 
