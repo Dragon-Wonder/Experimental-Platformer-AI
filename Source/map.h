@@ -1,11 +1,11 @@
 #ifndef __MAP__HEADER__
 #define __MAP__HEADER__
 /**********************************************************************************************************************************************/
-#include "main.h"
-#include "entity.h"
 #include <cstdio>
 #include <cmath>
 #include <new>
+/**********************************************************************************************************************************************/
+#include "main.h"
 /**********************************************************************************************************************************************/
 enum tile {
 	tileSpace = 0,
@@ -52,15 +52,13 @@ class clsMap {
 		//Functions
 		char move(uchar);
 		void load(void);
-		void show(void);
+		//void show(void);
 		void restart(void);
-		void playerDeath(void); //shows a short animation on player's death.
 
 		uchar getMapCell(uint,uint);
 		void setMapCell(uint,uint,uchar);
 
 		LOC getbasePlayer(void);
-		MNSTR getbaseMonster(uchar);
 };
 /**********************************************************************************************************************************************/
 #endif

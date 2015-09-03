@@ -25,8 +25,9 @@ clsTick::clsTick() {
 	*/
 
 	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
+	timerStart = clock();
 	if (Global::blnDebugMode) {printf("ulngSleepTime = %lu\n", ulngSleepTime);}
-	if(clsTick::uClock == 0) {clsTick::resetClock();}
+	uClock = DEFINED_TICK_LIMIT;
 }
 /**********************************************************************************************************************************************/
 clsTick::~clsTick() {
@@ -40,19 +41,16 @@ void clsTick::wait(void) {
 	CPU is still being used, but whatever. It "stops" the program for a bit
 	which was its point so its gonna stay until I find something better.*/
 
-
-	/* Code taken from http://c-for-dummies.com/blog/?p=69 */
-
 	ulong pause;
-	clock_t now, then;
+	clock_t now;
 
 	pause = ulngSleepTime * (CLOCKS_PER_SEC/1000);
+	now = clock();
 
-	now = then = clock();
-	if (Global::blnDebugMode) {printf("Wait started for %lu milliseconds.\n", ulngSleepTime);}
-
-	while ((now - then) < pause) {now = clock();}
-	if (Global::blnDebugMode) {printf("Wait ended.\n");}
+    if ((uint)abs(now - timerStart) < pause) {
+        while ( (uint)abs(now - timerStart) < pause) {now = clock();}
+    }
+	startTimer();
 }
 /**********************************************************************************************************************************************/
 void clsTick::resetClock(void) {
@@ -60,10 +58,15 @@ void clsTick::resetClock(void) {
 }
 /**********************************************************************************************************************************************/
 void clsTick::decClock(void) {
+    /* TODO (GamerMan7799#5#): Make clock run off of seconds */
 	if (uClock != 0) {uClock--;}
 }
 /**********************************************************************************************************************************************/
 uint clsTick::getClockTime(void) {
 	return uClock;
+}
+/**********************************************************************************************************************************************/
+void clsTick::startTimer(void) {
+    timerStart = clock();
 }
 /**********************************************************************************************************************************************/

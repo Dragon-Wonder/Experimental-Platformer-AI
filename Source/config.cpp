@@ -10,7 +10,7 @@ This holds all the functions related to the config file, its loading, making, an
 clsConfig::clsConfig() {
 	//Set the values as some default value.
 	values.blnLogging = true;
-	values.blnShowMap = false;
+	values.blnShowMap = true;
 	values.blnAppendTime = true;
 	values.blnHardMode = false;
 	values.uintFirstGen = 100;
@@ -18,6 +18,8 @@ clsConfig::clsConfig() {
 	values.uintGensPastGrowth = 10;
 	values.uintMutationChance = 15;
 	values.uintSeed = 12345;
+	values.uintScreenHeight = 0;
+	values.uintScreenWidth = 0;
 	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
 /**********************************************************************************************************************************************/
@@ -27,12 +29,9 @@ clsConfig::~clsConfig() {
 /**********************************************************************************************************************************************/
 bool clsConfig::exists(void) {
 	//Returns true or false if config file exists
-
-    /* TODO (GamerMan7799#1#): Replace this with a method that doesn't need the fstream library. ...
-    So we can reduce the libraries that we need.*/
-
-	std::ifstream infile(FileName);
-	return infile.good();
+	FILE* pTempFile = fopen(FileName, "r");
+	if (pTempFile == NULL) {return false;}
+	else {return true;}
 }
 /**********************************************************************************************************************************************/
 void clsConfig::make(void) {
@@ -43,44 +42,66 @@ void clsConfig::make(void) {
 	fprintf(configFile,"Config File for the program.\n");
 	fprintf(configFile,"%s\n",DEFINED_VER_FULLVERSION_STRING);
 
-	fprintf(configFile,"First Generation Steps: 100\n");
-	fprintf(configFile,"Generation Increase: 100\n");
-	fprintf(configFile,"Gens Past Growth: 10\n");
-	fprintf(configFile,"Percent Mutation Chance: 15\n");
+    //Write the config with the default values defined when the object was created.
+	fprintf(configFile,"First Generation Steps: %u\n",values.uintFirstGen);
+	fprintf(configFile,"Generation Increase: %u\n", values.uintGenIncrease);
+	fprintf(configFile,"Gens Past Growth: %u\n", values.uintGensPastGrowth);
+	fprintf(configFile,"Percent Mutation Chance: %u\n", values.uintMutationChance);
 	fprintf(configFile,"Log to File: 1\n");
 	fprintf(configFile,"Hard mode: 0\n");
-	fprintf(configFile,"Show map on update: 0\n");
-	fprintf(configFile,"Random Seed: [12345]\n");
+	fprintf(configFile,"Show map on update: 1\n");
+	fprintf(configFile,"Random Seed: [%u]\n", values.uintSeed);
 	fprintf(configFile,"Append Time: 1\n");
+	fprintf(configFile, "Only define these if the default screen size doesn't work for you, otherwise leave blank.\n");
+	fprintf(configFile, "Screen Height: 0\n");
+	fprintf(configFile, "Screen Width: 0\n");
 	fclose(configFile);
-
-	//These are just the default values I use when testing the program.
-	values.blnLogging = true;
-	values.blnShowMap = false;
-	values.blnAppendTime = true;
-	values.blnHardMode = false;
-	values.uintFirstGen = 100;
-	values.uintGenIncrease = 100;
-	values.uintGensPastGrowth = 10;
-	values.uintMutationChance = 15;
-	values.uintSeed = 12345;
 }
 /**********************************************************************************************************************************************/
 char clsConfig::verisonCheck(const char *ConfigVerison) {
 	//This checks the version number written at the top of the config file
 	//against the internal version number of the program.
-	//If it finds a Major revision change the config HAS to be replaced.
+	//If it finds a difference in Software status or a Major revision change the config HAS to be replaced.
 	//A Minor revision will result in a prompt to the user about if it should be replaced.
 	//And if only a patch change is found then it will just use the old config
 	//Lastly if no change is found then use the config of course
-	
-	// TODO (GamerMan7799#6#) : Allow the check to also check program status (beta / alpha / rc)
+
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
-	sscanf(ConfigVerison,"%u.%u.%u",&C_MajorNum,&C_MinorNum,&C_PatchNum);
-	if (Global::blnDebugMode) {printf("Config: v %u %u %u \n",C_MajorNum,C_MinorNum,C_PatchNum);}
-	if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
-	else if (DEFINED_VER_MINOR != C_MinorNum) {return PROMPTUSER;}
-	else {return USECONFIG;}
+	char C_SoftwareStatus[15], P_SoftwareStatus[15];
+	sscanf(ConfigVerison,"%u.%u.%u-%s",&C_MajorNum,&C_MinorNum,&C_PatchNum,&C_SoftwareStatus);
+	sscanf(DEFINED_VER_FULLVERSION_STRING,"%*u.%*u.%*u-%s", &P_SoftwareStatus);
+	if (Global::blnDebugMode) {
+            printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
+            printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
+            getchar();
+    }
+
+    if (DEFINED_VER_STATUS == "Release"){
+        //Since the release doesn't have any any ending in the string we have to check this differently
+        if (C_SoftwareStatus[0] != ')') {
+            if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
+            getchar();
+            return NEWCONFIG;
+        }
+    } else {
+        if ( P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
+            if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
+            getchar();
+            return NEWCONFIG;
+        }
+    }
+
+    if (DEFINED_VER_MAJOR != C_MajorNum) {
+        if (Global::blnDebugMode) {printf("Major number outdated.\n");}
+        return NEWCONFIG;
+    } else if (DEFINED_VER_MINOR != C_MinorNum) {
+        if (Global::blnDebugMode) {printf("Minor number outdated.\n");}
+        return PROMPTUSER;
+    } else {
+        if (Global::blnDebugMode) {printf("Nothing outdated.\n");}
+        return USECONFIG;
+    }
+    return USECONFIG;
 }
 /**********************************************************************************************************************************************/
 void clsConfig::load(void) {
@@ -151,12 +172,32 @@ void clsConfig::load(void) {
 	if(intTempBool == 1) {values.blnAppendTime = true;}
 	else {values.blnAppendTime = false;}
 
+	//Get blank line explaining screen sizes
+	//Need two fgets because the line is more than 50 characters long.
+	fgets(chrTempString,50,configFile);
+	fgets(chrTempString,50,configFile);
+
+	//Get Screen Height
+	fgets(chrTempString,50,configFile);
+    intValuesScanned = sscanf(chrTempString, "%*s %*s %u", &values.uintScreenHeight);
+    if (intValuesScanned < 1) {printf("ERROR!"); values.uintScreenHeight = 0;}
+    if (Global::blnDebugMode) {printf("Screen Height \t \t \t %u\n", values.uintScreenHeight);}
+
+    //Get Screen Width
+    fgets(chrTempString,50,configFile);
+    intValuesScanned = sscanf(chrTempString, "%*s %*s %u", &values.uintScreenWidth);
+    if (intValuesScanned < 1) {printf("ERROR!"); values.uintScreenWidth = 0;}
+    if (Global::blnDebugMode) {printf("Screen Width \t \t \t %u\n", values.uintScreenWidth);}
+
+
 	fclose(configFile);
 	printf("\n\n");
 }
 /**********************************************************************************************************************************************/
 void clsConfig::Check(void) {
 	char chrTempString[50], chrConfigVerison;
+	bool blnAnswered = false; //this is used for a fix for an issue I was facing.
+                          //I'll figure out a better method later.
 
 	if (exists() != true) {
 		printf("Config file was not found; creating now one\n");
@@ -180,24 +221,25 @@ void clsConfig::Check(void) {
 			do {
 				printf("Y or N\n> ");
 				scanf("%c",&chrConfigVerison);
-				switch (chrConfigVerison)
-				{
+				switch (chrConfigVerison) {
 					case 'Y' :
 					case 'y' :
 						//Replace the config file
 						fclose(configFile);
 						make();
+						blnAnswered = true;
 						break;
 					case 'n' :
 					case 'N' :
 						//Load the config file
 						load();
+						blnAnswered = true;
 						break;
 					default :
 						printf("\nUnknown answer; try again.\n");
 						break;
 				}; //end switch
-			} while (chrConfigVerison != 'n' || chrConfigVerison != 'N' || chrConfigVerison != 'Y' || chrConfigVerison != 'y');
+			} while (!blnAnswered);
 		} else { load();}
 	} //end if exists
 }
@@ -241,6 +283,12 @@ uint clsConfig::getvalues(uchar Spot) {
 		case cnfgSeed :
 			return values.uintSeed;
 			break;
+        case cnfgScreenHeight :
+            return values.uintScreenHeight;
+            break;
+        case cnfgScreenWidth :
+            return values.uintScreenWidth;
+            break;
 		default :
 			return 0;
 			break;

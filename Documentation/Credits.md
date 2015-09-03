@@ -3,12 +3,11 @@
 We would like to thank the following people for their work and support (knowingly or not) towards this project.
 
 ```
+[Daniele De Santis] (http://www.danieledesantis.net/) for his icon that is currently being used for the project.
 
+The Developers of the [SDL Library] (https://www.libsdl.org/credits.php)
 
-Daniele De Santis for his icon that is currently being used for the project.
+Mr Foo for his amazing tutorial on SDL, which can be found [here](http://lazyfoo.net/)
 
-The People at C-For-Dummies.com for their example code [Here] (http://c-for-dummies.com/blog/?p=69) 
-
-
+Sam Lantinga for his SDL TTF library
 ```
-

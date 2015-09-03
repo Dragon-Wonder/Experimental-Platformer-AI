@@ -1,4 +1,6 @@
 /**********************************************************************************************************************************************/
+id ICON "Icon_App.ico"
+/**********************************************************************************************************************************************/
 #include <windows.h>
 #include "../Source/version.h"
 /**********************************************************************************************************************************************/
@@ -43,6 +45,9 @@ BEGIN
             VALUE "ProductName",		VER_FILENAME_STR
             VALUE "ProductVersion",		DEFINED_VER_FULLVERSION_STRING
 			VALUE "Comments", 			VER_COMMENTS_STR
+#ifdef DEFINED_BUILD_MODE_PRIVATE
+			VALUE "PrivateBuild",		"This is a private build by GamerMan7799, intended for debugging uses."
+#endif
         END
     END
 

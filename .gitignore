@@ -40,6 +40,30 @@
 *.stackdump
 
 # Code Blocks files
-*.cbp
-*.depend
+/Project/bin/
+/Project/bin/*
+/Project/obj/
+/Project/obj/*
 *.layout
+*.depend
+
+# My stuff
+
+# Archived images that don't need to be on Github
+*.zip
+*.rar
+
+# I'll name files this if I don't want them on Github
+*.tmp
+
+# I store my SDL2 include and lib here
+/SDL2Stuff/include/
+/SDL2Stuff/lib/
+
+# Random stuff that also doesn't need to be on github
+/RandomCrap/
+/RandomCrap/*
+
+# Other Libraries (such as libjpeg-9) that I store the dll & license files here in case I decide to use them later.
+/OtherLibraries/
+/OtherLibraries/*

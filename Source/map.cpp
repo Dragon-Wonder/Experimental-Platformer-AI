@@ -1,8 +1,12 @@
 /**********************************************************************************************************************************************/
 #include "map.h"
+#include "entity.h"
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
+/* TODO (GamerMan7799#9#): Do away with a set array that holds the map information; instead make things more dynamic so
+   that movement will be changed to be velocity based as opposed to moving one cell at a time. This is of course because
+   we are using SDL. It will be alot of work to do this; so we should hold off until v5.0.0 */
 /**********************************************************************************************************************************************/
 clsMap::clsMap() {
 	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
@@ -11,51 +15,6 @@ clsMap::clsMap() {
 clsMap::~clsMap() {
 	if(Global::blnDebugMode) {printf("Map Destructor called.\n");}
 	delete[] pmstBaseMonsters;
-}
-/**********************************************************************************************************************************************/
-void clsMap::show(void) {
-	printf("\n\n\n\n");
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
-	uint x_start;
-
-	//A simple check so that if the player goes to the left of the start the map will still display
-	//properly, without this it will not show up when the player goes to the left.
-	if ((int)(tempPlayer.location.x - 5) <= 0) {x_start = 0;}
-	else {x_start = tempPlayer.location.x - 5;}
-
-	if (Global::blnDebugMode) {printf("Player found at (%d,%d)\n",tempPlayer.location.x, tempPlayer.location.y);}
-	printf("Time Remaining: %d\n",Global::Tick.getClockTime());
-	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-		for (uint x = x_start; x < tempPlayer.location.x + 73; x++) {
-			switch (map[y][x]) {
-				case tileSpace :
-					printf(" ");
-					break;
-				case tileWall :
-					printf("█");
-					break;
-				case tilePlayer :
-					printf("@");
-					break;
-				case tilePole :
-					printf("║");
-					break;
-				case tileMonster :
-					printf("+");
-					break;
-				case tileCoin :
-					printf("O");
-					break;
-				default :
-					printf("#");
-					break;
-			}; //end switch
-		}//end for x
-		printf("\n");
-	}//end for y
-	printf("Generation: %2d 		Player: %2d 		Fitness: %2.3f\n", Global::Enty.uchrGenNum, Global::Enty.uchrPlayerNum + 1, tempPlayer.fitness);
-	Global::Tick.wait(); //waits for the time needed.
 }
 /**********************************************************************************************************************************************/
 void clsMap::restart(void) {
@@ -110,7 +69,7 @@ char clsMap::move(uchar direction) {
 				map[tempy][tempx] = tileMonster;
 				tempMonster.location.x = tempx;
 			}
-			else if (map[tempy][tempx] == tilePlayer) {return DEAD;}
+			else if (map[tempy][tempx] == tilePlayer) {return deathMonster;}
 			else if (map[tempy][tempx] == tileWall) {tempMonster.movingright = !(tempMonster.movingright);}
 
 			//Because I don't want to have to deal with monsters falling, if the space below a monster is space
@@ -126,6 +85,8 @@ char clsMap::move(uchar direction) {
 
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
+    //Kill Player if their fitness gets too low in hard mode
+    if (tempPlayer.fitness < -2.5 && (Global::Cnfg.getvalues(cnfgHardMode) == 1) ) {return deathDecay;}
 
 	tempx = tempPlayer.location.x;
 	tempy = tempPlayer.location.y;
@@ -145,14 +106,14 @@ char clsMap::move(uchar direction) {
 			if (tempy > DEFINED_JUMP_HEIGHT && jumpcount < DEFINED_MAX_JUMP_COUNT) {tempy -= DEFINED_JUMP_HEIGHT; jumpcount++;}
 			break;
 	};
-	if (tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) {return DEAD;}//This makes the very last row of the array a "kill plane"
+	if (tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) {return deathFall;}//This makes the very last row of the array a "kill plane"
 
 	if (playerfalling) {tempy++;}
 		if (map[tempy][tempx] == tileMonster) {
 		//If the player falls on a monster kill the monster,
 		//but if the player is trying to walk into a monster kill the player
 		if (playerfalling) {Global::Enty.killMonster(tempx,tempy); tempPlayer.score += DEFINED_MONS_KILL_POINTS;}
-		else {return DEAD;}
+		else {return deathMonster;}
 	}
 
 	if (map[tempy][tempx] == tileWall){
@@ -164,7 +125,7 @@ char clsMap::move(uchar direction) {
 	}
 
 	if (map[tempy][tempx] == tileCoin) {tempPlayer.score += DEFINED_COIN_WORTH;}
-	if (tempx < locBasePlayer.x - 2 && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return DEAD;} //if the player goes too far to the left kill them.
+	if (tempx < locBasePlayer.x - 2 && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;} //if the player goes too far to the left kill them.
 
 	map[tempPlayer.location.y][tempPlayer.location.x] = tileSpace;
 	map[tempy][tempx] = tilePlayer;
@@ -178,16 +139,16 @@ char clsMap::move(uchar direction) {
 
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
 	Global::Tick.decClock();
-	if (Global::Tick.getClockTime() == 0) {return DEAD;}
+	if (Global::Tick.getClockTime() == 0) {return deathClock;}
 
-	return LIVING;
+	return statusLiving;
 }
 /**********************************************************************************************************************************************/
 void clsMap::load(void) {
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 
-    /* TODO (GamerMan7799#9#): Look into vectors for basemonsters */
+    /* TODO (xPUREx#5#): Look into vectors for basemonsters */
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
@@ -220,7 +181,8 @@ void clsMap::load(void) {
 					}
 
 					for (uchar i = 0; i < numMonsters - 1; i++) {
-                        /* TODO (GamerMan7799#5#08/20/15): Consider using std::copy from algorithm library */
+                        /* TODO (GamerMan7799#5#): Consider using std::copy from algorithm library
+                            Do not worry about if xPUREx converts to vectors.*/
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
 						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
 						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
@@ -275,41 +237,5 @@ void clsMap::setMapCell(uint x, uint y, uchar tile) {
 /**********************************************************************************************************************************************/
 LOC clsMap::getbasePlayer(void) {
 	return locBasePlayer;
-}
-/**********************************************************************************************************************************************/
-MNSTR clsMap::getbaseMonster(uchar num) {
-	// TODO (GamerMan7799#9#): Figure out if I need to do the temp first or if I can just return
-	MNSTR tempMNSTR;
-	tempMNSTR.location.x = pmstBaseMonsters[num].location.x;
-	tempMNSTR.location.y = pmstBaseMonsters[num].location.y;
-	tempMNSTR.living = pmstBaseMonsters[num].living;
-	tempMNSTR.movingright = pmstBaseMonsters[num].movingright;
-	return tempMNSTR;
-}
-/**********************************************************************************************************************************************/
-void clsMap::playerDeath(void) {
-	//Plays short death animation
-	//only shows up if the Map::move returns DEAD
-	//The games "pauses" for a second then the player will move up
-	//3 spaces then down about 4 spaces (depending on starting point)
-	//the whole thing happens in 5 frames.
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
-	show();
-	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
-	uint tempy = tempPlayer.location.y;
-	for (uchar i = 0; i < 5; i++) {
-		if (i < 3) {
-			if (tempy != DEFINED_MAP_HEIGHT) { tempy--;}
-		} else {
-			if (tempy < DEFINED_MAP_HEIGHT - 2) {tempy+=2;}
-		}
-
-		map[tempPlayer.location.y][tempPlayer.location.x] = tileSpace;
-		map[tempy][tempPlayer.location.x] = tilePlayer;
-
-		tempPlayer.location.y = tempy;
-		show();
-	}
 }
 /**********************************************************************************************************************************************/
