@@ -34,6 +34,7 @@ class clsScreen {
 
 
     private:
+        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
         SDL_Texture *player;
         SDL_Texture *monster;
         SDL_Texture *wall;
@@ -55,6 +56,7 @@ class clsScreen {
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
         //are closed
+        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
         bool blnWindow;
         bool blnRenderer;
         bool blnSky;

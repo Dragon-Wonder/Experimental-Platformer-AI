@@ -127,6 +127,7 @@ clsScreen::clsScreen() {
             if (Global::blnDebugMode) {printf("Monster loading successful\n");}
         }
 
+        /* TODO (GamerMan7799#3#): Embed Error Picture; then if a picture cannot be loaded load that instead with an error message */
         path = DEFINED_DEFAULT_IMAGE_PATH;
         path += "error.png";
 
@@ -137,6 +138,7 @@ clsScreen::clsScreen() {
             if (Global::blnDebugMode) {printf("Error loading successful\n");}
         }
 
+        /* TODO (GamerMan7799#4#): If Font doesn't load just don't write messages instead of exiting the whole program */
         MessageFont = TTF_OpenFont(DEFINED_MESSAGE_FONT,16); //Opens font and sets size
         if (MessageFont == nullptr) {
             printf("Failed to open font style.\n");
@@ -362,6 +364,7 @@ void clsScreen::writemessage(void) {
     char strPlayerNum[3];
     char strFitness[6];
 
+    /* TODO (GamerMan7799#5#): Somehow detect if over wall and change color of text */
     std::string message;
     sprintf(strClock, "%8u", Global::Tick.getClockTime());
 
