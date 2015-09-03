@@ -13,7 +13,7 @@ clsScreen::clsScreen() {
         //Figure out screen size
         if (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) {width = 35*pic_size;}
         else {width = Global::Cnfg.getvalues(cnfgScreenWidth);}
-        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = 14*pic_size;}
+        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = DEFINED_MAP_HEIGHT*pic_size;}
         else {height = Global::Cnfg.getvalues(cnfgScreenHeight);}
 
         //Set all the booleans to false
@@ -181,7 +181,7 @@ void clsScreen::update(void) {
     SDL_Rect dst;
 
     //Start updating texture placements
-    for (uint y = (tempPlayer.location.y - 2); (y < (tempPlayer.location.y + Max_Height - 2)) && (y < DEFINED_MAP_HEIGHT); y++) {
+    for (uint y = 0; (y < (Max_Height)) && (y < DEFINED_MAP_HEIGHT); y++) {
         for (uint x = (tempPlayer.location.x - 5); (x < (tempPlayer.location.x + Max_Width - 5)) && (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
             dst.x = (x - tempPlayer.location.x + 5) * pic_size;

@@ -73,20 +73,17 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	if (Global::blnDebugMode) {
             printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
             printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
-            getchar();
     }
 
     if (DEFINED_VER_STATUS == "Release"){
         //Since the release doesn't have any any ending in the string we have to check this differently
         if (C_SoftwareStatus[0] != ')') {
             if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
-            getchar();
             return NEWCONFIG;
         }
     } else {
         if ( P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
             if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
-            getchar();
             return NEWCONFIG;
         }
     }

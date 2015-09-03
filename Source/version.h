@@ -14,17 +14,17 @@
 //Standard Version Type
 #define DEFINED_VER_MAJOR  4
 #define DEFINED_VER_MINOR  1
-#define DEFINED_VER_PATCH  0
+#define DEFINED_VER_PATCH  1
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,1,0,71
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 0, 71\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.1.0"
+#define DEFINED_VER_RC_FILEVERSION 4,1,1,4
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 1, 4\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.1.1"
 
 //Software Status
-#define DEFINED_VER_STATUS 	"Release"
-#define DEFINED_VER_STATUS_SHORT  "r"
+#define DEFINED_VER_STATUS 	"Alpha"
+#define DEFINED_VER_STATUS_SHORT  "a"
 
 /*
 Software Status can be the following:

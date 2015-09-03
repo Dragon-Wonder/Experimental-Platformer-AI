@@ -3,6 +3,17 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [4.1.1] - 2015-09-03
+
+### Fixed
+
+* A bug with screen height being linked to player height causing screen to be a bit strange.
+
+
+## Old versions
+
+```
+
 ## [4.1.0] - 2015-09-03
 
 ### Added
@@ -37,10 +48,6 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Private build define not properly registering in boilerplate
 * Prompt for using old config not working
 
-
-## Old versions
-
-```
 
 ## [4.0.0] - 2015-08-21
 
