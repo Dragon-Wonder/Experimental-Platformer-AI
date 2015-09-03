@@ -27,7 +27,7 @@ clsTick::clsTick() {
 	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
 	timerStart = clock();
 	if (Global::blnDebugMode) {printf("ulngSleepTime = %lu\n", ulngSleepTime);}
-	if(clsTick::uClock == 0) {clsTick::resetClock();}
+	uClock = DEFINED_TICK_LIMIT;
 }
 /**********************************************************************************************************************************************/
 clsTick::~clsTick() {
@@ -40,9 +40,6 @@ void clsTick::wait(void) {
 	To work as a "sleep" but it doesn't function as a true sleep because the
 	CPU is still being used, but whatever. It "stops" the program for a bit
 	which was its point so its gonna stay until I find something better.*/
-
-
-	/* Code taken from http://c-for-dummies.com/blog/?p=69 */
 
 	ulong pause;
 	clock_t now;
@@ -61,6 +58,7 @@ void clsTick::resetClock(void) {
 }
 /**********************************************************************************************************************************************/
 void clsTick::decClock(void) {
+    /* TODO (GamerMan7799#5#): Make clock run off of seconds */
 	if (uClock != 0) {uClock--;}
 }
 /**********************************************************************************************************************************************/

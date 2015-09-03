@@ -181,7 +181,7 @@ void clsMap::load(void) {
 					}
 
 					for (uchar i = 0; i < numMonsters - 1; i++) {
-                        /* TODO (GamerMan7799#5#08/20/15): Consider using std::copy from algorithm library
+                        /* TODO (GamerMan7799#5#): Consider using std::copy from algorithm library
                             Do not worry about if xPUREx converts to vectors.*/
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
 						pTemp[i].location.x = pmstBaseMonsters[i].location.x;

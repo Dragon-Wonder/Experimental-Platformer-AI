@@ -20,6 +20,9 @@ As such you may use any and/or all of this project however you wish; Commerciall
 
 You can read more about the Public Domain Dedication [Here](http://unlicense.org/).
 
+This project uses libraries created by other individuals. Each one of course has a license by their own owner, these can be found under Documentation/Library Licenses.
+Please read these licenses before you decide to distribute any copies of this project.
+
 ## Questions, patches, and other feedback
 
 We are pretty novice programmers at best. Part of the reason we made this was to improve our skills. And part of the reason we made it open source is to get feedback.
@@ -32,29 +35,41 @@ If you have any questions or a suggestions or improvement please feel free to le
 
 ### SDL Library
 
-In order to run the program properly you will need to download SDL2-2.0.4 or higher (SDL-2.0.3 has issues that cause the program not to run correctly. You NEED 2.0.4).
+In order to run the program properly you will need to download SDL2-2.0.4 or higher (SDL-2.0.3 has issues that cause the program not to run correctly. You NEED 2.0.4). 
+You will also need SDL2 TTF library, and SDL2 Images library
 
 A link for SDL2 can be found [here] (https://www.libsdl.org/tmp/download-2.0.php).
+
+A link for SDL2 TTF can be found [here] (https://www.libsdl.org/projects/SDL_ttf/).
+
+A link for SDL2 Images can be found [here] (https://www.libsdl.org/projects/SDL_image/).
 
 You will want to download the Runtime Binaries (if you have windows I recommend 32 bit over 64 bit; even if you have a 64 bit computer).
 
 If you are running the version in the release tab you WILL need the 32 bit version because that it how I compile it.
 
-When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
+I have also included copies of the 32 bit Runtime binaries in the releases. You can just download these if you don't know what you're doing and you're on Windows.
 
 You will also need to download and extract the Images.rar file provided in the release tab.
+
+When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
 
 ```
 FolderName\
 FolderName\Platformer-Experiment.exe
 FolderName\SDL2.dll
-FolderName\Images\coin.bmp
-FolderName\Images\error.bmp
-FolderName\Images\monster.bmp
-FolderName\Images\player.bmp
-FolderName\Images\pole.bmp
-FolderName\Images\sky.bmp
-FolderName\Images\wall.bmp
+FolderName\SDL2_ttf.dll
+FolderName\SDL2_image.dll
+FolderName\libfreetype-6.dll
+FolderName\zlib1.dll
+FolderName\libpng16-16.dll
+FolderName\Images\coin.png
+FolderName\Images\error.png
+FolderName\Images\monster.png
+FolderName\Images\player.png
+FolderName\Images\pole.png
+FolderName\Images\sky.png
+FolderName\Images\wall.png
 ```
 
 ### Windows
@@ -73,6 +88,8 @@ Ubuntu, Mint, or Debian
 
 ``` 
 sudo apt-get install libsdl2-dev
+sudo apt-get install libsdl2-ttf-dev
+sudo apt-get install libsdl2-image-dev
 ```
 
 Please note, that the above method will only give you SDL 2.0.3 which has an issue with the bmp files. If you want it to work you will have to manually install SDL 2.0.4 from the link above or wait for the complete release of SDL 2.0.4.
