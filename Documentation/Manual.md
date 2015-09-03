@@ -8,7 +8,7 @@ When you first load the program it will create a config file with the default na
 
 ```
 Config File for the program.
-4.1.0-beta.4
+4.1.0-rc.1
 First Generation Steps: 100
 Generation Increase: 100
 Gens Past Growth: 10
@@ -80,6 +80,8 @@ This can be a 1 for true or a 0 for false. When this is enabled the program is p
 This can be a 1 for true or a 0 for false. If this is enabled then for every step that the player takes the map will be shown. This will of course slow down the program but will allow you to follow 
 the player around on their journey.
 
+You can also disable this if you do not have the images folder (you will still require the .dll files unfortunately).
+
 If this is disabled then you will only see the end result of the Top Players in terms of fitness. It is useful to have log to file on if you disable this so you can see the moves that the player took. 
 Disabling it is useful if you want to quickly test if a change has resulted in higher fitness; or are just testing that everything works (this is what we use it for).
 
@@ -101,7 +103,7 @@ This can be disabled as I talked about in Random Seed if don't want the random n
 ### Screen Size
 
 Here you can set a specific screen size if you need it. (This will only apply if show map is on). The program will attempt to set a screen size based on the current picture pixel size (24px by 24px), however if 
-this size doesn't work you for you can change it with this option. I only recommended changing this if you need it otherwise leave them both as 0 so the program knows to set it itself.
+this size doesn't work you for you can change it with this option. I only recommended changing this if you need it; otherwise leave them both as 0 so the program knows to set it itself.
 
 ## Running the Program
 

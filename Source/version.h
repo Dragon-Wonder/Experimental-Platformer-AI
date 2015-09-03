@@ -18,13 +18,13 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,1,0,68
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 0, 68\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.1.0-rc.1"
+#define DEFINED_VER_RC_FILEVERSION 4,1,0,71
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 0, 71\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.1.0"
 
 //Software Status
-#define DEFINED_VER_STATUS 	"Beta"
-#define DEFINED_VER_STATUS_SHORT  "b"
+#define DEFINED_VER_STATUS 	"Release"
+#define DEFINED_VER_STATUS_SHORT  "r"
 
 /*
 Software Status can be the following:

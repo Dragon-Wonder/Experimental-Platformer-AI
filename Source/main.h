@@ -12,7 +12,7 @@ all the cpps
 /*
 These defines are for the size of the map. The default is 14 high by 217 wide
 You should note that if you change this you have to change the base map under map.h as well to the same
-size or you will most likely run into a lot of issues. Later verisons where you can simply load your own map
+size or you will most likely run into a lot of issues. Later versions where you can simply load your own map
 will likely remove these and dynamically allocate the map size for you.
 */
 #define DEFINED_MAP_HEIGHT 14
@@ -23,7 +23,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define DEFINED_GOAL_FPS 30
+#define DEFINED_GOAL_FPS 15
 
 //The most steps a single player can take
 #define DEFINED_MAX_PLAYER_STEPS 1000
@@ -58,7 +58,7 @@ will likely remove these and dynamically allocate the map size for you.
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
 
-//These are used when checking the verison of the config file.
+//These are used when checking the version of the config file.
 #define NEWCONFIG 'N'
 #define USECONFIG 'U'
 #define PROMPTUSER 'P'
@@ -80,7 +80,7 @@ struct stcGeneration {
 }; //prefix = gen
 
 // Structure for the player, only used for the current player
-// because once they are done the imporant values are placed in
+// because once they are done the important values are placed in
 // the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;

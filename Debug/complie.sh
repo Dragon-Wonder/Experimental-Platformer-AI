@@ -20,7 +20,7 @@ g++ -std=c++11 -I../SDL2Stuff/include -Wall -Wextra -pg -g -c screen.cpp
 #Move back to the main directory
 cd ../
 #Complie everything together!
-g++ -std=c++11 -L./SDL2Stuff/lib -Wall -Wextra -pg -g -o PlatformerExperiment-PRIVATE.exe ./Source/main.o ./Source/config.o ./Source/map.o ./Source/entity.o ./Source/tick.o ./Source/screen.o ./Resources/boilerplate.res -lSDL2main -lSDL2
+g++ -std=c++11 -L./SDL2Stuff/lib -Wall -Wextra -pg -g -o PlatformerExperiment-PRIVATE.exe ./Source/main.o ./Source/config.o ./Source/map.o ./Source/entity.o ./Source/tick.o ./Source/screen.o ./Resources/boilerplate.res -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_TTF
 #Delete all the leftover parts
 rm ./Resources/boilerplate.res 
 rm ./Source/main.o 

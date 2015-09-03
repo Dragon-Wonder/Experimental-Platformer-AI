@@ -13,11 +13,12 @@
             <File name="..\Source\map.cpp" />
             <File name="..\Source\tick.h" />
             <File name="..\Source\tick.cpp" />
+            <File name="..\Source\screen.h" />
+            <File name="..\Source\screen.cpp" />
             <File name="..\Source\Readme.md" />
         </Folder>
         <Folder name="Resources">
             <File name="..\Resources\boilerplate.rc" />
-            <File name="..\Resources\my_icon.rc" />
             <File name="..\Resources\Readme.md" />
         </Folder>
         <Folder name="Docs">
@@ -30,10 +31,16 @@
             <File name="..\Documentation\ReadMe.md" />
         </Folder>
         <Folder name="Main">
-            <File name="..\Compile.bat" />
             <File name="..\Config.ini" />
             <File name="..\Makefile" />
             <File name="..\README.md" />
+        </Folder>
+        <Folder name="Debug">
+            <File name="..\Debug\Compile-Debug.bat" />
+            <File name="..\Debug\Compile-Final.bat" />
+            <File name="..\Debug\complie.sh" />
+            <File name="..\Debug\Object-Builder.sh" />
+            <File name="..\Debug\ReadMe.md" />
         </Folder>
     </Project>
 </NotepadPlus>

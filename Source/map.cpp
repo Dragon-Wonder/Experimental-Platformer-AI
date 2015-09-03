@@ -4,8 +4,8 @@
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
-/* TODO (GamerMan7799#9#): Do away with a set array that holds the map infomation; instead make things more dynamic so
-   that movement will be changed to be velocity based as opposed to moving one cell at a time. This is of couse because
+/* TODO (GamerMan7799#9#): Do away with a set array that holds the map information; instead make things more dynamic so
+   that movement will be changed to be velocity based as opposed to moving one cell at a time. This is of course because
    we are using SDL. It will be alot of work to do this; so we should hold off until v5.0.0 */
 /**********************************************************************************************************************************************/
 clsMap::clsMap() {
@@ -86,7 +86,7 @@ char clsMap::move(uchar direction) {
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
     //Kill Player if their fitness gets too low in hard mode
-    if (tempPlayer.fitness < -5.00 && (Global::Cnfg.getvalues(cnfgHardMode) == 1) ) {return deathDecay;}
+    if (tempPlayer.fitness < -2.5 && (Global::Cnfg.getvalues(cnfgHardMode) == 1) ) {return deathDecay;}
 
 	tempx = tempPlayer.location.x;
 	tempy = tempPlayer.location.y;

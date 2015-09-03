@@ -73,14 +73,25 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	if (Global::blnDebugMode) {
             printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
             printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
+            getchar();
     }
 
-	if (P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
-            //Only need to check the first letters because none of the software statuses share a first letter.
-            //(if the release does not include anything)
+    if (DEFINED_VER_STATUS == "Release"){
+        //Since the release doesn't have any any ending in the string we have to check this differently
+        if (C_SoftwareStatus[0] != ')') {
             if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
+            getchar();
             return NEWCONFIG;
-    } else if (DEFINED_VER_MAJOR != C_MajorNum) {
+        }
+    } else {
+        if ( P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
+            if (Global::blnDebugMode) {printf("Software Status outdated.\n");}
+            getchar();
+            return NEWCONFIG;
+        }
+    }
+
+    if (DEFINED_VER_MAJOR != C_MajorNum) {
         if (Global::blnDebugMode) {printf("Major number outdated.\n");}
         return NEWCONFIG;
     } else if (DEFINED_VER_MINOR != C_MinorNum) {
@@ -90,6 +101,7 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
         if (Global::blnDebugMode) {printf("Nothing outdated.\n");}
         return USECONFIG;
     }
+    return USECONFIG;
 }
 /**********************************************************************************************************************************************/
 void clsConfig::load(void) {

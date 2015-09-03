@@ -71,6 +71,7 @@ void clsEntity::nextplayer(char death) {
 		}// End logging if
 	}//end for
 
+    /* TODO (xPUREx#9#): Find unicode symbols for each death. */
 	if (CnfgValues.blnLogging) {
         //Write cause of death to log
         switch (death) {
@@ -101,7 +102,6 @@ void clsEntity::nextplayer(char death) {
 		if (uchrPlayerNum >= DEFINED_PLAYERS_PER_GEN) {
 			//If this is the last player add a line to better separate the different generations
 			//in the log file. The line will be as long as the longest possible string of directions
-
 			for (uint j = 0; j < 2* DEFINED_MAX_PLAYER_STEPS + 42; j++) {fprintf(logFile, "=");}
 			fprintf(logFile, "\n");
 		} //End of if last gen player
@@ -234,7 +234,6 @@ void clsEntity::allocateMonsters(uchar amount) {
 /**********************************************************************************************************************************************/
 MNSTR clsEntity::getMonster(uchar num) {
 	MNSTR tempMNSTR;
-
 	tempMNSTR.location.x = pmstMonsters[num].location.x;
 	tempMNSTR.location.y = pmstMonsters[num].location.y;
 	tempMNSTR.living = pmstMonsters[num].living;
@@ -243,7 +242,6 @@ MNSTR clsEntity::getMonster(uchar num) {
 }
 /**********************************************************************************************************************************************/
 void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
-
 	pmstMonsters[num].location.x = MonsterSet.location.x;
 	pmstMonsters[num].location.y = MonsterSet.location.y;
 	pmstMonsters[num].living = MonsterSet.living;
@@ -261,11 +259,8 @@ void clsEntity::setPlayer(LOC Place) {
 /**********************************************************************************************************************************************/
 char clsEntity::doPlayerStep(uint stepnum, char stage) {
     char chrPlayerStatus;
-
     chrPlayerStatus = Global::Map.move(plyPlayer.direction[stepnum]);
     getFitness();
-
-    //if (chrPlayerStatus != statusLiving) {return chrPlayerStatus;}
     //Do some checks to see if player is at the end of their inputs and change chrPlayerStatus to dead if they are.
     if (stage == stageFirst && stepnum >= Global::Cnfg.getvalues(cnfgFirstGen) - 1 ) {chrPlayerStatus = deathInputs;}
     else if (stage == stageGrowth && stepnum >= uintGenSteps + Global::Cnfg.getvalues(cnfgGenIncrease) - 1) {chrPlayerStatus = deathInputs;}
@@ -276,7 +271,6 @@ char clsEntity::doPlayerStep(uint stepnum, char stage) {
         //for (uint j = step; j < DEFINED_MAX_PLAYER_STEPS; j++) {plyPlayer.direction[j] = dirNone;}
         nextplayer(chrPlayerStatus);
     }
-
     return chrPlayerStatus;
 }
 /**********************************************************************************************************************************************/

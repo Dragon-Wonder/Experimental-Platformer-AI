@@ -8,8 +8,6 @@
                            Consider hiring someone? */
 /**********************************************************************************************************************************************************************/
 clsScreen::clsScreen() {
-    //width = Global::Config.values.uintScreenWidth;
-    //height = Global::Config.values.uintScreenHeight;
     if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
                                                     //useful so if show map is disabled you don't need the images folder.
         //Figure out screen size
@@ -149,8 +147,8 @@ clsScreen::clsScreen() {
             blnMessageFont = true;
         }
 
-        Black = {0, 0, 0}; //Make the color black for fonts
-        White = {255, 255, 255}; //Make the color white for fonts
+        Black = {0, 0, 0, 0}; //Make the color black for fonts
+        White = {255, 255, 255, 0}; //Make the color white for fonts
 
         writemessage();
         update();

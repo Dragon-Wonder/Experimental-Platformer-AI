@@ -35,10 +35,10 @@ If you have any questions or a suggestions or improvement please feel free to le
 
 ### SDL Library
 
-In order to run the program properly you will need to download SDL2-2.0.4 or higher (SDL-2.0.3 has issues that cause the program not to run correctly. You NEED 2.0.4). 
+In order to run the program properly you will need to download SDL2-2.0.3 or higher. 
 You will also need SDL2 TTF library, and SDL2 Images library
 
-A link for SDL2 can be found [here] (https://www.libsdl.org/tmp/download-2.0.php).
+A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
 
 A link for SDL2 TTF can be found [here] (https://www.libsdl.org/projects/SDL_ttf/).
 
@@ -91,8 +91,6 @@ sudo apt-get install libsdl2-dev
 sudo apt-get install libsdl2-ttf-dev
 sudo apt-get install libsdl2-image-dev
 ```
-
-Please note, that the above method will only give you SDL 2.0.3 which has an issue with the bmp files. If you want it to work you will have to manually install SDL 2.0.4 from the link above or wait for the complete release of SDL 2.0.4.
 
 ### IOSX
 
