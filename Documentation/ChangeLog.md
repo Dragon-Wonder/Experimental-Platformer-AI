@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.2] - 2015-09-04
+## [4.1.2] - 2015-09-04
 
 ### Fixed
 

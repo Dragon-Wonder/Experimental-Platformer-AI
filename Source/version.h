@@ -20,11 +20,11 @@
 //Don't forget to increment the build number before each build
 #define DEFINED_VER_RC_FILEVERSION 4,1,2,10
 #define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 2, 10\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.1.2-rc.1"
+#define DEFINED_VER_FULLVERSION_STRING  "4.1.2"
 
 //Software Status
-#define DEFINED_VER_STATUS 	"Release Candidate"
-#define DEFINED_VER_STATUS_SHORT  "rc"
+#define DEFINED_VER_STATUS 	"Release"
+#define DEFINED_VER_STATUS_SHORT  "r"
 
 /*
 Software Status can be the following:
