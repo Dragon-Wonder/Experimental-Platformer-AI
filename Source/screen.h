@@ -3,7 +3,7 @@
 /**********************************************************************************************************************************************************************/
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_TTF.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <cstdio>
 /**********************************************************************************************************************************************/
@@ -12,11 +12,15 @@
 #if defined(_WIN32) ||defined(_WIN64)
     #define DEFINED_DEFAULT_IMAGE_PATH ".\\Images\\"
     #define DEFINED_MESSAGE_FONT "C:\\Windows\\Fonts\\Arial.ttf"
-#elif defined(__unix__) || defined(__CYGWIN__) || defined(__linux__)
+#elif defined(__unix__) || defined(__linux__)
     #define DEFINED_DEFAULT_IMAGE_PATH "./Images/"
-    #define DEFINED_MESSAGE_FONT "/usr/share/fonts/truetype/arial.ttf"
+    #define DEFINED_MESSAGE_FONT "/usr/share/fonts/truetype/freefont/FreeMono.ttf"
+#elif defined(__CYGWIN__)
+    #define DEFINED_DEFAULT_IMAGE_PATH "./Images/"
+    #define DEFINED_MESSAGE_FONT "C:/Windows/Fonts/Arial.ttf"
 #else
     #define DEFINED_DEFAULT_IMAGE_PATH "OS NOT SUPPORTED!"
+    #define DEFINED_MESSAGE_FONT "OS NOT SUPPORTED!"
 #endif // defined OS
 /**********************************************************************************************************************************************************************/
 class clsScreen {
@@ -34,6 +38,7 @@ class clsScreen {
 
 
     private:
+        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
         SDL_Texture *player;
         SDL_Texture *monster;
         SDL_Texture *wall;
@@ -55,6 +60,7 @@ class clsScreen {
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
         //are closed
+        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
         bool blnWindow;
         bool blnRenderer;
         bool blnSky;
@@ -68,6 +74,7 @@ class clsScreen {
         bool blnMessageFont;
 
         SDL_Texture* loadIMG(std::string);
+        SDL_Texture* loadERROR(void);
         void error(void);
 
         SDL_Color Black;

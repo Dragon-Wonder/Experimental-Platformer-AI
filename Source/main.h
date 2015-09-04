@@ -23,7 +23,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define DEFINED_GOAL_FPS 15
+#define DEFINED_GOAL_FPS 30
 
 //The most steps a single player can take
 #define DEFINED_MAX_PLAYER_STEPS 1000

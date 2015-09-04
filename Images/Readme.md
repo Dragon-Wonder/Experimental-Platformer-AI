@@ -16,11 +16,13 @@ This picture represents the coins of the game.
 
 The coin itself is a Mario Coin. But the image was designed by [Sandro Pereira] (http://sandrodcpereira.deviantart.com/?rnrd=50936). You can find the original [here] (http://findicons.com/icon/423492/retro_coin).
 
-### Error.png
+### Error.xpm
 
 This picture is used if an unknown tile is on the map.
 
 This picture was created by [Hopstarter](http://hopstarter.deviantart.com/) you can find the original [here] (http://www.iconarchive.com/show/button-icons-by-hopstarter/Button-Close-icon.html).
+
+The image was converted to an xpm using GIMP to allow the image to be embedded into the program so that it can always load.
 
 ### Monster.png
 

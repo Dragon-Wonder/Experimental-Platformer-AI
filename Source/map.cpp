@@ -4,9 +4,10 @@
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
-/* TODO (GamerMan7799#9#): Do away with a set array that holds the map information; instead make things more dynamic so
-   that movement will be changed to be velocity based as opposed to moving one cell at a time. This is of course because
-   we are using SDL. It will be alot of work to do this; so we should hold off until v5.0.0 */
+/* TODO (GamerMan7799#9#): Have Monster and player movements based off of velocity instead of set cells. Every
+                           update would calculate how far they go based on time that has passed (like I did for the Cannon Simulation).
+                           Inputs will add / subtract velocities. I will first have to figure out how to detect where tile bounding boxes are.
+                           It will be a lot of work will likely be part of the next major release v5.0.0*/
 /**********************************************************************************************************************************************/
 clsMap::clsMap() {
 	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}

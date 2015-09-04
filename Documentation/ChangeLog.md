@@ -3,16 +3,39 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [4.1.2] - 2015-09-04
+
+### Fixed
+
+* VSnyc bug
+* Screen being jumpy as the player moves (screen is locked on the first 35 spaces until 
+	player goes to the 36th spot then it will be locked on the next 35 spaces, and so on.)
+* Font loading issue on Cygwin
+
+### Added
+
+* Player can now to nothing! Wow!
+
+### Changed
+
+* Error image is now embedded so that even if it cannot load images; it will show the error pictures instead.
+* If font cannot be loaded, messages won't appear instead of program closing
+
+
+## Old versions
+
+```
+
 ## [4.1.1] - 2015-09-03
 
 ### Fixed
 
 * A bug with screen height being linked to player height causing screen to be a bit strange.
 
+### Note
 
-## Old versions
+* In this release I accidently left DEFINED_VER_STATUS as "Alpha" which means that the config file will always be replaced. 
 
-```
 
 ## [4.1.0] - 2015-09-03
 

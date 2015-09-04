@@ -25,7 +25,7 @@
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
+					<Add option="-pg" />
 				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="-DDEFINED_BUILD_MODE_PRIVATE" />
@@ -53,8 +53,8 @@
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
 			<Add library="SDL2" />
-			<Add library="SDL2_TTF" />
-			<Add library="SDL2_Image" />
+			<Add library="SDL2_ttf" />
+			<Add library="SDL2_image" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
 		<Unit filename="../Documentation/ChangeLog.md">
@@ -92,6 +92,7 @@
 		</Unit>
 		<Unit filename="../Source/entity.h" />
 		<Unit filename="../Source/globals.h" />
+		<Unit filename="../Source/image_error.xpm" />
 		<Unit filename="../Source/main.cpp">
 			<Option weight="0" />
 		</Unit>
