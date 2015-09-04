@@ -3,6 +3,14 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## UNRELEASED [4.1.3] - 2015-09-04
+
+
+
+## Old versions
+
+```
+
 ## [4.1.2] - 2015-09-04
 
 ### Fixed
@@ -22,9 +30,6 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * If font cannot be loaded, messages won't appear instead of program closing
 
 
-## Old versions
-
-```
 
 ## [4.1.1] - 2015-09-03
 
