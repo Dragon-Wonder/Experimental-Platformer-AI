@@ -12,10 +12,7 @@
 #include "screen.h"
 /**********************************************************************************************************************************************/
 //General Todos
-// TODO (GamerMan7799#9#): Clean up the code since move start moved to main.
-/* TODO (GamerMan7799#5#): Consider replacing rand / srand with another form of random generaters
-							so we don't need cstdlib anymore */
-// TODO (xPUREx#5#): Add a short message the varies with the Software status (ex warning if using a beta or alpha)
+// TODO (xPUREx#2#): Add a short message the varies with the Software status (ex warning if using a beta or alpha)
 /**********************************************************************************************************************************************/
 //Globals
 namespace Global {
@@ -40,129 +37,86 @@ int main(int argc, char *argv[]) {
 	Global::Cnfg.Check(); //Load the config file's values
 	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 
+    //Put all of the config values into CnfgValues for easier reference
     Configures CnfgValues;
 	CnfgValues = Global::Cnfg.getvalues();
 
     clsScreen Screen; //create the screen, here so it is always called
     if (!CnfgValues.blnShowMap) {Screen.~clsScreen();} //deconstruct the screen if we aren't updating the screen.
-
+    //check if there was an error creating the SDL window
+    //exit program if there was
     if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
-
 	//Seed rand as defined in the config options.
 	if (CnfgValues.blnAppendTime) {srand(time(NULL) + CnfgValues.uintSeed);}
 	else {srand(CnfgValues.uintSeed);}
-
+    //Load the base map by locating the monster and player starting locations
 	Global::Map.load();
 	if (Global::blnDebugMode) {printf("Map loaded\n");}
+    //Check if there was an error loading map (usually with monster allocation)
+    //exit program if there was.
 	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
+	//Place base map back onto map
 	Global::Map.restart();
 	if (Global::blnDebugMode) {printf("Map Restarted\n");}
+    //Check if there was an error restarting map (usually with monsters)
+    //exit program if there was.
 	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
-	//Global::Map.show();
-	//getchar();
-
     //Starts the main part of the program
 	//that will loop through each generation
-
-	if (CnfgValues.blnLogging) {/*Open log file to clear it*/ Global::Enty.logFile = fopen(DEFINED_LOG_FILE_NAME,"w"); fclose(Global::Enty.logFile);}
-
 	char chrPlayerStatus = 0;
-	Global::Enty.uintGenSteps = 0;
-	Global::Enty.uchrGenNum = 1;
-
 	//First Generation
-	for (Global::Enty.uchrPlayerNum = 0; Global::Enty.uchrPlayerNum < DEFINED_PLAYERS_PER_GEN; Global::Enty.uchrPlayerNum++) {
-		Global::Enty.makeplayer();
+	for (uint i = 0; i < DEFINED_PLAYERS_PER_GEN; i++) {
+		Global::Enty.newplayer();
 		for (uint step = 0; step < CnfgValues.uintFirstGen; step++) {
-			chrPlayerStatus = Global::Map.move(Global::Enty.plyPlayer.direction[step]);
-			Global::Enty.getFitness();
-
-			if (CnfgValues.blnShowMap) {Screen.update();}
-			if (chrPlayerStatus == DEAD) {
-				//If the player dies clear the rest of their directions (disabled) and end the loop.
-				//for (uint j = step; j < Global::Cnfg.values.uintFirstGen; j++) {plyPlayer.direction[j] = dirNone;}
-				step = CnfgValues.uintFirstGen;
-				if (CnfgValues.blnShowMap) {Screen.playerDeath();}
-			} //end if dead
+            chrPlayerStatus = Global::Enty.doPlayerStep(step, stageFirst);
+			if (chrPlayerStatus != statusLiving) {
+                if (CnfgValues.blnShowMap) {Screen.playerDeath();}
+                step = DEFINED_MAX_PLAYER_STEPS; //Forces for loop to stop
+                Global::Map.restart();
+            } else {if (CnfgValues.blnShowMap) {Screen.update();}}
 		} //End for steps
-		Global::Enty.nextplayer();
 		if (CnfgValues.blnShowMap) {Screen.update();}
 	}//end for first gen
-
-	Global::Enty.getBest();
-	if(!(CnfgValues.blnShowMap)) {
-		printf("Best Players are:\n");
-		for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",Global::Enty.genBestPlayers[k].fitness);}
-		if (Global::blnDebugMode) {getchar();}
-	}
-
-	Global::Enty.uintGenSteps += CnfgValues.uintFirstGen;
+	Global::Enty.doNextGeneration(stageFirst);
 
 	//Growth Generation
 	while (Global::Enty.uintGenSteps + CnfgValues.uintGenIncrease <= DEFINED_MAX_PLAYER_STEPS) {
-		Global::Enty.uchrGenNum ++;
-		for (Global::Enty.uchrPlayerNum = 0; Global::Enty.uchrPlayerNum < DEFINED_PLAYERS_PER_GEN; Global::Enty.uchrPlayerNum++) {
-			Global::Enty.makeplayer();
+		for (uint i = 0; i < DEFINED_PLAYERS_PER_GEN; i++) {
+			Global::Enty.newplayer();
 			for (uint step = 0; step < Global::Enty.uintGenSteps + CnfgValues.uintGenIncrease; step++) {
-				chrPlayerStatus = Global::Map.move(Global::Enty.plyPlayer.direction[step]);
-                Global::Enty.getFitness();
-
-				if (CnfgValues.blnShowMap) {Screen.update();}
-				if (chrPlayerStatus == DEAD) {
-					//If the player dies clear the rest of their directions (disabled) and end the loop.
-					//for (uint j = step; j < uintGenSteps + Global::Cnfg.values.uintGenIncrease; j++) {plyPlayer.direction[j] = dirNone;}
-					step = Global::Enty.uintGenSteps + CnfgValues.uintGenIncrease;
-					if (CnfgValues.blnShowMap) {Screen.playerDeath();}
-				} //end if dead
+				 chrPlayerStatus = Global::Enty.doPlayerStep(step, stageGrowth);
+                if (chrPlayerStatus != statusLiving) {
+                    if (CnfgValues.blnShowMap) {Screen.playerDeath();}
+                    step = DEFINED_MAX_PLAYER_STEPS; //Forces for loop to stop
+                    Global::Map.restart();
+                } else {if (CnfgValues.blnShowMap) {Screen.update();}}
 			}//end for steps
-			Global::Enty.nextplayer();
 			if (CnfgValues.blnShowMap) {Screen.update();}
 		} //end for players
-		Global::Enty.getBest();
-		if(!(CnfgValues.blnShowMap)) {
-			printf("Best Players are:\n");
-			for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",Global::Enty.genBestPlayers[k].fitness);}
-			if (Global::blnDebugMode) {getchar();}
-		}
-		Global::Enty.uintGenSteps += CnfgValues.uintGenIncrease;
+		Global::Enty.doNextGeneration(stageGrowth);
 	}//end while loop
 
 	//Steady Generations
 	for (uint i = 0; i < CnfgValues.uintGensPastGrowth; i++) {
-		Global::Enty.uchrGenNum ++;
-		for (Global::Enty.uchrPlayerNum = 0; Global::Enty.uchrPlayerNum < DEFINED_PLAYERS_PER_GEN; Global::Enty.uchrPlayerNum++) {
-			Global::Enty.makeplayer();
+		for (uint j = 0; j < DEFINED_PLAYERS_PER_GEN; j++) {
+			Global::Enty.newplayer();
 			for (uint step = 0; step < DEFINED_MAX_PLAYER_STEPS; step++) {
-				chrPlayerStatus = Global::Map.move(Global::Enty.plyPlayer.direction[step]);
-                Global::Enty.getFitness();
-
-				if (CnfgValues.blnShowMap) {Screen.update();}
-				if (chrPlayerStatus == DEAD) {
-					//If the player dies clear the rest of their directions (disabled) and end the loop.
-					//for (uint j = step; j < DEFINED_MAX_PLAYER_STEPS; j++) {plyPlayer.direction[j] = dirNone;}
-					step = DEFINED_MAX_PLAYER_STEPS;
-					if (CnfgValues.blnShowMap) {Screen.playerDeath();}
-				} //end if dead
+                chrPlayerStatus = Global::Enty.doPlayerStep(step, stageSteady);
+                if (chrPlayerStatus != statusLiving) {
+                    if (CnfgValues.blnShowMap) {Screen.playerDeath();}
+                    step = DEFINED_MAX_PLAYER_STEPS; //Forces for loop to stop
+                    Global::Map.restart();
+                } else {if (CnfgValues.blnShowMap) {Screen.update();}}
 			}//end for steps
-			Global::Enty.nextplayer();
 			if (CnfgValues.blnShowMap) {Screen.update();}
 		} //end for players
-		Global::Enty.getBest();
-		if(!(CnfgValues.blnShowMap)) {
-			printf("Best Players are:\n");
-			for (uint k = 0; k < DEFINED_BEST_PLAYER_NUM; k++) {printf("%2.3f\n",Global::Enty.genBestPlayers[k].fitness);}
-			if (Global::blnDebugMode) {getchar();}
-		}
-	}//end for loop
+		Global::Enty.doNextGeneration(stageSteady);
+	}//end for gens loop
 
 
 	if (Global::blnDebugMode) {printf("Generations finished.\n");}
-	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
-
     Screen.~clsScreen();
-
 	printf("\nDone\n");
-
 	getchar();
 	return 0;
 }

@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS= -std=c++11 -Os -s
-LNFLAGS= -lSDL2main -lSDL2
+LNFLAGS= -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 source=$(wildcard source/*.cpp)
 HEAD=$(wildcard source/*.h)
 OBJ=$(source:.cpp=.o)

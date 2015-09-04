@@ -18,7 +18,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
@@ -26,7 +25,7 @@
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
+					<Add option="-pg" />
 				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="-DDEFINED_BUILD_MODE_PRIVATE" />
@@ -39,25 +38,23 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Os" />
-					<Add option="-std=c++11" />
 					<Add option="-w" />
 				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="" />
 				</Environment>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
 		<Linker>
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
 			<Add library="SDL2" />
+			<Add library="SDL2_ttf" />
+			<Add library="SDL2_image" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
 		<Unit filename="../Documentation/ChangeLog.md">
@@ -95,6 +92,7 @@
 		</Unit>
 		<Unit filename="../Source/entity.h" />
 		<Unit filename="../Source/globals.h" />
+		<Unit filename="../Source/image_error.xpm" />
 		<Unit filename="../Source/main.cpp">
 			<Option weight="0" />
 		</Unit>

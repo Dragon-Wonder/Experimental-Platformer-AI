@@ -12,7 +12,7 @@ all the cpps
 /*
 These defines are for the size of the map. The default is 14 high by 217 wide
 You should note that if you change this you have to change the base map under map.h as well to the same
-size or you will most likely run into a lot of issues. Later verisons where you can simply load your own map
+size or you will most likely run into a lot of issues. Later versions where you can simply load your own map
 will likely remove these and dynamically allocate the map size for you.
 */
 #define DEFINED_MAP_HEIGHT 14
@@ -46,7 +46,7 @@ will likely remove these and dynamically allocate the map size for you.
 //How many ticks to complete the level
 //Considering that the "player" does a move every tick
 //This doesn't matter so long as it is greater than DEFINED_MAX_PLAYER_STEPS
-//Will be used when ported to a human verison of the game.
+//Will be used when ported to a human version of the game.
 #define DEFINED_TICK_LIMIT 5000
 
 //How many best players are called at the end of each generation
@@ -58,11 +58,7 @@ will likely remove these and dynamically allocate the map size for you.
 /**********************************************************************************************************************************************/
 //These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
 
-//These ones are used when returning the state of the player after it has been moved
-#define DEAD 'D'
-#define LIVING 'L'
-
-//These are used when checking the verison of the config file.
+//These are used when checking the version of the config file.
 #define NEWCONFIG 'N'
 #define USECONFIG 'U'
 #define PROMPTUSER 'P'
@@ -84,7 +80,7 @@ struct stcGeneration {
 }; //prefix = gen
 
 // Structure for the player, only used for the current player
-// because once they are done the imporant values are placed in
+// because once they are done the important values are placed in
 // the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;

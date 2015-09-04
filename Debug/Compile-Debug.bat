@@ -50,7 +50,7 @@ echo.
 
 ::Complie everything together!
 echo Linking everything together...
-g++ -std=c++11 -L"C:\Program Files (x86)\CodeBlocks\MinGW\lib" -L%~dp0SDL2Stuff\lib -Wall -Wextra -g -DDEFINED_BUILD_MODE_PRIVATE -o PlatformerExperiment-PRIVATE.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0source\screen.o %~dp0Resources\boilerplate.res -pg -lgmon -lmingw32 -lSDL2main -lSDL2
+g++ -std=c++11 -L"C:\Program Files (x86)\CodeBlocks\MinGW\lib" -L%~dp0SDL2Stuff\lib -Wall -Wextra -g -DDEFINED_BUILD_MODE_PRIVATE -o PlatformerExperiment-PRIVATE.exe %~dp0Source\main.o %~dp0source\config.o %~dp0source\map.o %~dp0source\entity.o %~dp0source\tick.o %~dp0source\screen.o %~dp0Resources\boilerplate.res -pg -lgmon -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_TTF
 
 echo. 
 ::Delete all the leftover parts
