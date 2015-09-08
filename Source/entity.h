@@ -22,6 +22,16 @@ enum status { //Status of the player including deaths
     deathStupid, //6, death from hard mode & player going too far left.
     deathGeneric //7, Generic death
 };
+
+enum state { //State of Player or monster (walking, jumping, death, attacking, etc...)
+    stateRest = 0,
+    stateJump,//1
+    stateLeft,//2
+    stateRight,//3
+    stateDuck,//4
+    stateFalling,//5
+    stateDead //6
+};
 /**********************************************************************************************************************************************/
 class clsEntity {
 	//private :

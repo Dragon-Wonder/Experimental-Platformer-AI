@@ -3,8 +3,23 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.3] - 2015-09-04
+## UNRELEASED [4.1.3] - 2015-09-08
 
+### Added
+
+* An edge detector (testing the water with it)
+* Some states to monsters and players (this is mostly for later versions)
+
+### Changed
+
+* Clock now runs off of seconds instead of ticks
+* Screen Loaded Boolens now grouped together
+* Colors now grouped together
+* Textures now grouped together
+
+### Fixed
+
+* Issue with -s, -Os, or -O3 enabled during complie
 
 
 ## Old versions

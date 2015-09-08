@@ -21,6 +21,7 @@ clsEntity::clsEntity() {
 	plyPlayer.location.y = 11u;
 	plyPlayer.fitness = 0.00f;
 	plyPlayer.score = 0u;
+	plyPlayer.state = stateRest;
 
 	if (Global::Cnfg.getvalues(cnfgLogging) == 1) {/*Open log file to clear it*/ logFile = fopen(DEFINED_LOG_FILE_NAME,"w"); fclose(logFile);}
 }
@@ -44,6 +45,7 @@ void clsEntity::nextplayer(char death) {
 
 	plyPlayer.fitness = 0.00f;
 	plyPlayer.score = 0;
+	plyPlayer.state = stateRest;
 
 	for (uint i = 0; i < DEFINED_MAX_PLAYER_STEPS; i++) {
 		genPastPlayers[uchrPlayerNum].direction[i] = plyPlayer.direction[i];
@@ -237,7 +239,7 @@ MNSTR clsEntity::getMonster(uchar num) {
 	tempMNSTR.location.x = pmstMonsters[num].location.x;
 	tempMNSTR.location.y = pmstMonsters[num].location.y;
 	tempMNSTR.living = pmstMonsters[num].living;
-	tempMNSTR.movingright = pmstMonsters[num].movingright;
+	tempMNSTR.state = pmstMonsters[num].state;
 	return tempMNSTR;
 }
 /**********************************************************************************************************************************************/
@@ -245,7 +247,7 @@ void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
 	pmstMonsters[num].location.x = MonsterSet.location.x;
 	pmstMonsters[num].location.y = MonsterSet.location.y;
 	pmstMonsters[num].living = MonsterSet.living;
-	pmstMonsters[num].movingright = MonsterSet.movingright;
+	pmstMonsters[num].state = MonsterSet.state;
 }
 /**********************************************************************************************************************************************/
 PLYR clsEntity::getPlayer(void) {
@@ -259,6 +261,27 @@ void clsEntity::setPlayer(LOC Place) {
 /**********************************************************************************************************************************************/
 char clsEntity::doPlayerStep(uint stepnum, char stage) {
     char chrPlayerStatus;
+    switch (plyPlayer.direction[stepnum]) {
+    case dirNone:
+        plyPlayer.state = stateRest;
+        break;
+    case dirDown:
+        plyPlayer.state = stateDuck;
+        break;
+    case dirLeft:
+        plyPlayer.state = stateLeft;
+        break;
+    case dirUp:
+        plyPlayer.state = stateJump;
+        break;
+    case dirRight:
+        plyPlayer.state = stateRight;
+        break;
+    default:
+        plyPlayer.state = stateRest;
+        break;
+    }
+
     chrPlayerStatus = Global::Map.move(plyPlayer.direction[stepnum]);
     getFitness();
     //Do some checks to see if player is at the end of their inputs and change chrPlayerStatus to dead if they are.

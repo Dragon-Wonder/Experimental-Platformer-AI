@@ -8,14 +8,6 @@
 /**********************************************************************************************************************************************/
 class clsTick {
     public:
-	//private:
-		//Members
-		uchar uchrFPS;
-		ulong ulngSleepTime;
-		uint uClock;
-		clock_t timerStart;
-
-	//public:
 		//Default Constructor
 		clsTick();
 		~clsTick();
@@ -27,6 +19,16 @@ class clsTick {
 
 		void decClock(void); //This is so the clock will decrement even when show map is false.
 		uint getClockTime(void);
+
+    private:
+		//Members
+		uchar uchrFPS;
+		ulong ulngSleepTime;
+		uint uClock;
+		float fClock; //The clock as a floating point, will be converted to uint
+		clock_t timerStart; //The start of the timer since the last pause
+		clock_t clockStart; //the start of the clock
+
 };
 /**********************************************************************************************************************************************/
 #endif

@@ -23,6 +23,40 @@
     #define DEFINED_MESSAGE_FONT "OS NOT SUPPORTED!"
 #endif // defined OS
 /**********************************************************************************************************************************************************************/
+struct stcLoaded { //Holds bools for if stuff is loaded or not
+    bool blnWindow;
+    bool blnRenderer;
+    bool blnSky;
+    bool blnPlayer;
+    bool blnMonster;
+    bool blnWall;
+    bool blnPole;
+    bool blnCoin;
+    bool blnErrortex;
+    bool blnMessage;
+    bool blnMessageFont;
+};
+
+struct stcColors {
+    SDL_Color Black;
+    SDL_Color White;
+};
+
+struct stcTextures {
+    SDL_Texture *player;
+    SDL_Texture *monster;
+    SDL_Texture *wall;
+    SDL_Texture *sky;
+    SDL_Texture *pole;
+    SDL_Texture *coin;
+    SDL_Texture *errortex;
+    SDL_Texture *texmessage;
+};
+
+typedef struct stcLoaded Loaded;
+typedef struct stcColors clrs;
+typedef struct stcTextures TEX;
+/**********************************************************************************************************************************************************************/
 class clsScreen {
     public:
         /** Default constructor */
@@ -38,21 +72,14 @@ class clsScreen {
 
 
     private:
-        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
-        SDL_Texture *player;
-        SDL_Texture *monster;
-        SDL_Texture *wall;
-        SDL_Texture *sky;
-        SDL_Texture *pole;
-        SDL_Texture *coin;
-        SDL_Texture *errortex;
-        SDL_Texture *texmessage;
+        TEX textures;
 
         SDL_Window *win;
         SDL_Renderer *ren;
 
         uint width;
         uint height;
+
         //All the pictures should be the same size,
         //define that size here.
         const uint pic_size = 24;
@@ -60,28 +87,17 @@ class clsScreen {
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
         //are closed
-        /* TODO (GamerMan7799#6#): Group these together somehow. Namespace or Struct */
-        bool blnWindow;
-        bool blnRenderer;
-        bool blnSky;
-        bool blnPlayer;
-        bool blnMonster;
-        bool blnWall;
-        bool blnPole;
-        bool blnCoin;
-        bool blnErrortex;
-        bool blnMessage;
-        bool blnMessageFont;
+        Loaded blnloaded;
 
         SDL_Texture* loadIMG(std::string);
         SDL_Texture* loadERROR(void);
         void error(void);
 
-        SDL_Color Black;
-        SDL_Color White;
+        clrs colors;
 
         TTF_Font *MessageFont;
         void writemessage(void);
+        SDL_Rect detectEdge(SDL_Rect, SDL_Rect);
 };
 /**********************************************************************************************************************************************************************/
 #endif // __MY_SCREEN_HEADER__

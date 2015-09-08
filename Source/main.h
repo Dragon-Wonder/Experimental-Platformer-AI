@@ -23,7 +23,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define DEFINED_GOAL_FPS 30
+#define DEFINED_GOAL_FPS 15
 
 //The most steps a single player can take
 #define DEFINED_MAX_PLAYER_STEPS 1000
@@ -47,7 +47,7 @@ will likely remove these and dynamically allocate the map size for you.
 //Considering that the "player" does a move every tick
 //This doesn't matter so long as it is greater than DEFINED_MAX_PLAYER_STEPS
 //Will be used when ported to a human version of the game.
-#define DEFINED_TICK_LIMIT 5000
+#define DEFINED_TICK_LIMIT 300
 
 //How many best players are called at the end of each generation
 #define DEFINED_BEST_PLAYER_NUM 10
@@ -87,13 +87,14 @@ struct stcPlayer {
 	float fitness;
 	unsigned int score;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
+	unsigned char state;
 }; //prefix = ply
 
 // Structure for the monsters
 struct stcMonster {
 	struct stcLoc location;
 	bool living; //This is checked before trying to move the monster
-	bool movingright; //Keeps track of which direction they are moving
+	unsigned char state; //Keeps track of their state.
 }; //prefix = mst
 
 enum dir {

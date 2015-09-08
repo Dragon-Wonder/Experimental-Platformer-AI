@@ -36,7 +36,7 @@ void clsMap::restart(void) {
 			tempMonster.location.x = pmstBaseMonsters[i].location.x;
 			tempMonster.location.y = pmstBaseMonsters[i].location.y;
 			tempMonster.living = pmstBaseMonsters[i].living;
-			tempMonster.movingright = pmstBaseMonsters[i].movingright;
+			tempMonster.state = pmstBaseMonsters[i].state;
 			Global::Enty.setMonster(i,tempMonster);
 			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
 		}
@@ -62,8 +62,8 @@ char clsMap::move(uchar direction) {
 		if (tempMonster.living) {
 			tempx = tempMonster.location.x;
 			tempy = tempMonster.location.y;
-			if (tempMonster.movingright) {tempx ++;}
-			else {tempx--;}
+			if (tempMonster.state == stateRight) {tempx ++;}
+			else if (tempMonster.state == stateLeft) {tempx--;}
 
 			if (map[tempy][tempx] == tileSpace) {
 				map[tempy][tempMonster.location.x] = tileSpace;
@@ -71,7 +71,10 @@ char clsMap::move(uchar direction) {
 				tempMonster.location.x = tempx;
 			}
 			else if (map[tempy][tempx] == tilePlayer) {return deathMonster;}
-			else if (map[tempy][tempx] == tileWall) {tempMonster.movingright = !(tempMonster.movingright);}
+			else if (map[tempy][tempx] == tileWall) {
+                if (tempMonster.state == stateRight) {tempMonster.state = stateLeft;}
+                else if (tempMonster.state == stateLeft) {tempMonster.state = stateRight;}
+            }
 
 			//Because I don't want to have to deal with monsters falling, if the space below a monster is space
 			//kill the monster.
@@ -94,13 +97,16 @@ char clsMap::move(uchar direction) {
 
 	switch (direction) {
 		case dirLeft :
+		    tempPlayer.state = stateLeft;
 			if (tempx != 0) {tempx --;}
 			break;
 		case dirRight :
+		    tempPlayer.state = stateRight;
 			if (tempx != DEFINED_MAP_WIDTH - 1) {tempx ++;}
 			break;
 		case dirUp :
 			if (map[tempy][tempx] == tileWall) {break;}
+			tempPlayer.state = stateJump;
 			//make sure that the player has enough space to make the jump or the program will attempt to reference a
 			//non-existing array spot (crashing the program). Also note that jumping is consider in negative direction because the top of the
 			//map is considered array spot 0 while the bottom is 13.
@@ -135,8 +141,10 @@ char clsMap::move(uchar direction) {
 
 	Global::Enty.setPlayer(tempPlayer.location);
 
-	if ((tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) || (map[tempPlayer.location.y + 1][tempPlayer.location.x] == tileSpace)) {playerfalling = true;}
-	else {playerfalling = false;}
+	if ((tempPlayer.location.y == DEFINED_MAP_HEIGHT - 1) || (map[tempPlayer.location.y + 1][tempPlayer.location.x] == tileSpace)) {
+        playerfalling = true;
+        tempPlayer.state = stateFalling;
+    } else {playerfalling = false;}
 
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
 	Global::Tick.decClock();
@@ -171,7 +179,7 @@ void clsMap::load(void) {
 					pmstBaseMonsters[0].location.x = x;
 					pmstBaseMonsters[0].location.y = y;
 					pmstBaseMonsters[0].living = true;
-					pmstBaseMonsters[0].movingright = false;
+					pmstBaseMonsters[0].state = stateLeft;
 				} else {
 					//Allocate a temp array to hold the old array + the new monster
 					MNSTR* pTemp = new (std::nothrow) MNSTR[numMonsters];
@@ -188,7 +196,7 @@ void clsMap::load(void) {
 						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
 						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
 						pTemp[i].living = pmstBaseMonsters[i].living;
-						pTemp[i].movingright = pmstBaseMonsters[i].movingright;
+						pTemp[i].state = pmstBaseMonsters[i].state;
 					}
 					//Delete old array as it isn't needed.
 					delete[] pmstBaseMonsters;
@@ -197,7 +205,7 @@ void clsMap::load(void) {
 					pTemp[numMonsters - 1].location.x = x;
 					pTemp[numMonsters - 1].location.y = y;
 					pTemp[numMonsters - 1].living = true;
-					pTemp[numMonsters - 1].movingright = false;
+					pTemp[numMonsters - 1].state = stateLeft;
 
 					//Generate new Base Monster array
 					pmstBaseMonsters = new (std::nothrow) MNSTR[numMonsters];
@@ -212,7 +220,7 @@ void clsMap::load(void) {
 						pmstBaseMonsters[i].location.x = pTemp[i].location.x;
 						pmstBaseMonsters[i].location.y = pTemp[i].location.y;
 						pmstBaseMonsters[i].living = pTemp[i].living;
-						pmstBaseMonsters[i].movingright = pTemp[i].movingright;
+						pmstBaseMonsters[i].state = pTemp[i].state;
 					}
 
 					//Delete Temp Array

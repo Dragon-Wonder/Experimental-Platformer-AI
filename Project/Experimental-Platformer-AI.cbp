@@ -38,8 +38,12 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-w" />
 				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="" />
 				</Environment>

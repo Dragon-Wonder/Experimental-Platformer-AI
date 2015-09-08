@@ -19,9 +19,8 @@ clsTick::clsTick() {
 	leading to the console being really hard to follow.
 	The sleep allows it to look much better.
 
-	The frames per second is also not going to be right because it doesn't account for
-	all the other functions of the program and there is also the rounding. But
-	it should be close enough to not matter.
+	The program will also keep track of how many ticks have passed since the last time it paused;
+	and it will only pause for however much longer it needs to meet the FPS goal.
 	*/
 
 	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
@@ -55,11 +54,14 @@ void clsTick::wait(void) {
 /**********************************************************************************************************************************************/
 void clsTick::resetClock(void) {
 	uClock = DEFINED_TICK_LIMIT;
+	fClock = DEFINED_TICK_LIMIT;
+	clockStart = clock();
 }
 /**********************************************************************************************************************************************/
 void clsTick::decClock(void) {
-    /* TODO (GamerMan7799#5#): Make clock run off of seconds */
-	if (uClock != 0) {uClock--;}
+    fClock = DEFINED_TICK_LIMIT - (clock() - clockStart) / CLOCKS_PER_SEC;
+    if (fClock >= 0.00) { uClock = (uint) roundf(fClock);}
+    else {uClock = 0;}
 }
 /**********************************************************************************************************************************************/
 uint clsTick::getClockTime(void) {
