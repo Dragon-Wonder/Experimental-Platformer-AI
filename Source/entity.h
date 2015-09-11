@@ -20,7 +20,8 @@ enum status { //Status of the player including deaths
     deathFall, //4, Player fell through hole
     deathDecay, //5, death from hard mode & player fitness getting too low.
     deathStupid, //6, death from hard mode & player going too far left.
-    deathGeneric //7, Generic death
+    deathGeneric, //7, Generic death
+    deathError //8, and error happened and the player had to die
 };
 
 enum state { //State of Player or monster (walking, jumping, death, attacking, etc...)
@@ -71,7 +72,8 @@ class clsEntity {
 		void setMonster(uchar, MNSTR);
 
 		PLYR getPlayer(void);
-		void setPlayer(LOC);
+		BPLYR getPlayerBase(void);
+		void setPlayer(BPLYR);
 
 		char doPlayerStep(uint, char);
 		void doNextGeneration(char);

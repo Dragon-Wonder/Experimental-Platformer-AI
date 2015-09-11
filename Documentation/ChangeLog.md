@@ -3,7 +3,23 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.3] - 2015-09-11
+## UNRELEASED [4.2.0] - 2015-09-11
+
+### Added
+
+* Human inputs for game under certain builds
+
+### Changed
+
+* Player and Monster movement is now velcity based.
+
+
+
+## Old versions
+
+```
+
+## [4.1.3] - 2015-09-11
 
 ### Added
 
@@ -22,10 +38,6 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 * Issue with -s, -Os, or -O3 enabled during complie
 
-
-## Old versions
-
-```
 
 ## [4.1.2] - 2015-09-04
 

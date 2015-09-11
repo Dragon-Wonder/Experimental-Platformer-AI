@@ -17,8 +17,10 @@ clsEntity::clsEntity() {
 	uchrPlayerNum = 0;
 	uintGenSteps = 0;
 
-	plyPlayer.location.x = 5u;
-	plyPlayer.location.y = 11u;
+	plyPlayer.location.x = 4 * DEFINED_PIC_SIZE;
+	plyPlayer.location.y = 10 * DEFINED_PIC_SIZE;
+	plyPlayer.vel.x = 0.00;
+	plyPlayer.vel.y = 0.00;
 	plyPlayer.fitness = 0.00f;
 	plyPlayer.score = 0u;
 	plyPlayer.state = stateRest;
@@ -95,6 +97,9 @@ void clsEntity::nextplayer(char death) {
         case deathInputs:
             fprintf(logFile, " I");
             break;
+        case deathError:
+            fprintf(logFile, " E");
+            break;
         default:
             fprintf(logFile, " G");
             break;
@@ -104,7 +109,7 @@ void clsEntity::nextplayer(char death) {
 		if (uchrPlayerNum >= DEFINED_PLAYERS_PER_GEN) {
 			//If this is the last player add a line to better separate the different generations
 			//in the log file. The line will be as long as the longest possible string of directions
-			for (uint j = 0; j < 2* DEFINED_MAX_PLAYER_STEPS + 42; j++) {fprintf(logFile, "=");}
+			for (uint j = 0; j < 2 * DEFINED_MAX_PLAYER_STEPS + 42; j++) {fprintf(logFile, "=");}
 			fprintf(logFile, "\n");
 		} //End of if last gen player
 		fclose(logFile);
@@ -170,14 +175,14 @@ void clsEntity::getFitness(void) {
 	float temp = 0.00f;
 
 	//Get the spot that the player starts at for reference
-	LOC locPlayerBase;
-	locPlayerBase = Global::Map.getbasePlayer();
+	BPLYR bplyPlayerBase;
+	bplyPlayerBase = Global::Map.getbasePlayer();
 
 	temp += (plyPlayer.score) / 250.0;
-	if (plyPlayer.location.x >= locPlayerBase.x) {temp += (5.0/2.0) * (plyPlayer.location.x - locPlayerBase.x);}
-	if (locPlayerBase.y >= plyPlayer.location.y) {temp += (locPlayerBase.y - plyPlayer.location.y) / 4.0;}
-	temp += (plyPlayer.location.x + plyPlayer.location.y) / 6.0;
-	if (plyPlayer.location.x > 204) {temp += 200.0;}
+	if (plyPlayer.location.x >= bplyPlayerBase.location.x) {temp += (0.25) * (plyPlayer.location.x - bplyPlayerBase.location.x);}
+	if (bplyPlayerBase.location.y >= plyPlayer.location.y) {temp += (0.15) * (bplyPlayerBase.location.y - plyPlayer.location.y) ;}
+	temp += (0.05) * (plyPlayer.location.x + plyPlayer.location.y);
+	if (plyPlayer.location.x > (203 * DEFINED_PIC_SIZE) ) {temp += 200.0;}
 	if (Global::Cnfg.getvalues(cnfgHardMode) == 1) {temp -= uintStepNum / 80.0;}
 
 	//In hard mode player fitness is updated every frame, while when not hard mode
@@ -238,6 +243,8 @@ MNSTR clsEntity::getMonster(uchar num) {
 	MNSTR tempMNSTR;
 	tempMNSTR.location.x = pmstMonsters[num].location.x;
 	tempMNSTR.location.y = pmstMonsters[num].location.y;
+	tempMNSTR.vel.x = pmstMonsters[num].vel.x;
+	tempMNSTR.vel.y = pmstMonsters[num].vel.y;
 	tempMNSTR.living = pmstMonsters[num].living;
 	tempMNSTR.state = pmstMonsters[num].state;
 	return tempMNSTR;
@@ -246,6 +253,8 @@ MNSTR clsEntity::getMonster(uchar num) {
 void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
 	pmstMonsters[num].location.x = MonsterSet.location.x;
 	pmstMonsters[num].location.y = MonsterSet.location.y;
+    pmstMonsters[num].vel.x = MonsterSet.vel.x;
+	pmstMonsters[num].vel.y = MonsterSet.vel.y;
 	pmstMonsters[num].living = MonsterSet.living;
 	pmstMonsters[num].state = MonsterSet.state;
 }
@@ -254,9 +263,11 @@ PLYR clsEntity::getPlayer(void) {
 	return plyPlayer;
 }
 /**********************************************************************************************************************************************/
-void clsEntity::setPlayer(LOC Place) {
-	plyPlayer.location.x = (uint) Place.x;
-	plyPlayer.location.y = (uint) Place.y;
+void clsEntity::setPlayer(BPLYR baseplayer) {
+	plyPlayer.location.x = (uint) baseplayer.location.x;
+	plyPlayer.location.y = (uint) baseplayer.location.y;
+	plyPlayer.vel.x = baseplayer.vel.x;
+	plyPlayer.vel.y = baseplayer.vel.y;
 }
 /**********************************************************************************************************************************************/
 char clsEntity::doPlayerStep(uint stepnum, char stage) {
@@ -311,5 +322,12 @@ void clsEntity::doNextGeneration(char stage) {
     if (stage == stageFirst) {uintGenSteps += Global::Cnfg.getvalues(cnfgFirstGen);}
     else if (stage == stageGrowth) {uintGenSteps += Global::Cnfg.getvalues(cnfgGenIncrease);}
     else {uintGenSteps = DEFINED_MAX_PLAYER_STEPS;}
+}
+/**********************************************************************************************************************************************/
+BPLYR clsEntity::getPlayerBase() {
+    BPLYR temp;
+    temp.location = plyPlayer.location;
+    temp.vel = plyPlayer.vel;
+    return temp;
 }
 /**********************************************************************************************************************************************/

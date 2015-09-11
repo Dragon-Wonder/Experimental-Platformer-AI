@@ -100,39 +100,33 @@ clsScreen::~clsScreen() {
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::update(void) {
-    PLYR tempPlayer = Global::Enty.getPlayer();
-    uint Max_Height, Max_Width; //Values for how far on the map the screen should render
-    uint x_start; //place where x starts at
-    Max_Height = (uint) (height/pic_size);
-    Max_Width = (uint) (width/pic_size);
-
-    //This will cause the screen to move in different segments at a time.
-    x_start = (uint) (round (tempPlayer.location.x / width) ) * width;
-
     //clear renderer
     SDL_RenderClear(ren);
-
     //copy sky to cover entire screen.
     SDL_RenderCopy(ren,textures.maptiles,&clips[tileSpace],NULL);
-
     SDL_Rect dst;
+    //Set the pic size
+    dst.w = dst.h = pic_size;
 
-    //Start updating texture placements
-    for (uint y = 0; (y < (Max_Height)) && (y < DEFINED_MAP_HEIGHT); y++) {
-        for (uint x = x_start; (x < (x_start + Max_Width)) && (x < DEFINED_MAP_WIDTH); x++) {
+    PLYR tempPlayer = Global::Enty.getPlayer();
+    stcLoc offset; //how much the screen is offset by
+
+    offset.x = (uint) (round( tempPlayer.location.x / width ) * width);
+    offset.y = (uint) (round( tempPlayer.location.y / height) * height);
+
+    //Place the map parts where they belong.
+    for (uint y = 0; (y < DEFINED_MAP_HEIGHT); y++) {
+        for (uint x = 0; (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
-            dst.x = (x - x_start) * pic_size;
-            dst.y = y * pic_size;
-            //Query a texture to get its width and height
-            //Since all the textures are the same we'll use the error one since the program would
-            //not have gotten this far if that failed load.
-            SDL_QueryTexture(textures.errortex,NULL,NULL, &dst.w, &dst.h);
+            dst.x = (x * pic_size) - (offset.x / pic_size);
+            dst.y = (y * pic_size) - (offset.y / pic_size);
 
+            //Load the map.
             switch( Global::Map.getMapCell(x,y) ) { //Use this to make sure we aren't try to load a non-existing part
             case tileSpace:
             case tileCoin:
-            case tileMonster:
-            case tilePlayer:
+            //case tileMonster:
+            //case tilePlayer:
             case tilePole:
             case tileWall:
                 SDL_RenderCopy(ren, textures.maptiles, &clips[Global::Map.getMapCell(x,y)], &dst);
@@ -144,6 +138,21 @@ void clsScreen::update(void) {
             } //end switch
         } //end for x
     } //end for y
+
+    //Now place the player and monsters
+    dst.x = tempPlayer.location.x - offset.x; //Fix this later, doesn't account for screen shifts but I want to work on getting velocity working
+    dst.y = tempPlayer.location.y - offset.y;
+
+    SDL_RenderCopy(ren, textures.maptiles, &clips[tilePlayer], &dst);
+    MNSTR tempMonster;
+    for (uchar i = 0; i < Global::Map.numMonsters; i++) {
+        tempMonster = Global::Enty.getMonster(i);
+        if (tempMonster.living) {
+            dst.x = (tempMonster.location.x - offset.x);
+            dst.y = (tempMonster.location.y - offset.y);
+            SDL_RenderCopy(ren, textures.maptiles, &clips[tileMonster], &dst);
+        } //end if living
+    } // end for monsters
 
     //Write messages only if Message font is loaded.
     if (blnloaded.blnMessageFont) {
@@ -266,21 +275,18 @@ void clsScreen::playerDeath(void) {
 	//the whole thing happens in 5 frames.
 
     /* TODO (GamerMan7799#1#): Add tileDeadPlayer with its own image to better tell when the death animation is happening */
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
+	BPLYR tempPlayer;
+	tempPlayer = Global::Enty.getPlayerBase();
 	//show();
 	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
-	uint tempy = tempPlayer.location.y;
 	for (uchar i = 0; i < 5; i++) {
-		if (i < 3) {
-			if (tempy != DEFINED_MAP_HEIGHT) { tempy--;}
-		} else {
-			if (tempy < DEFINED_MAP_HEIGHT - 2) {tempy+=2;}
-		}
-        Global::Map.setMapCell(tempPlayer.location.x, tempPlayer.location.y,tileSpace);
-        Global::Map.setMapCell(tempPlayer.location.x, tempy, tilePlayer);
+		if (i < 3) { tempPlayer.vel.y -= Global::Physics::fIncVelocity; }
+        else { tempPlayer.vel.y += 2 * Global::Physics::fIncVelocity; }
 
-        tempPlayer.location.y = tempy;
+        tempPlayer.location.x += tempPlayer.vel.x * (1 / DEFINED_GOAL_FPS);
+        tempPlayer.location.y += tempPlayer.vel.y * (1 / DEFINED_GOAL_FPS);
+
+        Global::Enty.setPlayer(tempPlayer);
 		update();
 	}
 }
@@ -381,7 +387,7 @@ void clsScreen::writemessage(void) {
     SDL_FreeSurface(surmessage);
 }
 /**********************************************************************************************************************************************************************/
-SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
+/*SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
     //This will check if the moving tex is going to overlap the other texture.
     //if it is, it will return a new rectangle ending of the edge.
 
@@ -404,7 +410,7 @@ SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
     } else {
         return movingtex;
     }
-}
+}*/
 /**********************************************************************************************************************************************************************/
 void clsScreen::set_clips() {
     //Set all the locations of the specific tiles in the tiles.png

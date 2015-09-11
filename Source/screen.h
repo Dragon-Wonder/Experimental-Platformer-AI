@@ -72,7 +72,7 @@ class clsScreen {
 
         //All the pictures should be the same size,
         //define that size here.
-        const uint pic_size = 24;
+        const uint pic_size = DEFINED_PIC_SIZE;
 
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
@@ -89,7 +89,7 @@ class clsScreen {
 
         TTF_Font *MessageFont;
         void writemessage(void);
-        SDL_Rect detectEdge(SDL_Rect, SDL_Rect);
+        //SDL_Rect detectEdge(SDL_Rect, SDL_Rect);
 };
 /**********************************************************************************************************************************************************************/
 #endif // __MY_SCREEN_HEADER__

@@ -34,10 +34,10 @@ namespace Global {
 
     namespace Physics { //Constants that are gonna be used for physics in later versions
 	    const float fGravityAcceleration = 9.81;
-	    const float fAirFriction = 1.0;
-	    const float fGroundFriction = 1.0;
-	    const float fMaxVelocity = 10.2;
-	    const float fIncVelocity = 0.7; //How much velocity increments by for an input
+	    const float fFriction = 0.32; //factor by which velocity will be decreased by.
+	    const float fMaxVelocity = 352.5;
+	    const float fIncVelocity = 56.94; //How much velocity increments by for an input
+	    const float fRecoil = -0.95;
 	};
 };
 /**********************************************************************************************************************************************/
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
     //check if there was an error creating the SDL window
     //exit program if there was
     if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
+#ifndef DEFINED_BUILD_HUMAN
 	//Seed rand as defined in the config options.
 	if (CnfgValues.blnAppendTime) {srand(time(NULL) + CnfgValues.uintSeed);}
 	else {srand(CnfgValues.uintSeed);}
@@ -123,6 +124,53 @@ int main(int argc, char *argv[]) {
 
 
 	if (Global::blnDebugMode) {printf("Generations finished.\n");}
+#else
+    //This is the human side of the game,
+    //just for debugging stuff
+    bool quit = false;
+    SDL_Event event;
+    char direction;
+
+    Global::Map.load();
+    Global::Map.restart();
+    while (!quit) {
+        Screen.update();
+        if (SDL_PollEvent( &event )) {
+            if (event.type == SDL_QUIT) {quit = true;}
+            else if (event.type == SDL_KEYDOWN) {
+                //Key has been pressed figure out what to do
+                switch (event.key.keysym.sym) {
+                case SDLK_UP:
+                case SDLK_w:
+                    direction = dirUp;
+                    break;
+                case SDLK_DOWN:
+                case SDLK_s:
+                    direction = dirDown;
+                    break;
+                case SDLK_RIGHT:
+                case SDLK_d:
+                    direction = dirRight;
+                    break;
+                case SDLK_LEFT:
+                case SDLK_a:
+                    direction = dirLeft;
+                    break;
+                case SDLK_q:
+                case SDLK_ESCAPE:
+                    quit = true;
+                    break;
+                case SDLK_r:
+                    Global::Map.restart();
+                    break;
+                } //end switch
+            } //end if key down
+        } //end if event
+        Global::Map.move(direction);
+        direction = dirNone;
+    } //end while not quit
+#endif
+
     Screen.~clsScreen();
 	printf("\nDone\n");
 	getchar();

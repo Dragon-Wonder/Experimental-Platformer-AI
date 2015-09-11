@@ -23,7 +23,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define DEFINED_GOAL_FPS 15
+#define DEFINED_GOAL_FPS 60
 
 //The most steps a single player can take
 #define DEFINED_MAX_PLAYER_STEPS 1000
@@ -53,6 +53,12 @@ will likely remove these and dynamically allocate the map size for you.
 
 //How many different map tiles there are (used to make the array for clipping)
 #define DEFINED_NUM_MAP_TILES 6
+
+//Size of each tile in pixels
+#define DEFINED_PIC_SIZE 24
+
+//if human inputs are allowed or not
+#define DEFINED_BUILD_HUMAN
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
 #define DEFINED_CONFIG_FILE_NAME "Config.ini"
@@ -75,6 +81,11 @@ struct stcLoc {
 	unsigned int y;
 }; //prefix = loc
 
+struct stcVel {
+    float x;
+    float y;
+}; //prefix = vel
+
 // Structure for the storage of a generation
 struct stcGeneration {
 	float fitness;
@@ -86,17 +97,22 @@ struct stcGeneration {
 // the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;
-	struct stcLoc vel;
+	struct stcVel vel;
 	float fitness;
 	unsigned int score;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
 	unsigned char state;
 }; //prefix = ply
 
+struct stcBasePlayer {
+	struct stcLoc location;
+	struct stcVel vel;
+}; //prefix = bply
+
 // Structure for the monsters
 struct stcMonster {
 	struct stcLoc location;
-	struct stcLoc vel;
+	struct stcVel vel;
 	bool living; //This is checked before trying to move the monster
 	unsigned char state; //Keeps track of their state.
 }; //prefix = mst
@@ -113,6 +129,8 @@ typedef struct stcGeneration GEN;
 typedef struct stcPlayer PLYR;
 typedef struct stcMonster MNSTR;
 typedef struct stcLoc LOC;
+typedef struct stcVel VEL;
+typedef struct stcBasePlayer BPLYR;
 
 //Ahh laziness at its finest
 typedef unsigned char uchar;

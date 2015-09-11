@@ -21,10 +21,10 @@ namespace Global {
 	extern clsTick Tick;
 	namespace Physics { //Constants that are gonna be used for physics in later versions
 	    extern const float fGravityAcceleration;
-	    extern const float fAirFriction;
-	    extern const float fGroundFriction;
+	    extern const float fFriction;
 	    extern const float fMaxVelocity;
 	    extern const float fIncVelocity; //How much velocity increments by for an input
+	    extern const float fRecoil; //Recoil for when hitting an object
 	};
 };
 /**********************************************************************************************************************************************/
