@@ -63,12 +63,7 @@ FolderName\SDL2_image.dll
 FolderName\libfreetype-6.dll
 FolderName\zlib1.dll
 FolderName\libpng16-16.dll
-FolderName\Images\coin.png
-FolderName\Images\monster.png
-FolderName\Images\player.png
-FolderName\Images\pole.png
-FolderName\Images\sky.png
-FolderName\Images\wall.png
+FolderName\Images\tiles.png
 ```
 
 ### Windows

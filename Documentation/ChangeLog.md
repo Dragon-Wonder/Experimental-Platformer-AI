@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.1.3] - 2015-09-08
+## UNRELEASED [4.1.3] - 2015-09-11
 
 ### Added
 
@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Screen Loaded Boolens now grouped together
 * Colors now grouped together
 * Textures now grouped together
+* All map tile are now a single image with clipping
 
 ### Fixed
 

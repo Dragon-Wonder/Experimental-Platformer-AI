@@ -43,14 +43,16 @@ will likely remove these and dynamically allocate the map size for you.
 //The points the player gets for killing a monster
 #define DEFINED_MONS_KILL_POINTS 500
 
-//How many ticks to complete the level
+//How many seconds to complete the level
 //Considering that the "player" does a move every tick
-//This doesn't matter so long as it is greater than DEFINED_MAX_PLAYER_STEPS
 //Will be used when ported to a human version of the game.
 #define DEFINED_TICK_LIMIT 300
 
 //How many best players are called at the end of each generation
 #define DEFINED_BEST_PLAYER_NUM 10
+
+//How many different map tiles there are (used to make the array for clipping)
+#define DEFINED_NUM_MAP_TILES 6
 /**********************************************************************************************************************************************/
 //These are the names for some files used. Change them as you will.
 #define DEFINED_CONFIG_FILE_NAME "Config.ini"
@@ -84,6 +86,7 @@ struct stcGeneration {
 // the Generation structure.
 struct stcPlayer {
 	struct stcLoc location;
+	struct stcLoc vel;
 	float fitness;
 	unsigned int score;
 	unsigned char direction[DEFINED_MAX_PLAYER_STEPS];
@@ -93,6 +96,7 @@ struct stcPlayer {
 // Structure for the monsters
 struct stcMonster {
 	struct stcLoc location;
+	struct stcLoc vel;
 	bool living; //This is checked before trying to move the monster
 	unsigned char state; //Keeps track of their state.
 }; //prefix = mst

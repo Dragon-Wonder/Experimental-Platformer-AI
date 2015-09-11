@@ -31,6 +31,14 @@ namespace Global {
 	clsEntity Enty;
 	clsMap Map;
 	clsTick Tick;
+
+    namespace Physics { //Constants that are gonna be used for physics in later versions
+	    const float fGravityAcceleration = 9.81;
+	    const float fAirFriction = 1.0;
+	    const float fGroundFriction = 1.0;
+	    const float fMaxVelocity = 10.2;
+	    const float fIncVelocity = 0.7; //How much velocity increments by for an input
+	};
 };
 /**********************************************************************************************************************************************/
 int main(int argc, char *argv[]) {

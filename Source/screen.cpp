@@ -20,8 +20,10 @@ clsScreen::clsScreen() {
         //Set all the booleans to false
         blnloaded.blnWindow = false;
         blnloaded.blnRenderer = false;
-        blnloaded.blnSky = blnloaded.blnPlayer = blnloaded.blnMonster = blnloaded.blnWall = blnloaded.blnPole = blnloaded.blnCoin = blnloaded.blnErrortex = false;
+        blnloaded.blnMapTiles = blnloaded.blnErrortex = false;
         bln_SDL_started = false;
+
+        set_clips();
 
         //Start SDL
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -68,50 +70,8 @@ clsScreen::clsScreen() {
             if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
         }
 
-        textures.errortex = loadERROR();
+        loadTextures();
         if (bln_SDL_started == false) {return;}
-        else {
-            blnloaded.blnErrortex = true;
-            if (Global::blnDebugMode) {printf("Error loading successful\n");}
-        }
-
-        std::string path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "sky.png";
-        textures.sky = loadIMG(path);
-        blnloaded.blnSky = true;
-        if (Global::blnDebugMode) {printf("Sky loading successful\n");}
-
-        path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "player.png";
-        textures.player = loadIMG(path);
-        blnloaded.blnPlayer = true;
-        if (Global::blnDebugMode) {printf("Player loading successful\n");}
-
-
-        path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "wall.png";
-        textures.wall = loadIMG(path);
-        blnloaded.blnWall = true;
-        if (Global::blnDebugMode) {printf("Wall loading successful\n");}
-
-
-        path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "coin.png";
-        textures.coin = loadIMG(path);
-        blnloaded.blnCoin = true;
-        if (Global::blnDebugMode) {printf("Coin loading successful\n");}
-
-        path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "pole.png";
-        textures.pole = loadIMG(path);
-        blnloaded.blnPole = true;
-        if (Global::blnDebugMode) {printf("Pole loading successful\n");}
-
-        path = DEFINED_DEFAULT_IMAGE_PATH;
-        path += "monster.png";
-        textures.monster = loadIMG(path);
-        blnloaded.blnMonster = true;
-        if (Global::blnDebugMode) {printf("Monster loading successful\n");}
 
         MessageFont = TTF_OpenFont(DEFINED_MESSAGE_FONT,16); //Opens font and sets size
         if (MessageFont == nullptr) {
@@ -147,13 +107,13 @@ void clsScreen::update(void) {
     Max_Width = (uint) (width/pic_size);
 
     //This will cause the screen to move in different segments at a time.
-    x_start = (uint) (round (tempPlayer.location.x / Max_Width) ) * Max_Width;
+    x_start = (uint) (round (tempPlayer.location.x / width) ) * width;
 
     //clear renderer
     SDL_RenderClear(ren);
 
     //copy sky to cover entire screen.
-    SDL_RenderCopy(ren,textures.sky,NULL,NULL);
+    SDL_RenderCopy(ren,textures.maptiles,&clips[tileSpace],NULL);
 
     SDL_Rect dst;
 
@@ -168,24 +128,14 @@ void clsScreen::update(void) {
             //not have gotten this far if that failed load.
             SDL_QueryTexture(textures.errortex,NULL,NULL, &dst.w, &dst.h);
 
-            switch(Global::Map.getMapCell(x,y)) {
+            switch( Global::Map.getMapCell(x,y) ) { //Use this to make sure we aren't try to load a non-existing part
             case tileSpace:
-                //SDL_RenderCopy(ren,sky,NULL, &dst);
-                break;
             case tileCoin:
-                SDL_RenderCopy(ren,textures.coin,NULL, &dst);
-                break;
             case tileMonster:
-                SDL_RenderCopy(ren, textures.monster, NULL, &dst);
-                break;
             case tilePlayer:
-                SDL_RenderCopy(ren, textures.player, NULL, &dst);
-                break;
             case tilePole:
-                SDL_RenderCopy(ren, textures.pole, NULL, &dst);
-                break;
             case tileWall:
-                SDL_RenderCopy(ren, textures.wall, NULL, &dst);
+                SDL_RenderCopy(ren, textures.maptiles, &clips[Global::Map.getMapCell(x,y)], &dst);
                 break;
             default:
                 //Don't know what this is so display an error texture.
@@ -205,39 +155,10 @@ void clsScreen::update(void) {
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::cleanup(void) {
-    if (blnloaded.blnPlayer) {
-        SDL_DestroyTexture(textures.player);
-        blnloaded.blnPlayer = false;
-        if (Global::blnDebugMode) {printf("Player texture destroyed\n");}
-    }
-	if (blnloaded.blnSky) {
-        SDL_DestroyTexture(textures.sky);
-        blnloaded.blnSky = false;
-        if (Global::blnDebugMode) {printf("Sky texture destroyed\n");}
-    }
-
-    if (blnloaded.blnCoin) {
-        SDL_DestroyTexture(textures.coin);
-        blnloaded.blnCoin = false;
-        if (Global::blnDebugMode) {printf("Coin texture destroyed\n");}
-    }
-
-     if (blnloaded.blnWall) {
-        SDL_DestroyTexture(textures.wall);
-        blnloaded.blnWall = false;
-        if (Global::blnDebugMode) {printf("Wall texture destroyed\n");}
-    }
-
-    if (blnloaded.blnPole) {
-        SDL_DestroyTexture(textures.pole);
-        blnloaded.blnPole = false;
-        if (Global::blnDebugMode) {printf("Pole texture destroyed\n");}
-    }
-
-    if (blnloaded.blnMonster) {
-        SDL_DestroyTexture(textures.monster);
-        blnloaded.blnMonster = false;
-        if (Global::blnDebugMode) {printf("Monster texture destroyed\n");}
+    if (blnloaded.blnMapTiles) {
+        SDL_DestroyTexture(textures.maptiles);
+        blnloaded.blnMapTiles = false;
+        if (Global::blnDebugMode) {printf("Tiles texture destroyed\n");}
     }
 
     if (blnloaded.blnErrortex) {
@@ -280,26 +201,61 @@ void clsScreen::error(void) {
 	getchar();
 }
 /**********************************************************************************************************************************************************************/
-SDL_Texture* clsScreen::loadIMG(std::string filename) {
-    SDL_Surface* temp = IMG_Load(filename.c_str());
+void clsScreen::loadTextures() {
+    std::string path = DEFINED_DEFAULT_IMAGE_PATH;
+    path += "tiles.png";
 
-	if (temp == nullptr) {
-        printf("Failed to load img.\n");
-        return textures.errortex;
+    //Load the error texture first.
+    SDL_Surface* temp = IMG_ReadXPMFromArray(image_error_xpm);
+    if (temp == nullptr) {
+        printf("Failed to load embedded image.\n");
+        error();
+        return;
 	} else {
-	    if (Global::blnDebugMode) {printf("img to surface successful\n");}
+	    if (Global::blnDebugMode) {printf("Error surface created.\n");}
     }
 
-	SDL_Texture *tex = SDL_CreateTextureFromSurface(ren,temp);
-	SDL_FreeSurface(temp);
-	if (tex == nullptr) {
+    textures.errortex = SDL_CreateTextureFromSurface(ren,temp);
+	if (textures.errortex == nullptr) {
         printf("Failed to create texture.\n");
-        tex = textures.errortex;
+        error();
 	} else {
 	    if (Global::blnDebugMode) {printf("Surface to texture successful\n");}
+	    blnloaded.blnErrortex = true;
     }
 
-	return tex;
+    //Now load the tiles
+    temp = IMG_Load(path.c_str());
+	if (temp == nullptr) {
+        //File doesn't exist, replace the clips to be all 0,0
+        //and set it to use the error texture instead.
+        printf("Could not find tiles.png!\n");
+        textures.maptiles = textures.errortex;
+        for (uchar i = 0; i < DEFINED_NUM_MAP_TILES; i++) {
+            clips[i].x = clips[i].y = 0;
+        }
+        blnloaded.blnMapTiles = true;
+        return;
+	} else {
+	    if (Global::blnDebugMode) {printf("Tiles.png load successful\n");}
+    }
+
+	textures.maptiles = SDL_CreateTextureFromSurface(ren,temp);
+	SDL_FreeSurface(temp);
+	if (textures.maptiles == nullptr) {
+        //Cannot make texture; replace the clips to be all 0,0
+        //and set it to use the error texture instead.
+        printf("Tiles could not be converted to texture.\n");
+        textures.maptiles = textures.errortex;
+        for (uchar i = 0; i < DEFINED_NUM_MAP_TILES; i++) {
+            clips[i].x = clips[i].y = 0;
+        }
+        blnloaded.blnMapTiles = true;
+        return;
+	} else {
+	    if (Global::blnDebugMode) {printf("Tiles converted to texture successful\n");}
+	    blnloaded.blnMapTiles = true;
+    }
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::playerDeath(void) {
@@ -425,29 +381,6 @@ void clsScreen::writemessage(void) {
     SDL_FreeSurface(surmessage);
 }
 /**********************************************************************************************************************************************************************/
-SDL_Texture* clsScreen::loadERROR(void) {
-    SDL_Surface* temp = IMG_ReadXPMFromArray(image_error_xpm);
-
-	if (temp == nullptr) {
-        printf("Failed to load embedded image.\n");
-        error();
-        return nullptr;
-	} else {
-	    if (Global::blnDebugMode) {printf("Error surface created.\n");}
-    }
-
-	SDL_Texture *tex = SDL_CreateTextureFromSurface(ren,temp);
-	SDL_FreeSurface(temp);
-	if (tex == nullptr) {
-        printf("Failed to create texture.\n");
-        error();
-	} else {
-	    if (Global::blnDebugMode) {printf("Surface to texture successful\n");}
-    }
-
-	return tex;
-}
-/**********************************************************************************************************************************************************************/
 SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
     //This will check if the moving tex is going to overlap the other texture.
     //if it is, it will return a new rectangle ending of the edge.
@@ -471,5 +404,43 @@ SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
     } else {
         return movingtex;
     }
+}
+/**********************************************************************************************************************************************************************/
+void clsScreen::set_clips() {
+    //Set all the locations of the specific tiles in the tiles.png
+     //Since all of the sizes are the same we will do this all together to save space
+     for (uchar i = 0; i < DEFINED_NUM_MAP_TILES; i++) {
+        clips[i].w = clips[i].h = pic_size;
+     }
+
+    /*     The Picture Coordinates (x,y)
+     *     we multiply this by the pic size to get the clip
+     *     +-----+-----+-----+
+     *     |(0,0)|(1,0)|(2,0)|
+     *     +-----+-----+-----+
+     *     |(0,1)|(1,1)|(2,1)|
+     *     +-----+-----+-----+
+     */
+
+     //First Row (Space, Wall, Player)
+     clips[tileSpace].x = 0 * pic_size;
+     clips[tileSpace].y = 0 * pic_size;
+
+     clips[tileWall].x = 1 * pic_size;
+     clips[tileWall].y = 0 * pic_size;
+
+     clips[tilePlayer].x = 2 * pic_size;
+     clips[tilePlayer].y = 0 * pic_size;
+
+     //Second Row (Pole, Monster, Coin)
+     clips[tilePole].x = 0 * pic_size;
+     clips[tilePole].y = 1 * pic_size;
+
+     clips[tileMonster].x = 1 * pic_size;
+     clips[tileMonster].y = 1 * pic_size;
+
+     clips[tileCoin].x = 2 * pic_size;
+     clips[tileCoin].y = 1 * pic_size;
+
 }
 /**********************************************************************************************************************************************************************/

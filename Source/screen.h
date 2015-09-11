@@ -11,13 +11,13 @@
 /**********************************************************************************************************************************************************************/
 #if defined(_WIN32) ||defined(_WIN64)
     #define DEFINED_DEFAULT_IMAGE_PATH ".\\Images\\"
-    #define DEFINED_MESSAGE_FONT "C:\\Windows\\Fonts\\Arial.ttf"
+    #define DEFINED_MESSAGE_FONT "C:\\Windows\\Fonts\\GARA.ttf"
 #elif defined(__unix__) || defined(__linux__)
     #define DEFINED_DEFAULT_IMAGE_PATH "./Images/"
     #define DEFINED_MESSAGE_FONT "/usr/share/fonts/truetype/freefont/FreeMono.ttf"
 #elif defined(__CYGWIN__)
     #define DEFINED_DEFAULT_IMAGE_PATH "./Images/"
-    #define DEFINED_MESSAGE_FONT "C:/Windows/Fonts/Arial.ttf"
+    #define DEFINED_MESSAGE_FONT "C:/Windows/Fonts/GARA.ttf"
 #else
     #define DEFINED_DEFAULT_IMAGE_PATH "OS NOT SUPPORTED!"
     #define DEFINED_MESSAGE_FONT "OS NOT SUPPORTED!"
@@ -26,12 +26,7 @@
 struct stcLoaded { //Holds bools for if stuff is loaded or not
     bool blnWindow;
     bool blnRenderer;
-    bool blnSky;
-    bool blnPlayer;
-    bool blnMonster;
-    bool blnWall;
-    bool blnPole;
-    bool blnCoin;
+    bool blnMapTiles;
     bool blnErrortex;
     bool blnMessage;
     bool blnMessageFont;
@@ -43,12 +38,7 @@ struct stcColors {
 };
 
 struct stcTextures {
-    SDL_Texture *player;
-    SDL_Texture *monster;
-    SDL_Texture *wall;
-    SDL_Texture *sky;
-    SDL_Texture *pole;
-    SDL_Texture *coin;
+    SDL_Texture *maptiles;
     SDL_Texture *errortex;
     SDL_Texture *texmessage;
 };
@@ -89,8 +79,10 @@ class clsScreen {
         //are closed
         Loaded blnloaded;
 
-        SDL_Texture* loadIMG(std::string);
-        SDL_Texture* loadERROR(void);
+        void loadTextures(void);
+        SDL_Rect clips[DEFINED_NUM_MAP_TILES];
+
+        void set_clips(void);
         void error(void);
 
         clrs colors;

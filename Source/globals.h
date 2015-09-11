@@ -13,12 +13,19 @@
 namespace Global {
 	extern const bool blnDebugMode; //Holds if in debug mode or not. Causes more messages to appear in the console
 	extern bool blnError; //if there was an error; then the program will exit when it checks this.
-	
+
 	//Call all of the classes as globals so they are the same everywhere.
 	extern clsConfig Cnfg;
 	extern clsEntity Enty;
 	extern clsMap Map;
 	extern clsTick Tick;
+	namespace Physics { //Constants that are gonna be used for physics in later versions
+	    extern const float fGravityAcceleration;
+	    extern const float fAirFriction;
+	    extern const float fGroundFriction;
+	    extern const float fMaxVelocity;
+	    extern const float fIncVelocity; //How much velocity increments by for an input
+	};
 };
 /**********************************************************************************************************************************************/
 #endif
