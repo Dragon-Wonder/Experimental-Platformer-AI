@@ -50,8 +50,6 @@ char clsMap::move(uchar direction) {
 	float deltat = 1.0 / DEFINED_GOAL_FPS;
 	BPLYR tempEntity; //keeps track of x, y, and velocity.
 	if (playerfalling == false) {jumpcount = 0;}
-
-	float GravityVelDec = Global::Physics::fGravityAcceleration * deltat;
     bool blnLoop = true;
 	//Move monsters first, to see if player dies and we can then skip the rest
 	MNSTR tempMonster;
@@ -69,15 +67,15 @@ char clsMap::move(uchar direction) {
             tempEntity.vel.y -= tempEntity.vel.y * Global::Physics::fFriction;
 
 			if (tempMonster.state == stateRight) {
-                if (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMaxVelocity) {tempEntity.vel.x += Global::Physics::fIncVelocity;}
-                else {tempEntity.vel.x = Global::Physics::fMaxVelocity;}
+                if (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMonsMaxVelocity) {tempEntity.vel.x += Global::Physics::fIncVelocity;}
+                else {tempEntity.vel.x = Global::Physics::fMonsMaxVelocity;}
             } else if (tempMonster.state == stateLeft) {
-                if ( abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMaxVelocity) {tempEntity.vel.x -= Global::Physics::fIncVelocity;}
-                else {tempEntity.vel.x = -1.00 * Global::Physics::fMaxVelocity;}
+                if ( abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMonsMaxVelocity) {tempEntity.vel.x -= Global::Physics::fIncVelocity;}
+                else {tempEntity.vel.x = -1.00 * Global::Physics::fMonsMaxVelocity;}
             }
 
             //Apply Gravity
-            if (tempEntity.vel.y + GravityVelDec < Global::Physics::fMaxVelocity) {tempEntity.vel.y += GravityVelDec;}
+            if (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) {tempEntity.vel.y += Global::Physics::fGravityAcceleration;}
             else {tempEntity.vel.y = Global::Physics::fMaxVelocity;}
 
             //Update location based on delta t
@@ -89,7 +87,7 @@ char clsMap::move(uchar direction) {
                 switch ( checkCollision(tempEntity.location, tileMonster) ) {
                 case tileCoin:
                     //Replace the coin tile with space
-                    map[(uint)(tempMonster.location.y / DEFINED_PIC_SIZE)][(uint)(tempMonster.location.x / DEFINED_PIC_SIZE)] = tileSpace;
+                    map[(uint)round(tempMonster.location.y / DEFINED_PIC_SIZE)][(uint)round(tempMonster.location.x / DEFINED_PIC_SIZE)] = tileSpace;
                 case tilePole:
                 case tileSpace:
                     tempMonster.location.x = tempEntity.location.x;
@@ -116,6 +114,8 @@ char clsMap::move(uchar direction) {
                         //recoil off the wall as well
                         tempEntity.location.x = tempMonster.location.x;
                         tempEntity.vel.x *= Global::Physics::fRecoil;
+                        if (tempMonster.state == stateLeft) {tempMonster.state = stateRight;}
+                        else {tempMonster.state = stateLeft;}
                         blnLoop = true;
                     } else { tempMonster.living = false; blnLoop = false; }
                 } //end switch check Collision
@@ -159,12 +159,12 @@ char clsMap::move(uchar direction) {
 		    if (jumpcount < DEFINED_MAX_JUMP_COUNT) {
                 tempPlayer.state = stateJump;
                 jumpcount++;
-                if ( abs(tempEntity.vel.y - Global::Physics::fIncVelocity) < Global::Physics::fMaxVelocity) {tempEntity.vel.y -= Global::Physics::fIncVelocity;}
-                else {tempEntity.vel.y = Global::Physics::fMaxVelocity;}
+                tempEntity.vel.y -= Global::Physics::fMaxVelocity;
 		    } //end if less than jump count
 			break;
         case dirDown :
             tempPlayer.state = stateDuck;
+            tempEntity.vel.y += Global::Physics::fMaxVelocity;
             break;
         case dirNone:
         default:
@@ -173,7 +173,7 @@ char clsMap::move(uchar direction) {
 	};
 
     //Apply Gravity
-    if (tempEntity.vel.y + GravityVelDec < Global::Physics::fMaxVelocity) {tempEntity.vel.y += GravityVelDec;}
+    if (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) {tempEntity.vel.y += Global::Physics::fGravityAcceleration;}
     else {tempEntity.vel.y = Global::Physics::fMaxVelocity;}
 
     //Update location based on delta t
@@ -186,7 +186,7 @@ char clsMap::move(uchar direction) {
         switch ( checkCollision(tempEntity.location, tilePlayer) ) {
         case tileCoin:
             //Replace the coin tile with space
-            map[(uint)(tempMonster.location.y / DEFINED_PIC_SIZE)][(uint)(tempMonster.location.x / DEFINED_PIC_SIZE)] = tileSpace;
+            map[(uint)(tempPlayer.location.y / DEFINED_PIC_SIZE)][(uint)(tempPlayer.location.x / DEFINED_PIC_SIZE)] = tileSpace;
             tempPlayer.score += DEFINED_COIN_WORTH;
         case tilePole:
         case tileSpace:
@@ -203,7 +203,7 @@ char clsMap::move(uchar direction) {
                 Global::Enty.killMonster(tempEntity.location.x, tempEntity.location.y);
                 tempPlayer.score += DEFINED_MONS_KILL_POINTS;
             } else { return deathMonster;}
-            blnLoop = true;
+            blnLoop = false;
             break;
         case tileWall:
         default:
@@ -295,7 +295,7 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,0,0,0,0,0,0
                     pmstBaseMonsters[0].vel.x = x;
                     pmstBaseMonsters[0].vel.y = y;
 					pmstBaseMonsters[0].living = true;
-					pmstBaseMonsters[0].state = stateLeft;
+					pmstBaseMonsters[0].state = stateRight;
 				} else {
 					//Allocate a temp array to hold the old array + the new monster
 					MNSTR* pTemp = new (std::nothrow) MNSTR[numMonsters];
@@ -325,7 +325,7 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,0,0,0,0,0,0
                     pTemp[numMonsters - 1].vel.x = 0;
                     pTemp[numMonsters - 1].vel.y = 0;
 					pTemp[numMonsters - 1].living = true;
-					pTemp[numMonsters - 1].state = stateLeft;
+					pTemp[numMonsters - 1].state = stateRight;
 
 					//Generate new Base Monster array
 					pmstBaseMonsters = new (std::nothrow) MNSTR[numMonsters];
@@ -381,6 +381,13 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
     A.top = placement.y;
     A.bottom = placement.y + DEFINED_PIC_SIZE;
 
+    if (tile == tilePlayer) { //shrink the player hitbox
+        A.left += 4;
+        A.right -= 4;
+        A.top += 3;
+        A.bottom -= 3;
+    }
+
     //Check if collision with a player (if monster)
     if (tile == tileMonster) {
         PLYR tempPlayer = Global::Enty.getPlayer();
@@ -400,15 +407,17 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
         MNSTR tempMonster;
         for (uchar i = 0; i < numMonsters; i++) {
             tempMonster = Global::Enty.getMonster(i);
-            B.left = tempMonster.location.x;
-            B.right = B.left + DEFINED_PIC_SIZE;
-            B.top = tempMonster.location.y;
-            B.bottom = B.top + DEFINED_PIC_SIZE;
+            if(tempMonster.living) {
+                B.left = tempMonster.location.x;
+                B.right = B.left + DEFINED_PIC_SIZE;
+                B.top = tempMonster.location.y;
+                B.bottom = B.top + DEFINED_PIC_SIZE;
 
-            if ( checkOverlap(A, B) ) {
-                if (Global::blnDebugMode) {printf("Player collided with monster.\n");}
-                return tileMonster;
-            } //end if overlap
+                if ( checkOverlap(A, B) ) {
+                    if (Global::blnDebugMode) {printf("Player collided with monster.\n");}
+                    return tileMonster;
+                } //end if overlap
+            } //end if living
         } //end for monster
     } //end if player
 
@@ -432,12 +441,21 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
 }
 /**********************************************************************************************************************************************/
 bool clsMap::checkOverlap(BOX A, BOX B) {
-    if ( (A.right >= B.left && A.right <= B.right) || (A.left <= B.right && A.left >= B.left) ) { //X's cross now check y's
-        if ( (A.bottom < B.bottom && A.bottom > B.top) || (A.top > B.bottom && A.top < B.top) ) {
+    if( A.bottom <= B.top ){return false;}
+    if( A.top >= B.bottom ){return false;}
+    if( A.right <= B.left ){return false;}
+    if( A.left >= B.right ){return false;}
+    //If none of the sides from A are outside B
+    return true;
+
+
+
+    /*if ( (A.right > B.left && A.right < B.right) || (A.left < B.right && A.left > B.left) ) { //X's cross now check y's
+        if ( (A.bottom <= B.bottom && A.bottom >= B.top) || (A.top >= B.bottom && A.top <= B.top) ) {
             //if (Global::blnDebugMode) {printf("Overlap found.\n");}
             return true;
         } //end collide y
     } //end collide x
-    return false;
+    return false;*/
 }
 /**********************************************************************************************************************************************/

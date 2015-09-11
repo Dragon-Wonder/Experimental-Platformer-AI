@@ -34,10 +34,11 @@ namespace Global {
 
     namespace Physics { //Constants that are gonna be used for physics in later versions
 	    const float fGravityAcceleration = 9.81;
-	    const float fFriction = 0.127; //factor by which velocity will be decreased by.
+	    const float fFriction = 0.068; //factor by which velocity will be decreased by.
 	    const float fMaxVelocity = 352.5;
-	    const float fIncVelocity = 56.94; //How much velocity increments by for an input
-	    const float fRecoil = -0.95;
+	    const float fMonsMaxVelocity = 84.25;
+	    const float fIncVelocity = 27.94; //How much velocity increments by for an input
+	    const float fRecoil = -0.78;
 	};
 };
 /**********************************************************************************************************************************************/
@@ -176,7 +177,7 @@ int main(int argc, char *argv[]) {
 #endif
     Screen.~clsScreen();
 	printf("\nDone\n");
-	getchar();
+	//getchar();
 	return 0;
 }
 /**********************************************************************************************************************************************/

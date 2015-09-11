@@ -214,10 +214,19 @@ void clsEntity::killMonster(uchar xplace,uchar yplace) {
 	//We don't have to worry about replacing the tile they are in with empty
 	//Because the player will be replace them.
 
+    BOX A;
+    A.left = xplace + 4;
+    A.right = xplace + DEFINED_PIC_SIZE - 4;
+    A.top = yplace + 3;
+    A.bottom = yplace + DEFINED_PIC_SIZE - 3;
+    BOX B;
+
 	for (uchar i = 0; i < Global::Map.numMonsters; i++) {
-		if (pmstMonsters[i].location.x == xplace && pmstMonsters[i].location.y == yplace) {
-			pmstMonsters[i].living = false;
-		}
+		B.left = pmstMonsters[i].location.x;
+		B.right = B.left + DEFINED_PIC_SIZE;
+		B.top = pmstMonsters[i].location.y;
+		B.bottom = B.top + DEFINED_PIC_SIZE;
+		if (Global::Map.checkOverlap(A,B)) {pmstMonsters[i].living = false;}
 	}
 }
 /**********************************************************************************************************************************************/

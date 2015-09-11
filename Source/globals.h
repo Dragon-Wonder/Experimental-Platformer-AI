@@ -23,6 +23,7 @@ namespace Global {
 	    extern const float fGravityAcceleration;
 	    extern const float fFriction;
 	    extern const float fMaxVelocity;
+	    extern const float fMonsMaxVelocity;
 	    extern const float fIncVelocity; //How much velocity increments by for an input
 	    extern const float fRecoil; //Recoil for when hitting an object
 	};

@@ -38,8 +38,9 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O3" />
+					<Add option="-Os" />
 					<Add option="-w" />
+					<Add option="-D__NO_INLINE__" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

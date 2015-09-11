@@ -118,8 +118,8 @@ void clsScreen::update(void) {
     for (uint y = 0; (y < DEFINED_MAP_HEIGHT); y++) {
         for (uint x = 0; (x < DEFINED_MAP_WIDTH); x++) {
             //update where we're trying to put the texture.
-            dst.x = (x * pic_size) - (offset.x / pic_size);
-            dst.y = (y * pic_size) - (offset.y / pic_size);
+            dst.x = (x * pic_size) - (offset.x);
+            dst.y = (y * pic_size) - (offset.y);
 
             //Load the map.
             switch( Global::Map.getMapCell(x,y) ) { //Use this to make sure we aren't try to load a non-existing part
@@ -277,8 +277,8 @@ void clsScreen::playerDeath(void) {
 	//show();
 	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
 	for (uchar i = 0; i < 5; i++) {
-		if (i < 3) { tempPlayer.vel.y -= Global::Physics::fIncVelocity; }
-        else { tempPlayer.vel.y += 2 * Global::Physics::fIncVelocity; }
+		if (i < 3) { tempPlayer.vel.y = -1 * Global::Physics::fMaxVelocity; }
+        else { tempPlayer.vel.y = 0; }
 
         tempPlayer.location.x += tempPlayer.vel.x * (1 / DEFINED_GOAL_FPS);
         tempPlayer.location.y += tempPlayer.vel.y * (1 / DEFINED_GOAL_FPS);

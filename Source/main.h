@@ -23,7 +23,7 @@ will likely remove these and dynamically allocate the map size for you.
 
 //What the target FPS is for the program, only effects things when show map is true
 //See tick.cpp for what it does
-#define DEFINED_GOAL_FPS 60
+#define DEFINED_GOAL_FPS 30
 
 //The most steps a single player can take
 #define DEFINED_MAX_PLAYER_STEPS 1000
@@ -33,9 +33,6 @@ will likely remove these and dynamically allocate the map size for you.
 
 //How many jumps the player has
 #define DEFINED_MAX_JUMP_COUNT 2
-
-//How high the player will jump
-#define DEFINED_JUMP_HEIGHT 2
 
 //The points the player gets for collecting a coin
 #define DEFINED_COIN_WORTH 100
