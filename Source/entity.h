@@ -41,8 +41,6 @@ class clsEntity {
 		void getFitness(void);
 		void getBest(void);
 		void nextplayer(char);
-
-
 		//Members
 		uint uintStepNum;
 		GEN genPastPlayers[DEFINED_PLAYERS_PER_GEN];
@@ -50,31 +48,25 @@ class clsEntity {
 		uint uintGenSteps;
 		const char* FileName = DEFINED_LOG_FILE_NAME;
         FILE* logFile;
-
 		PLYR plyPlayer;
 		MNSTR *pmstMonsters;
-
 	//public :
 		//Default Constructor
 		clsEntity();
 		~clsEntity();
-
 		//Members
 		uchar uchrGenNum;
 		uchar uchrPlayerNum;
-
 		//Functions
-		//void start(void);
 		void killMonster(uchar,uchar);
 		void allocateMonsters(uchar);
-
 		MNSTR getMonster(uchar);
 		void setMonster(uchar, MNSTR);
-
 		PLYR getPlayer(void);
 		BPLYR getPlayerBase(void);
+		char getPlayerState(void);
+		void setPlayerState(char);
 		void setPlayer(BPLYR);
-
 		char doPlayerStep(uint, char);
 		void doNextGeneration(char);
 		void newplayer(void);

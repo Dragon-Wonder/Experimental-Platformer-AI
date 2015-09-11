@@ -413,7 +413,7 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
     } //end if player
 
 
-
+/* TODO (GamerMan7799#1#): Make it so it doesn't have to check the entire map. */
     for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++ ) {
         for (uint x = 0; x < DEFINED_MAP_WIDTH; x++ ) {
             if (map[y][x] != tileSpace) {

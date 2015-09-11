@@ -12,9 +12,9 @@ clsScreen::clsScreen() {
     if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
                                                     //useful so if show map is disabled you don't need the images folder.
         //Figure out screen size
-        if (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) {width = 35*pic_size;}
+        if (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) {width = 35 * pic_size;}
         else {width = Global::Cnfg.getvalues(cnfgScreenWidth);}
-        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = DEFINED_MAP_HEIGHT*pic_size;}
+        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = DEFINED_MAP_HEIGHT * pic_size;}
         else {height = Global::Cnfg.getvalues(cnfgScreenHeight);}
 
         //Set all the booleans to false
@@ -108,7 +108,7 @@ void clsScreen::update(void) {
     //Set the pic size
     dst.w = dst.h = pic_size;
 
-    PLYR tempPlayer = Global::Enty.getPlayer();
+    BPLYR tempPlayer = Global::Enty.getPlayerBase();
     stcLoc offset; //how much the screen is offset by
 
     offset.x = (uint) (round( tempPlayer.location.x / width ) * width);
@@ -125,8 +125,6 @@ void clsScreen::update(void) {
             switch( Global::Map.getMapCell(x,y) ) { //Use this to make sure we aren't try to load a non-existing part
             case tileSpace:
             case tileCoin:
-            //case tileMonster:
-            //case tilePlayer:
             case tilePole:
             case tileWall:
                 SDL_RenderCopy(ren, textures.maptiles, &clips[Global::Map.getMapCell(x,y)], &dst);
@@ -140,10 +138,6 @@ void clsScreen::update(void) {
     } //end for y
 
     //Now place the player and monsters
-    dst.x = tempPlayer.location.x - offset.x; //Fix this later, doesn't account for screen shifts but I want to work on getting velocity working
-    dst.y = tempPlayer.location.y - offset.y;
-
-    SDL_RenderCopy(ren, textures.maptiles, &clips[tilePlayer], &dst);
     MNSTR tempMonster;
     for (uchar i = 0; i < Global::Map.numMonsters; i++) {
         tempMonster = Global::Enty.getMonster(i);
@@ -153,6 +147,9 @@ void clsScreen::update(void) {
             SDL_RenderCopy(ren, textures.maptiles, &clips[tileMonster], &dst);
         } //end if living
     } // end for monsters
+    dst.x = tempPlayer.location.x - offset.x; //Fix this later, doesn't account for screen shifts but I want to work on getting velocity working
+    dst.y = tempPlayer.location.y - offset.y;
+    SDL_RenderCopy(ren, textures.maptiles, &clips[tilePlayer], &dst);
 
     //Write messages only if Message font is loaded.
     if (blnloaded.blnMessageFont) {
@@ -386,31 +383,6 @@ void clsScreen::writemessage(void) {
     SDL_RenderCopy(ren, textures.texmessage, NULL, &dst);
     SDL_FreeSurface(surmessage);
 }
-/**********************************************************************************************************************************************************************/
-/*SDL_Rect clsScreen::detectEdge(SDL_Rect movingtex, SDL_Rect wall) {
-    //This will check if the moving tex is going to overlap the other texture.
-    //if it is, it will return a new rectangle ending of the edge.
-
-    if ( movingtex.x + movingtex.w >= wall.x && movingtex.x + movingtex.w <= wall.x + wall.w  ) {
-        //moving tex is above the wall x range
-        if (movingtex.y + movingtex.h >= wall.y && movingtex.y + movingtex.h <= wall.y + wall.h) {
-            //The lower edge is within the other texture box.
-            //Push moving texture up.
-            movingtex.y = wall.y - movingtex.h;
-            return movingtex;
-        } else if (movingtex.y >= wall.y && movingtex.y <= wall.y + wall.h) {
-            //The upper edge is in the box
-            //Push moving texture down
-            movingtex.y = wall.y + wall.h;
-            return movingtex;
-        } else {
-            //Not in the box
-            return movingtex;
-        }
-    } else {
-        return movingtex;
-    }
-}*/
 /**********************************************************************************************************************************************************************/
 void clsScreen::set_clips() {
     //Set all the locations of the specific tiles in the tiles.png

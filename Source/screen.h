@@ -9,7 +9,7 @@
 /**********************************************************************************************************************************************/
 #include "main.h"
 /**********************************************************************************************************************************************************************/
-#if defined(_WIN32) ||defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     #define DEFINED_DEFAULT_IMAGE_PATH ".\\Images\\"
     #define DEFINED_MESSAGE_FONT "C:\\Windows\\Fonts\\GARA.ttf"
 #elif defined(__unix__) || defined(__linux__)
@@ -89,7 +89,6 @@ class clsScreen {
 
         TTF_Font *MessageFont;
         void writemessage(void);
-        //SDL_Rect detectEdge(SDL_Rect, SDL_Rect);
 };
 /**********************************************************************************************************************************************************************/
 #endif // __MY_SCREEN_HEADER__

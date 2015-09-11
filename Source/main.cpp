@@ -34,7 +34,7 @@ namespace Global {
 
     namespace Physics { //Constants that are gonna be used for physics in later versions
 	    const float fGravityAcceleration = 9.81;
-	    const float fFriction = 0.32; //factor by which velocity will be decreased by.
+	    const float fFriction = 0.127; //factor by which velocity will be decreased by.
 	    const float fMaxVelocity = 352.5;
 	    const float fIncVelocity = 56.94; //How much velocity increments by for an input
 	    const float fRecoil = -0.95;
@@ -166,11 +166,14 @@ int main(int argc, char *argv[]) {
                 } //end switch
             } //end if key down
         } //end if event
-        Global::Map.move(direction);
+        direction = Global::Map.move(direction);
+        if (direction != statusLiving) {
+            Screen.playerDeath();
+            Global::Map.restart();
+        }
         direction = dirNone;
     } //end while not quit
 #endif
-
     Screen.~clsScreen();
 	printf("\nDone\n");
 	getchar();
