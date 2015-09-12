@@ -38,7 +38,7 @@ namespace Global {
 	    const float fMaxVelocity = 180;
 	    const float fMonsMaxVelocity = 44.25;
 	    const float fIncVelocity = 32; //How much velocity increments by for an input
-	    const float fRecoil = -0.598;
+	    const float fRecoil = -0.595;
 	};
 };
 /**********************************************************************************************************************************************/
