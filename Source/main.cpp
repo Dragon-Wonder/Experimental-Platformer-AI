@@ -34,11 +34,11 @@ namespace Global {
 
     namespace Physics { //Constants that are gonna be used for physics in later versions
 	    const float fGravityAcceleration = 9.81;
-	    const float fFriction = 0.068; //factor by which velocity will be decreased by.
-	    const float fMaxVelocity = 352.5;
-	    const float fMonsMaxVelocity = 84.25;
-	    const float fIncVelocity = 27.94; //How much velocity increments by for an input
-	    const float fRecoil = -0.78;
+	    const float fFriction = 0.089; //factor by which velocity will be decreased by.
+	    const float fMaxVelocity = 180;
+	    const float fMonsMaxVelocity = 44.25;
+	    const float fIncVelocity = 32; //How much velocity increments by for an input
+	    const float fRecoil = -0.598;
 	};
 };
 /**********************************************************************************************************************************************/
@@ -131,11 +131,13 @@ int main(int argc, char *argv[]) {
     bool quit = false;
     SDL_Event event;
     char direction;
+    char playerStatus;
 
     Global::Map.load();
     Global::Map.restart();
     while (!quit) {
         Screen.update();
+        Global::Enty.getFitness();
         if (SDL_PollEvent( &event )) {
             if (event.type == SDL_QUIT) {quit = true;}
             else if (event.type == SDL_KEYDOWN) {
@@ -165,14 +167,15 @@ int main(int argc, char *argv[]) {
                     Global::Map.restart();
                     break;
                 } //end switch
-            } //end if key down
+            } else if (event.type == SDL_KEYUP) {
+                direction = dirNone;
+            } //end if event
         } //end if event
-        direction = Global::Map.move(direction);
-        if (direction != statusLiving) {
+        playerStatus = Global::Map.move(direction);
+        if (playerStatus != statusLiving) {
             Screen.playerDeath();
             Global::Map.restart();
         }
-        direction = dirNone;
     } //end while not quit
 #endif
     Screen.~clsScreen();

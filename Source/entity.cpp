@@ -211,14 +211,12 @@ void clsEntity::getBest(void) {
 /**********************************************************************************************************************************************/
 void clsEntity::killMonster(uchar xplace,uchar yplace) {
 	//Finds monster at specified place and kills them.
-	//We don't have to worry about replacing the tile they are in with empty
-	//Because the player will be replace them.
 
     BOX A;
-    A.left = xplace + 4;
-    A.right = xplace + DEFINED_PIC_SIZE - 4;
-    A.top = yplace + 3;
-    A.bottom = yplace + DEFINED_PIC_SIZE - 3;
+    A.left = xplace;
+    A.right = xplace + DEFINED_PIC_SIZE;
+    A.top = yplace;
+    A.bottom = yplace + DEFINED_PIC_SIZE;
     BOX B;
 
 	for (uchar i = 0; i < Global::Map.numMonsters; i++) {

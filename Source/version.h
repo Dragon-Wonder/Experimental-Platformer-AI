@@ -18,9 +18,9 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,2,0,28
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 28\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.2\0"
+#define DEFINED_VER_RC_FILEVERSION 4,2,0,35
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 35\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.3\0"
 
 //Software Status
 #define DEFINED_VER_STATUS 	"Beta"

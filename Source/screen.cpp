@@ -276,9 +276,9 @@ void clsScreen::playerDeath(void) {
 	tempPlayer = Global::Enty.getPlayerBase();
 	//show();
 	for (uchar i = 0; i < DEFINED_GOAL_FPS; i++) {Global::Tick.wait();} //wait for a second.
-	for (uchar i = 0; i < 5; i++) {
-		if (i < 3) { tempPlayer.vel.y = -1 * Global::Physics::fMaxVelocity; }
-        else { tempPlayer.vel.y = 0; }
+	for (uchar i = 0; i < 60; i++) {
+		if (i < 30) { tempPlayer.vel.y = -1 * Global::Physics::fMaxVelocity; }
+        else { tempPlayer.vel.y = Global::Physics::fMaxVelocity; }
 
         tempPlayer.location.x += tempPlayer.vel.x * (1 / DEFINED_GOAL_FPS);
         tempPlayer.location.y += tempPlayer.vel.y * (1 / DEFINED_GOAL_FPS);
@@ -304,7 +304,7 @@ void clsScreen::writemessage(void) {
     std::string message;
     sprintf(strClock, "%8u", Global::Tick.getClockTime());
 
-    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont, strClock, colors.Black);
+    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont, strClock, colors.White);
     if (surmessage == nullptr) {
         printf("Failed to make clock surface.\n");
         error();

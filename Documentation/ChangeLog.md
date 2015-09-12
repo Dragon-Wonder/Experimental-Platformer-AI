@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 ### Changed
 
 * Player and Monster movement is now velocity based.
+* Map
 
 ### Fixed
 
