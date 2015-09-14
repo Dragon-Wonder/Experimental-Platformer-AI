@@ -35,7 +35,7 @@ namespace Global {
     namespace Physics { //Constants that are gonna be used for physics in later versions
 	    const float fGravityAcceleration = 9.81;
 	    const float fFriction = 0.089; //factor by which velocity will be decreased by.
-	    const float fMaxVelocity = 180;
+	    const float fMaxVelocity = 200;
 	    const float fMonsMaxVelocity = 44.25;
 	    const float fIncVelocity = 32; //How much velocity increments by for an input
 	    const float fRecoil = -0.595;

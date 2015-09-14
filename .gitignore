@@ -52,11 +52,14 @@
 # Archived images that don't need to be on Github
 *.zip
 *.rar
+*.gz
 
 # I'll name files this if I don't want them on Github
 *.tmp
 
 # I store my SDL2 include and lib here
+/SDL2Stuff/
+/SDL2Stuff/*
 /SDL2Stuff/include/
 /SDL2Stuff/lib/
 

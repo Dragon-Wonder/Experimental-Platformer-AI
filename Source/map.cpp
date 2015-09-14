@@ -160,7 +160,7 @@ char clsMap::move(uchar direction) {
                 tempPlayer.state = stateJump;
                 jumpcount++;
                 playerfalling = true;
-                tempEntity.vel.y -= Global::Physics::fMaxVelocity / 1.15;
+                tempEntity.vel.y -= 1.325 * Global::Physics::fMaxVelocity;
 		    } //end if less than jump count
 			break;
         case dirDown :

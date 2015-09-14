@@ -5,7 +5,7 @@
 //it kept really messing up the system I was using so I turned it off
 
 //Date Version Types
-#define DEFINED_VER_DATE "11"
+#define DEFINED_VER_DATE "14"
 #define DEFINED_VER_MONTH "09"
 #define DEFINED_VER_YEAR "2015"
 //I don't know what this is for, but I'll leave it for now.
@@ -18,8 +18,8 @@
 
 //Miscellaneous Version Types
 //Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,2,0,35
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 35\0"
+#define DEFINED_VER_RC_FILEVERSION 4,2,0,36
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 36\0"
 #define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.3\0"
 
 //Software Status
