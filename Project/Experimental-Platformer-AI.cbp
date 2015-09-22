@@ -15,6 +15,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectCompilerOptionsRelation="2" />
+				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
@@ -23,6 +24,7 @@
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-pg" />
 					<Add library="mingw32" />
 				</Linker>
@@ -38,7 +40,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectCompilerOptionsRelation="2" />
-				<Option projectLinkerOptionsRelation="0" />
+				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="0" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Option projectLibDirsRelation="0" />
@@ -97,6 +99,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
+			<Add option="-Wno-write-strings" />
 			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
 		<Linker>

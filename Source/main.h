@@ -49,7 +49,7 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_BEST_PLAYER_NUM 10
 
 //How many different map tiles there are (used to make the array for clipping)
-#define DEFINED_NUM_MAP_TILES 6
+#define DEFINED_NUM_MAP_TILES 11
 
 //Size of each tile in pixels
 #define DEFINED_PIC_SIZE 24
@@ -61,7 +61,7 @@ will likely remove these and dynamically allocate the map size for you.
 #define DEFINED_CONFIG_FILE_NAME "Config.ini"
 #define DEFINED_LOG_FILE_NAME "Player.log"
 /**********************************************************************************************************************************************/
-//These defines are just to make the code a little easier to read in terms of random Characters being returned and thier meaning
+//These defines are just to make the code a little easier to read in terms of random Characters being returned and their meaning
 
 //These are used when checking the version of the config file.
 #define NEWCONFIG 'N'

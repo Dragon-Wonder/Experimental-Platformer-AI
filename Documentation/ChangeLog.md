@@ -3,16 +3,20 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## UNRELEASED [4.2.0] - 2015-09-11
+## UNRELEASED [4.2.0] - 2015-09-22
 
 ### Added
 
 * Human inputs for game under certain builds
+* Added 5 new brick textures
+* Map loading functionality
 
 ### Changed
 
 * Player and Monster movement is now velocity based.
 * Map
+* Map tiles now referenced in hexadecimal
+* 
 
 ### Fixed
 

@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
     if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 #ifndef DEFINED_BUILD_HUMAN
 	//Seed rand as defined in the config options.
-	if (CnfgValues.blnAppendTime) {srand(time(NULL) + CnfgValues.uintSeed);}
-	else {srand(CnfgValues.uintSeed);}
+
+	srand(CnfgValues.uintSeed + ( CnfgValues.blnAppendTime ? time(NULL) : 0 ) );
     //Load the base map by locating the monster and player starting locations
 	Global::Map.load();
 	if (Global::blnDebugMode) {printf("Map loaded\n");}
@@ -180,7 +180,6 @@ int main(int argc, char *argv[]) {
 #endif
     Screen.~clsScreen();
 	printf("\nDone\n");
-	//getchar();
 	return 0;
 }
 /**********************************************************************************************************************************************/

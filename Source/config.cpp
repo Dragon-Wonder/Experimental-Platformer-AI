@@ -47,11 +47,11 @@ void clsConfig::make(void) {
 	fprintf(configFile,"Generation Increase: %u\n", values.uintGenIncrease);
 	fprintf(configFile,"Gens Past Growth: %u\n", values.uintGensPastGrowth);
 	fprintf(configFile,"Percent Mutation Chance: %u\n", values.uintMutationChance);
-	fprintf(configFile,"Log to File: 1\n");
-	fprintf(configFile,"Hard mode: 0\n");
-	fprintf(configFile,"Show map on update: 1\n");
+	fprintf(configFile,"Log to File: %u\n", values.blnLogging ? 1 : 0);
+	fprintf(configFile,"Hard mode: %u\n", values.blnHardMode ? 1 : 0);
+	fprintf(configFile,"Show map on update: %u\n", values.blnShowMap ? 1 : 0);
 	fprintf(configFile,"Random Seed: [%u]\n", values.uintSeed);
-	fprintf(configFile,"Append Time: 1\n");
+	fprintf(configFile,"Append Time: %u\n", values.blnAppendTime ? 1 : 0);
 	fprintf(configFile, "Only define these if the default screen size doesn't work for you, otherwise leave blank.\n");
 	fprintf(configFile, "Screen Height: 0\n");
 	fprintf(configFile, "Screen Width: 0\n");
@@ -71,8 +71,8 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	sscanf(ConfigVerison,"%u.%u.%u-%s",&C_MajorNum,&C_MinorNum,&C_PatchNum,&C_SoftwareStatus);
 	sscanf(DEFINED_VER_FULLVERSION_STRING,"%*u.%*u.%*u-%s", &P_SoftwareStatus);
 	if (Global::blnDebugMode) {
-            printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
-            printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
+        printf("Config: v %u %u %u %s\n",C_MajorNum,C_MinorNum,C_PatchNum,C_SoftwareStatus);
+        printf("Program: v %u %u %u %s\n",DEFINED_VER_MAJOR, DEFINED_VER_MINOR, DEFINED_VER_PATCH, P_SoftwareStatus);
     }
 
     if (DEFINED_VER_STATUS == "Release"){
@@ -136,8 +136,7 @@ void clsConfig::load(void) {
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d", &intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
 	if(Global::blnDebugMode) {printf("Log to file \t \t \t %d\n",intTempBool);}
-	if(intTempBool == 1) {values.blnLogging = true;}
-	else {values.blnLogging = false;}
+	values.blnLogging = (intTempBool == 1);
 
 	//Check if hard mode is enabled.
 	fgets(chrTempString,50,configFile);
@@ -152,8 +151,7 @@ void clsConfig::load(void) {
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 	if(Global::blnDebugMode) {printf("Show Map Update \t \t %d\n",intTempBool);}
-	if(intTempBool == 1) {values.blnShowMap = true;}
-	else {values.blnShowMap = false;}
+	values.blnShowMap = (intTempBool == 1);
 
 	//Get the seed used in the config
 	fgets(chrTempString,50,configFile);
@@ -166,8 +164,7 @@ void clsConfig::load(void) {
 	intValuesScanned = sscanf(chrTempString,"%*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 1;}
 	if(Global::blnDebugMode) {printf("Append Time \t \t \t %u\n",intTempBool);}
-	if(intTempBool == 1) {values.blnAppendTime = true;}
-	else {values.blnAppendTime = false;}
+	values.blnAppendTime = (intTempBool == 1);
 
 	//Get blank line explaining screen sizes
 	//Need two fgets because the line is more than 50 characters long.
@@ -250,20 +247,16 @@ uint clsConfig::getvalues(uchar Spot) {
 	//Useful when I don't need ALL the values.
 	switch (Spot) {
 		case cnfgLogging :
-			if (values.blnLogging) {return 1;}
-			else {return 0;}
+			return values.blnLogging ? 1 : 0;
 			break;
 		case cnfgShowMap :
-			if (values.blnShowMap) {return 1;}
-			else {return 0;}
+			return values.blnShowMap ? 1 : 0;
 			break;
 		case cnfgAppendTime :
-			if (values.blnAppendTime) {return 1;}
-			else {return 0;}
+			return values.blnAppendTime ? 1 : 0;
 			break;
 		case cnfgHardMode :
-			if (values.blnHardMode) {return 1;}
-			else {return 0;}
+			return values.blnHardMode ? 1 : 0;
 			break;
 		case cnfgFirstGen :
 			return values.uintFirstGen;

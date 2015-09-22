@@ -60,8 +60,8 @@ void clsTick::resetClock(void) {
 /**********************************************************************************************************************************************/
 void clsTick::decClock(void) {
     fClock = DEFINED_TICK_LIMIT - (clock() - clockStart) / CLOCKS_PER_SEC;
-    if (fClock >= 0.00) { uClock = (uint) roundf(fClock);}
-    else {uClock = 0;}
+
+    uClock = (fClock >= 0.00) ? (uint) roundf(fClock) : 0;
 }
 /**********************************************************************************************************************************************/
 uint clsTick::getClockTime(void) {

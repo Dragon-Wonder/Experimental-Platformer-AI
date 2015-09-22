@@ -152,8 +152,7 @@ void clsEntity::newplayer(void) {
 			uRandSection = (uint)(rand() % ((uintGenSteps - uTempStep)) + uTempStep);
 			if (Global::blnDebugMode) {printf("Player %d Section of %d\n",uchrRandPlayer,uRandSection);}
 			for (uint j = uTempStep; j <= uRandSection; j++) {
-				if ((uint)(rand() % 100) < CnfgValues.uintMutationChance) {plyPlayer.direction[j] = (uint)(rand() % dirDown);}
-				else {plyPlayer.direction[j] = genBestPlayers[uchrRandPlayer].direction[j];}
+                plyPlayer.direction[j] = (uint)(rand() % 100) < CnfgValues.uintMutationChance ? (uint)(rand() % dirDown) : genBestPlayers[uchrRandPlayer].direction[j];
 			}//End for
 			uTempStep = uRandSection;
 		} while (uTempStep < uintGenSteps - 1);

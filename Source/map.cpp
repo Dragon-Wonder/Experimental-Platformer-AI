@@ -49,7 +49,7 @@ char clsMap::move(uchar direction) {
 	static bool playerfalling; //if the player is falling
 	float deltat = 1.0 / DEFINED_GOAL_FPS;
 	BPLYR tempEntity; //keeps track of x, y, and velocity.
-	if (playerfalling == false) {jumpcount = 0;}
+	if (!playerfalling) {jumpcount = 0;}
     bool blnLoop = true;
 	//Move monsters first, to see if player dies and we can then skip the rest
 	MNSTR tempMonster;
@@ -57,26 +57,24 @@ char clsMap::move(uchar direction) {
 	for (uchar i = 0; i < numMonsters; i++) {
 		tempMonster = Global::Enty.getMonster(i);
 		if (tempMonster.living) {
-			tempEntity.location.x = tempMonster.location.x;
-			tempEntity.location.y = tempMonster.location.y;
-			tempEntity.vel.x = tempMonster.vel.x;
-			tempEntity.vel.y = tempMonster.vel.y;
+			tempEntity.location = tempMonster.location;
+			tempEntity.vel = tempMonster.vel;
 
             //Decrease velocities by friction
             tempEntity.vel.x -= tempEntity.vel.x * Global::Physics::fFriction;
             tempEntity.vel.y -= tempEntity.vel.y * Global::Physics::fFriction;
 
 			if (tempMonster.state == stateRight) {
-                if (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMonsMaxVelocity) {tempEntity.vel.x += Global::Physics::fIncVelocity;}
-                else {tempEntity.vel.x = Global::Physics::fMonsMaxVelocity;}
+                tempEntity.vel.x = (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMonsMaxVelocity) ?
+                                    tempEntity.vel.x + Global::Physics::fIncVelocity : Global::Physics::fMonsMaxVelocity;
             } else if (tempMonster.state == stateLeft) {
-                if ( abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMonsMaxVelocity) {tempEntity.vel.x -= Global::Physics::fIncVelocity;}
-                else {tempEntity.vel.x = -1.00 * Global::Physics::fMonsMaxVelocity;}
+                tempEntity.vel.x = (abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMonsMaxVelocity) ?
+                                    tempEntity.vel.x - Global::Physics::fIncVelocity : -1 * Global::Physics::fMonsMaxVelocity;
             }
 
             //Apply Gravity
-            if (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) {tempEntity.vel.y += Global::Physics::fGravityAcceleration;}
-            else {tempEntity.vel.y = Global::Physics::fMaxVelocity;}
+            tempEntity.vel.y = (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) ?
+                                tempEntity.vel.y + Global::Physics::fGravityAcceleration : Global::Physics::fMaxVelocity;
 
             //Update location based on delta t
             tempEntity.location.x += round(tempEntity.vel.x * deltat);
@@ -90,10 +88,8 @@ char clsMap::move(uchar direction) {
                     map[(uint)round(tempMonster.location.y / DEFINED_PIC_SIZE)][(uint)round(tempMonster.location.x / DEFINED_PIC_SIZE)] = tileSpace;
                 case tilePole:
                 case tileSpace:
-                    tempMonster.location.x = tempEntity.location.x;
-                    tempMonster.location.y = tempEntity.location.y;
-                    tempMonster.vel.x = tempEntity.vel.x;
-                    tempMonster.vel.y = tempEntity.vel.y;
+                    tempMonster.location = tempEntity.location;
+                    tempMonster.vel = tempEntity.vel;
                     blnLoop = false;
                     break;
                 case tilePlayer:
@@ -101,7 +97,12 @@ char clsMap::move(uchar direction) {
                     blnLoop = false;
                     return deathMonster;
                     break;
-                case tileWall:
+                case tileBricksGray:
+                case tileBricksGreen:
+                case tileBricksLarge:
+                case tileBricksOrange:
+                case tileBricksRed:
+                case tileBricksSmall:
                 default:
                     //Collision with wall first reset y
                     if (tempEntity.location.y != tempMonster.location.y) {
@@ -121,7 +122,10 @@ char clsMap::move(uchar direction) {
                 } //end switch check Collision
             } while (blnLoop);
             //do a check if monster is in the kill planes
-            if (tempMonster.location.y < 0 || tempMonster.location.x < 0 || tempMonster.location.y > DEFINED_MAP_HEIGHT * DEFINED_PIC_SIZE || tempMonster.location.x > DEFINED_MAP_WIDTH * DEFINED_PIC_SIZE) {
+            if (tempMonster.location.y < 0 || tempMonster.location.x < 0 ||
+                tempMonster.location.y > DEFINED_MAP_HEIGHT * DEFINED_PIC_SIZE ||
+                tempMonster.location.x > DEFINED_MAP_WIDTH * DEFINED_PIC_SIZE)
+            {
                 tempMonster.living = false;
             }
 
@@ -131,7 +135,6 @@ char clsMap::move(uchar direction) {
 
 
 	//Now the player can move.
-
 	PLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayer();
     //Kill Player if their fitness gets too low in hard mode
@@ -147,13 +150,13 @@ char clsMap::move(uchar direction) {
 	switch (direction) {
 		case dirLeft :
 		    tempPlayer.state = stateLeft;
-		    if ( abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMaxVelocity) {tempEntity.vel.x -= Global::Physics::fIncVelocity;}
-		    else {tempEntity.vel.x = Global::Physics::fMaxVelocity;}
+            tempEntity.vel.x = (abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMaxVelocity) ?
+                                tempEntity.vel.x - Global::Physics::fIncVelocity : -1 * Global::Physics::fMaxVelocity;
 			break;
 		case dirRight :
 		    tempPlayer.state = stateRight;
-            if ( tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMaxVelocity) {tempEntity.vel.x += Global::Physics::fIncVelocity;}
-		    else {tempEntity.vel.x = Global::Physics::fMaxVelocity;}
+            tempEntity.vel.x = (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMaxVelocity) ?
+                                tempEntity.vel.x + Global::Physics::fIncVelocity : Global::Physics::fMaxVelocity;
 			break;
 		case dirUp :
 		    if (jumpcount < DEFINED_MAX_JUMP_COUNT) {
@@ -174,8 +177,8 @@ char clsMap::move(uchar direction) {
 	};
 
     //Apply Gravity
-    if (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) {tempEntity.vel.y += Global::Physics::fGravityAcceleration;}
-    else {tempEntity.vel.y = Global::Physics::fMaxVelocity;}
+    tempEntity.vel.y = (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) ?
+                    tempEntity.vel.y + Global::Physics::fGravityAcceleration : Global::Physics::fMaxVelocity;
 
     //Update location based on delta t
     tempEntity.location.x += round(tempEntity.vel.x * deltat);
@@ -206,7 +209,12 @@ char clsMap::move(uchar direction) {
             } else { return deathMonster;}
             blnLoop = false;
             break;
-        case tileWall:
+        case tileBricksGray:
+        case tileBricksGreen:
+        case tileBricksLarge:
+        case tileBricksOrange:
+        case tileBricksRed:
+        case tileBricksSmall:
         default:
             //Collision with wall first reset y
             if (tempEntity.location.y != tempPlayer.location.y) {
@@ -268,6 +276,22 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 
+    FILE * mapload = fopen("map.sav", "r");
+    if (mapload == nullptr) {
+        printf("Could not find map save, default will be used.\n");
+        for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
+            for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
+                basemap[y][x] = tempmap[y][x];
+            } //end for x
+        } //end for y
+    } else {
+        printf("Map Found, will load.\n");
+        for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
+            for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
+                fscanf( mapload, "%2x", &basemap[y][x] );
+            } //end for x
+        } //end for y
+    } //end file exists
 
     //set base map (I couldn't do it as a const anymore because I'm trying to modify it)
 
@@ -275,7 +299,6 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-            basemap[y][x] = tempmap[y][x];
 			if (basemap[y][x] == tilePlayer) {
 				if (Global::blnDebugMode) {printf("Found Player at (%d,%d).\n",x,y);}
 				bplyBasePlayer.location.x = x * DEFINED_PIC_SIZE;
@@ -299,8 +322,8 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 					}
 					pmstBaseMonsters[0].location.x = x * DEFINED_PIC_SIZE;
 					pmstBaseMonsters[0].location.y = y * DEFINED_PIC_SIZE;
-                    pmstBaseMonsters[0].vel.x = x;
-                    pmstBaseMonsters[0].vel.y = y;
+                    pmstBaseMonsters[0].vel.x = 0;
+                    pmstBaseMonsters[0].vel.y = 0;
 					pmstBaseMonsters[0].living = true;
 					pmstBaseMonsters[0].state = stateRight;
 				} else {
@@ -316,10 +339,8 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
                         /* TODO (GamerMan7799#5#): Consider using std::copy from algorithm library
                             Do not worry about if xPUREx converts to vectors.*/
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
-						pTemp[i].location.x = pmstBaseMonsters[i].location.x;
-						pTemp[i].location.y = pmstBaseMonsters[i].location.y;
-						pTemp[i].vel.x = pmstBaseMonsters[i].vel.x;
-                        pTemp[i].vel.y = pmstBaseMonsters[i].vel.y;
+						pTemp[i].location = pmstBaseMonsters[i].location;
+						pTemp[i].vel = pmstBaseMonsters[i].vel;
 						pTemp[i].living = pmstBaseMonsters[i].living;
 						pTemp[i].state = pmstBaseMonsters[i].state;
 					}
@@ -344,10 +365,8 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 
 					for (uchar i = 0; i < numMonsters; i++) {
 						//Copy Temp Array into new array.
-						pmstBaseMonsters[i].location.x = pTemp[i].location.x;
-						pmstBaseMonsters[i].location.y = pTemp[i].location.y;
-						pmstBaseMonsters[i].vel.x = pTemp[i].vel.x;
-                        pmstBaseMonsters[i].vel.y = pTemp[i].vel.y;
+						pmstBaseMonsters[i].location = pTemp[i].location;
+						pmstBaseMonsters[i].vel = pTemp[i].vel;
 						pmstBaseMonsters[i].living = pTemp[i].living;
 						pmstBaseMonsters[i].state = pTemp[i].state;
 					}

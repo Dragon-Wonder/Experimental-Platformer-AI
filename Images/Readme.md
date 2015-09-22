@@ -50,8 +50,8 @@ This picture is used to represent empty space tiles.
 
 This picture I created (since it is just a white picture).
 
-### Wall
+### Bricks
 
-This picture is used to represent the wall tiles.
+All the bricks that are shown were made by Eponasoft
 
-This picture is a scaled down version of the one found [here] (http://www.it.murdoch.edu.au/units/ICT207/nominations/previous/Tavern%20Defender/executable/textures/brick%20paving.png)
+The orginals can be found [here] (http://opengameart.org/content/basic-bricks)

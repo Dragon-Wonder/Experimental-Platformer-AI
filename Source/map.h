@@ -8,12 +8,17 @@
 #include "main.h"
 /**********************************************************************************************************************************************/
 enum tile {
-	tileSpace = 0,
-	tileWall, //1
-	tilePlayer, //2
-	tilePole, //3
-	tileMonster, //4
-	tileCoin //5
+	tileSpace = 0x0,
+	tileBricksLarge = 0x1,
+	tilePlayer = 0x2,
+	tilePole = 0x3,
+	tileMonster = 0x4,
+	tileCoin = 0x5,
+	tileBricksSmall = 0x6,
+	tileBricksGray = 0x7,
+	tileBricksGreen = 0x8,
+	tileBricksOrange = 0x9,
+	tileBricksRed = 0xA
 };
 /**********************************************************************************************************************************************/
 struct stcBox { //Collision box
@@ -24,8 +29,6 @@ struct stcBox { //Collision box
 };
 
 typedef struct stcBox BOX;
-/**********************************************************************************************************************************************/
-// TODO (GamerMan7799#8#): Map loading.
 /**********************************************************************************************************************************************/
 class clsMap {
     public:

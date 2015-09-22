@@ -12,14 +12,12 @@ clsScreen::clsScreen() {
     if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
                                                     //useful so if show map is disabled you don't need the images folder.
         //Figure out screen size
-        if (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) {width = 35 * pic_size;}
-        else {width = Global::Cnfg.getvalues(cnfgScreenWidth);}
-        if (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) {height = DEFINED_MAP_HEIGHT * pic_size;}
-        else {height = Global::Cnfg.getvalues(cnfgScreenHeight);}
+
+        width = (Global::Cnfg.getvalues(cnfgScreenWidth) == 0) ? 35 * pic_size : Global::Cnfg.getvalues(cnfgScreenWidth);
+        height = (Global::Cnfg.getvalues(cnfgScreenHeight) == 0) ? DEFINED_MAP_HEIGHT * pic_size : Global::Cnfg.getvalues(cnfgScreenHeight);
 
         //Set all the booleans to false
-        blnloaded.blnWindow = false;
-        blnloaded.blnRenderer = false;
+        blnloaded.blnWindow = blnloaded.blnRenderer = false;
         blnloaded.blnMapTiles = blnloaded.blnErrortex = false;
         bln_SDL_started = false;
 
@@ -51,16 +49,7 @@ clsScreen::clsScreen() {
         }
 
         win = SDL_CreateWindow("Experimental Platformer AI",100, 100, width, height, SDL_WINDOW_SHOWN);
-        if (win == nullptr) {
-            printf("SDL Failed to create window.\n");
-            error();
-            return;
-        } else {
-            blnloaded.blnWindow = true;
-            if (Global::blnDebugMode) {printf("Window creation successful\n");}
-        }
-
-        ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+        ren = (win == nullptr) ? nullptr : SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (ren == nullptr) {
             printf("SDL Failed to create renderer.\n");
             error();
@@ -71,7 +60,7 @@ clsScreen::clsScreen() {
         }
 
         loadTextures();
-        if (bln_SDL_started == false) {return;}
+        if ( !bln_SDL_started ) {return;}
 
         MessageFont = TTF_OpenFont(DEFINED_MESSAGE_FONT,16); //Opens font and sets size
         if (MessageFont == nullptr) {
@@ -126,7 +115,12 @@ void clsScreen::update(void) {
             case tileSpace:
             case tileCoin:
             case tilePole:
-            case tileWall:
+            case tileBricksGray:
+            case tileBricksGreen:
+            case tileBricksLarge:
+            case tileBricksOrange:
+            case tileBricksRed:
+            case tileBricksSmall:
                 SDL_RenderCopy(ren, textures.maptiles, &clips[Global::Map.getMapCell(x,y)], &dst);
                 break;
             default:
@@ -213,15 +207,7 @@ void clsScreen::loadTextures() {
 
     //Load the error texture first.
     SDL_Surface* temp = IMG_ReadXPMFromArray(image_error_xpm);
-    if (temp == nullptr) {
-        printf("Failed to load embedded image.\n");
-        error();
-        return;
-	} else {
-	    if (Global::blnDebugMode) {printf("Error surface created.\n");}
-    }
-
-    textures.errortex = SDL_CreateTextureFromSurface(ren,temp);
+    textures.errortex = (temp == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren,temp);
 	if (textures.errortex == nullptr) {
         printf("Failed to create texture.\n");
         error();
@@ -232,21 +218,7 @@ void clsScreen::loadTextures() {
 
     //Now load the tiles
     temp = IMG_Load(path.c_str());
-	if (temp == nullptr) {
-        //File doesn't exist, replace the clips to be all 0,0
-        //and set it to use the error texture instead.
-        printf("Could not find tiles.png!\n");
-        textures.maptiles = textures.errortex;
-        for (uchar i = 0; i < DEFINED_NUM_MAP_TILES; i++) {
-            clips[i].x = clips[i].y = 0;
-        }
-        blnloaded.blnMapTiles = true;
-        return;
-	} else {
-	    if (Global::blnDebugMode) {printf("Tiles.png load successful\n");}
-    }
-
-	textures.maptiles = SDL_CreateTextureFromSurface(ren,temp);
+	textures.maptiles = (temp == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren,temp);
 	SDL_FreeSurface(temp);
 	if (textures.maptiles == nullptr) {
         //Cannot make texture; replace the clips to be all 0,0
@@ -304,16 +276,8 @@ void clsScreen::writemessage(void) {
     std::string message;
     sprintf(strClock, "%8u", Global::Tick.getClockTime());
 
-    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont, strClock, colors.White);
-    if (surmessage == nullptr) {
-        printf("Failed to make clock surface.\n");
-        error();
-        return;
-    } else {
-        if (Global::blnDebugMode) {printf("Surface Message successfully created\n");}
-    }
-
-    textures.texmessage = SDL_CreateTextureFromSurface(ren, surmessage);
+    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont, strClock, colors.Black);
+    textures.texmessage = (surmessage == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
     if (textures.texmessage == nullptr) {
         printf("Failed to convert message surface to texture.\n");
         error();
@@ -340,32 +304,25 @@ void clsScreen::writemessage(void) {
     message = "Generation: ";
     valuesscanned = sprintf(strGenNum, "%2u", Global::Enty.uchrGenNum);
     if (valuesscanned >= 1) {
-            strGenNum[4] = '\0'; //Make sure that the char is null terminated or the program crashes.
-            message += std::string(strGenNum);
+        strGenNum[4] = '\0'; //Make sure that the char is null terminated or the program crashes.
+        message += std::string(strGenNum);
     }
     message += "     Player: ";
     valuesscanned = sprintf(strPlayerNum, "%3u", Global::Enty.uchrPlayerNum);
     if (valuesscanned >= 1) {
-            strPlayerNum[3] = '\0'; //Make sure that the char is null terminated or the program crashes.
-            message += std::string(strPlayerNum);
+        strPlayerNum[3] = '\0'; //Make sure that the char is null terminated or the program crashes.
+        message += std::string(strPlayerNum);
     }
     message += "     Fitness: ";
     valuesscanned = sprintf(strFitness, "%3.2f", tempPlayer.fitness);
     if (valuesscanned >= 1) {
-            strFitness[6] = '\0'; //Make sure that the char is null terminated or the program crashes.
-            message += std::string(strFitness);
+        strFitness[6] = '\0'; //Make sure that the char is null terminated or the program crashes.
+        message += std::string(strFitness);
     }
     if (Global::blnDebugMode) {printf("Status message made.\n");}
 
-    surmessage = TTF_RenderText_Solid(MessageFont, message.c_str(),colors.White);
-    if (surmessage == nullptr) {
-        printf("Failed to make status surface.\n");
-        error();
-        return;
-    } else {
-        if (Global::blnDebugMode) {printf("Generation Status Message successfully created.\n");}
-    }
-    textures.texmessage = SDL_CreateTextureFromSurface(ren, surmessage);
+    surmessage = TTF_RenderText_Solid(MessageFont, message.c_str(),colors.Black);
+    textures.texmessage = (surmessage == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
     if (textures.texmessage == nullptr) {
         printf("Failed to convert message surface to texture.\n");
         blnloaded.blnMessage = false;
@@ -398,14 +355,18 @@ void clsScreen::set_clips() {
      *     +-----+-----+-----+
      *     |(0,1)|(1,1)|(2,1)|
      *     +-----+-----+-----+
+     *     |(0,2)|(1,2)|(2,2)|
+     *     +-----+-----+-----+
+     *     |(0,3)|(1,3)|(2,3)|
+     *     +-----+-----+-----+
      */
 
      //First Row (Space, Wall, Player)
      clips[tileSpace].x = 0 * pic_size;
      clips[tileSpace].y = 0 * pic_size;
 
-     clips[tileWall].x = 1 * pic_size;
-     clips[tileWall].y = 0 * pic_size;
+     clips[tileBricksLarge].x = 1 * pic_size;
+     clips[tileBricksLarge].y = 0 * pic_size;
 
      clips[tilePlayer].x = 2 * pic_size;
      clips[tilePlayer].y = 0 * pic_size;
@@ -419,6 +380,24 @@ void clsScreen::set_clips() {
 
      clips[tileCoin].x = 2 * pic_size;
      clips[tileCoin].y = 1 * pic_size;
+
+     //Third Row (Bricks Small, bricks Gray, bricks Green)
+     clips[tileBricksSmall].x = 0 * pic_size;
+     clips[tileBricksSmall].y = 2 * pic_size;
+
+     clips[tileBricksGray].x = 1 * pic_size;
+     clips[tileBricksGray].y = 2 * pic_size;
+
+     clips[tileBricksGreen].x = 2 * pic_size;
+     clips[tileBricksGreen].y = 2 * pic_size;
+
+     //Second Row (Bricks Orange, Bricks Red
+     clips[tileBricksOrange].x = 0 * pic_size;
+     clips[tileBricksOrange].y = 3 * pic_size;
+
+     clips[tileBricksRed].x = 1 * pic_size;
+     clips[tileBricksRed].y = 3 * pic_size;
+
 
 }
 /**********************************************************************************************************************************************************************/
