@@ -1,0 +1,10 @@
+<map id="clsEntity::getPlayer" name="clsEntity::getPlayer">
+<area shape="rect" id="node2" href="$dd/d1b/a00015.html#a8f8b70dddcc9c0a3d6802b761d565680" title="clsMap::move" alt="" coords="417,56,520,83"/>
+<area shape="rect" id="node5" href="$dd/d1b/a00015.html#a8194eee85d348ce3500edc3ea9bbd652" title="clsMap::checkCollision" alt="" coords="195,107,351,133"/>
+<area shape="rect" id="node6" href="$d7/d7a/a00016.html#a20c698420111d438cb080ccdc7e89ef6" title="clsScreen::writemessage" alt="" coords="189,157,357,184"/>
+<area shape="rect" id="node3" href="$d2/de7/a00014.html#a57a6a82696afc1fe86e92d2044bc1f45" title="clsEntity::doPlayerStep" alt="" coords="580,5,739,32"/>
+<area shape="rect" id="node4" href="$db/d3a/a00040.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="787,81,837,108"/>
+<area shape="rect" id="node7" href="$d7/d7a/a00016.html#a48e3bd1e5536ca47c10d46fa36924352" title="clsScreen::update" alt="" coords="405,157,532,184"/>
+<area shape="rect" id="node8" href="$d7/d7a/a00016.html#a79076e236a5bf5c09c8feacd70e33bd3" title="clsScreen::clsScreen" alt="" coords="586,157,733,184"/>
+<area shape="rect" id="node9" href="$d7/d7a/a00016.html#a42e216ff7d4f665365f1b800bd3282c5" title="clsScreen::playerDeath" alt="" coords="581,208,738,235"/>
+</map>

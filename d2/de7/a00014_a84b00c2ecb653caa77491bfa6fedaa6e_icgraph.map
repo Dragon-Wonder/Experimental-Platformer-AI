@@ -1,0 +1,6 @@
+<map id="clsEntity::getPlayerBase" name="clsEntity::getPlayerBase">
+<area shape="rect" id="node2" href="$d7/d7a/a00016.html#a48e3bd1e5536ca47c10d46fa36924352" title="clsScreen::update" alt="" coords="220,25,347,52"/>
+<area shape="rect" id="node5" href="$d7/d7a/a00016.html#a42e216ff7d4f665365f1b800bd3282c5" title="clsScreen::playerDeath" alt="" coords="395,76,552,103"/>
+<area shape="rect" id="node3" href="$db/d3a/a00040.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="600,25,651,52"/>
+<area shape="rect" id="node4" href="$d7/d7a/a00016.html#a79076e236a5bf5c09c8feacd70e33bd3" title="clsScreen::clsScreen" alt="" coords="400,25,547,52"/>
+</map>

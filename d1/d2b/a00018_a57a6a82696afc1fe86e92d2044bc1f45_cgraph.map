@@ -1,0 +1,15 @@
+<map id="clsEntity::doPlayerStep" name="clsEntity::doPlayerStep">
+<area shape="rect" id="node2" href="$dd/da2/a00019.html#a8f8b70dddcc9c0a3d6802b761d565680" title="clsMap::move" alt="" coords="232,208,335,235"/>
+<area shape="rect" id="node12" href="$d1/d2b/a00018.html#a1dca9206dd93bcd6f748a52525c6960a" title="clsEntity::getFitness" alt="" coords="212,411,355,437"/>
+<area shape="rect" id="node14" href="$d1/d2b/a00018.html#ae1c2fb4ca35caee5108cfe36571f8a03" title="clsEntity::nextplayer" alt="" coords="213,360,354,387"/>
+<area shape="rect" id="node3" href="$d1/d2b/a00018.html#abce930b697b192fad910748905e47494" title="clsEntity::getMonster" alt="" coords="609,5,755,32"/>
+<area shape="rect" id="node4" href="$dd/da2/a00019.html#a8194eee85d348ce3500edc3ea9bbd652" title="clsMap::checkCollision" alt="" coords="403,56,559,83"/>
+<area shape="rect" id="node5" href="$d1/d2b/a00018.html#a44628a49c7f026ecbeca99713752e98a" title="clsEntity::getPlayer" alt="" coords="614,107,750,133"/>
+<area shape="rect" id="node7" href="$d1/d2b/a00018.html#a551e9ad8eb05eda917a042a7b9acac52" title="clsEntity::setMonster" alt="" coords="407,157,554,184"/>
+<area shape="rect" id="node8" href="$d4/d51/a00017.html#ac00eec83dabc93a0888bbe5889823591" title="clsConfig::getvalues" alt="" coords="412,360,549,387"/>
+<area shape="rect" id="node9" href="$d1/d2b/a00018.html#af5ce22f5b3605f986db80248df7061e6" title="clsEntity::killMonster" alt="" coords="409,208,553,235"/>
+<area shape="rect" id="node10" href="$d1/d2b/a00018.html#a37efde95e4ba6b07796ce60940b6acc7" title="clsEntity::setPlayer" alt="" coords="413,259,549,285"/>
+<area shape="rect" id="node11" href="$de/d11/a00021.html#a2273989fc5035f6f44eef94543e52422" title="clsTick::decClock" alt="" coords="418,309,543,336"/>
+<area shape="rect" id="node6" href="$dd/da2/a00019.html#a6c80e807e8df8a0ba778ddfe16ee7efd" title="clsMap::checkOverlap" alt="" coords="607,56,757,83"/>
+<area shape="rect" id="node13" href="$dd/da2/a00019.html#aaaf13b34ed96480260d3c9cea16946c7" title="clsMap::getbasePlayer" alt="" coords="403,411,558,437"/>
+</map>

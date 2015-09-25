@@ -1,0 +1,5 @@
+<map id="clsMap::getbasePlayer" name="clsMap::getbasePlayer">
+<area shape="rect" id="node2" href="$d1/d2b/a00018.html#a1dca9206dd93bcd6f748a52525c6960a" title="clsEntity::getFitness" alt="" coords="208,31,351,57"/>
+<area shape="rect" id="node3" href="$d1/d2b/a00018.html#a57a6a82696afc1fe86e92d2044bc1f45" title="clsEntity::doPlayerStep" alt="" coords="399,5,557,32"/>
+<area shape="rect" id="node4" href="$d5/df9/a00044.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="605,31,656,57"/>
+</map>

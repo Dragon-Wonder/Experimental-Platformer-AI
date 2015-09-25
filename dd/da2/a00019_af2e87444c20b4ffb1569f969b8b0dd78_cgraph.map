@@ -1,0 +1,5 @@
+<map id="clsMap::restart" name="clsMap::restart">
+<area shape="rect" id="node2" href="$de/d11/a00021.html#a273be798d9d612c20efdecb4b1764326" title="clsTick::resetClock" alt="" coords="169,5,303,32"/>
+<area shape="rect" id="node3" href="$d1/d2b/a00018.html#a551e9ad8eb05eda917a042a7b9acac52" title="clsEntity::setMonster" alt="" coords="163,56,309,83"/>
+<area shape="rect" id="node4" href="$d1/d2b/a00018.html#a37efde95e4ba6b07796ce60940b6acc7" title="clsEntity::setPlayer" alt="" coords="168,107,304,133"/>
+</map>

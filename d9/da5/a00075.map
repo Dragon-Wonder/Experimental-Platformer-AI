@@ -1,0 +1,7 @@
+<map id="clsEntity" name="clsEntity">
+<area shape="rect" id="node2" href="$dc/de2/a00024.html" title="stcPlayer" alt="" coords="243,95,321,121"/>
+<area shape="rect" id="node3" href="$d7/de0/a00022.html" title="stcLoc" alt="" coords="91,5,153,32"/>
+<area shape="rect" id="node6" href="$d3/d52/a00023.html" title="stcMonster" alt="" coords="5,95,92,121"/>
+<area shape="rect" id="node4" href="$d6/d5b/a00026.html" title="stcVel" alt="" coords="218,5,277,32"/>
+<area shape="rect" id="node5" href="$db/db2/a00020.html" title="stcGeneration" alt="" coords="116,95,219,121"/>
+</map>

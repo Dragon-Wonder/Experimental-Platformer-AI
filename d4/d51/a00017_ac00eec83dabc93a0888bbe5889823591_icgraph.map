@@ -1,0 +1,9 @@
+<map id="clsConfig::getvalues" name="clsConfig::getvalues">
+<area shape="rect" id="node2" href="$d1/d2b/a00018.html#ae1c2fb4ca35caee5108cfe36571f8a03" title="clsEntity::nextplayer" alt="" coords="193,65,335,92"/>
+<area shape="rect" id="node4" href="$d5/df9/a00044.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="619,116,669,142"/>
+<area shape="rect" id="node5" href="$d1/d2b/a00018.html#acc38f5f2bdfdf88902498916f5007f69" title="clsEntity::newplayer" alt="" coords="409,166,547,193"/>
+<area shape="rect" id="node6" href="$d1/d2b/a00018.html#ae2ca6e6a7b6b534a0a96d6b5600fed43" title="clsEntity::doNextGeneration" alt="" coords="385,217,571,244"/>
+<area shape="rect" id="node7" href="$dd/da2/a00019.html#a8f8b70dddcc9c0a3d6802b761d565680" title="clsMap::move" alt="" coords="213,116,315,142"/>
+<area shape="rect" id="node8" href="$db/db2/a00020.html#a79076e236a5bf5c09c8feacd70e33bd3" title="clsScreen::clsScreen" alt="" coords="191,268,337,294"/>
+<area shape="rect" id="node3" href="$d1/d2b/a00018.html#a57a6a82696afc1fe86e92d2044bc1f45" title="clsEntity::doPlayerStep" alt="" coords="399,65,557,92"/>
+</map>
