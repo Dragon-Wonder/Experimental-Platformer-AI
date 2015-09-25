@@ -1,20 +1,45 @@
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+#include <cstdio>
+#include <cstdlib>
+/*****************************************************************************/
 #include "map.h"
 #include "entity.h"
 #include "config.h"
 #include "tick.h"
 #include "globals.h"
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file map.cpp
+/// @brief Holds all of the functions for the Map Class
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsMap::clsMap() {
+    /////////////////////////////////////////////////
+    /// @brief Default constructor.
+    /////////////////////////////////////////////////
+
 	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 clsMap::~clsMap() {
+    /////////////////////////////////////////////////
+    /// @brief Default deconstructor, deletes pmstBaseMonsters.
+    /////////////////////////////////////////////////
+
 	if(Global::blnDebugMode) {printf("Map Destructor called.\n");}
 	delete[] pmstBaseMonsters;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsMap::restart(void) {
+    /////////////////////////////////////////////////
+    /// @brief Resets the following:
+    ///        * Map Tiles
+    ///        * Clock
+    ///        * Player Values
+    ///        * Monster Values
+    /// @return void
+    /////////////////////////////////////////////////
+
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
 			map[y][x] = basemap[y][x];
@@ -43,8 +68,15 @@ void clsMap::restart(void) {
 	Global::Enty.setPlayer(bplyBasePlayer);
 	if (Global::blnDebugMode) {printf("Player reset.\n");}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsMap::move(uchar direction) {
+    /////////////////////////////////////////////////
+    /// @brief Will move the player a direction specificied, checking for collisions
+    ///        and monsters and all that. (Its a long function)
+    /// @param direction = Direction to move the player. See dir
+    /// @return Player Status. See status
+    /////////////////////////////////////////////////
+
 	static uchar jumpcount; //how many times the player has jumped
 	static bool playerfalling; //if the player is falling
 	float deltat = 1.0 / DEFINED_GOAL_FPS;
@@ -204,7 +236,7 @@ char clsMap::move(uchar direction) {
         case tileMonster:
             //Player is running into monster
             if (playerfalling) { //kill monster if falling on it
-                Global::Enty.killMonster(tempEntity.location.x, tempEntity.location.y);
+                Global::Enty.killMonster(tempEntity.location);
                 tempPlayer.score += DEFINED_MONS_KILL_POINTS;
             } else { return deathMonster;}
             blnLoop = false;
@@ -256,8 +288,16 @@ char clsMap::move(uchar direction) {
 
 	return statusLiving;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsMap::load(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will load map from file (if it exists) and place that into base map.
+    ///        Then it will find the starting places for all the monsters and the player,
+    ///        and set baseplayer and basemosnters.
+    /// @return void
+    /////////////////////////////////////////////////
+
+    /** @todo (GamerMan7799#4#): Dynamically allocate map size */
 	//Finds player and monster on the map, and place them in base stats used
 	//when restarting the map.
 
@@ -295,7 +335,7 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 
     //set base map (I couldn't do it as a const anymore because I'm trying to modify it)
 
-    /* TODO (xPUREx#5#): Look into vectors for basemonsters */
+    /** \todo (xPUREx#5#): Look into vectors for basemonsters */
 	numMonsters = 0;
 	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
 		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
@@ -336,7 +376,7 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 					}
 
 					for (uchar i = 0; i < numMonsters - 1; i++) {
-                        /* TODO (GamerMan7799#5#): Consider using std::copy from algorithm library
+                        /** \todo (GamerMan7799#5#): Consider using std::copy from algorithm library
                             Do not worry about if xPUREx converts to vectors.*/
 						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
 						pTemp[i].location = pmstBaseMonsters[i].location;
@@ -383,20 +423,48 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 	Global::Enty.allocateMonsters(numMonsters);
 	if (Global::blnError) {printf("Could not allocate the memory!\n"); return;}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 uchar clsMap::getMapCell(uint x, uint y) {
+    /////////////////////////////////////////////////
+    /// @brief Gets Map tile.
+    /// @param x = X spot in array.
+    /// @param y = Y spot in array.
+    /// @return tile
+    /////////////////////////////////////////////////
+
 	return map[y][x];
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsMap::setMapCell(uint x, uint y, uchar tile) {
+    /////////////////////////////////////////////////
+    /// @brief Sets Map tile.
+    /// @param x = X spot in array.
+    /// @param y = Y spot in array.
+    /// @param tile = tile to set it to.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	map[y][x] = tile;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 BPLYR clsMap::getbasePlayer(void) {
+    /////////////////////////////////////////////////
+    /// @brief Returns bplyBasePlayer
+    /// @return bplyBasePlayer
+    /////////////////////////////////////////////////
+
 	return bplyBasePlayer;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsMap::checkCollision(LOC placement, uchar tile) {
+    /////////////////////////////////////////////////
+    /// @brief Will check if Monster / Player is colliding with anything.
+    /// @param placement = Monster / Player's location
+    /// @param tile = This is used because the collision checking between the monsters
+    ///               and the players is slightly different.
+    /// @return They tile they are colliding with (or space if not colliding).
+    /////////////////////////////////////////////////
+
     //First convert pixel
 
     BOX A;
@@ -448,7 +516,7 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
     } //end if player
 
 
-/* TODO (GamerMan7799#1#): Make it so it doesn't have to check the entire map. */
+/** \todo (GamerMan7799#1#): Make it so it doesn't have to check the entire map. */
     for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++ ) {
         for (uint x = 0; x < DEFINED_MAP_WIDTH; x++ ) {
             if (map[y][x] != tileSpace) {
@@ -465,23 +533,20 @@ char clsMap::checkCollision(LOC placement, uchar tile) {
     } //end for y
     return tileSpace; //return a space, for no collision
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 bool clsMap::checkOverlap(BOX A, BOX B) {
+    /////////////////////////////////////////////////
+    /// @brief Checks if two collision boxes are overlapping.
+    /// @param A = Collision box for object A
+    /// @param B = Collision box for object B
+    /// @return TURE / FALSE if they overlap.
+    /////////////////////////////////////////////////
+
     if( A.bottom <= B.top ){return false;}
     if( A.top >= B.bottom ){return false;}
     if( A.right <= B.left ){return false;}
     if( A.left >= B.right ){return false;}
     //If none of the sides from A are outside B
     return true;
-
-
-
-    /*if ( (A.right > B.left && A.right < B.right) || (A.left < B.right && A.left > B.left) ) { //X's cross now check y's
-        if ( (A.bottom <= B.bottom && A.bottom >= B.top) || (A.top >= B.bottom && A.top <= B.top) ) {
-            //if (Global::blnDebugMode) {printf("Overlap found.\n");}
-            return true;
-        } //end collide y
-    } //end collide x
-    return false;*/
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/

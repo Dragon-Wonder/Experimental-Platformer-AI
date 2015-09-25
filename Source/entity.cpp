@@ -1,16 +1,32 @@
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+#include <cstdlib>
+#include <cstdio>
+/*****************************************************************************/
 #include "entity.h"
 #include "config.h"
 #include "map.h"
 #include "globals.h"
-/**********************************************************************************************************************************************/
-/*
-This will hold everything related to the entities that have to be kept track of including the players, monsters, past players, etc...
-Later on we might split up players and monsters but since monsters only need to be stored at the moment I didn't see a need to make them
-their own .cpp
-*/
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file entity.cpp
+/// @brief Holds all of the functions for the Entity Class
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsEntity::clsEntity() {
+    /////////////////////////////////////////////////
+    /// @brief Default constructor. Sets class values as the following:
+    ///        * Gen Number = 1
+    ///        * Player Num = 0
+    ///        * Gen Steps = 0
+    ///        Then it will set the player values to:
+    ///        * Location = values based on where it would be in the default map
+    ///        * Velocity = 0
+    ///        * Fitness = 0
+    ///        * Score = 0
+    ///        * State = Rest
+    ///        Then it will open the log file to clear it out.
+    /////////////////////////////////////////////////
+
 	if (Global::blnDebugMode) {printf("Entity Constructor called.\n");}
 	//Default Constructor
 	uchrGenNum = 1;
@@ -27,13 +43,26 @@ clsEntity::clsEntity() {
 
 	if (Global::Cnfg.getvalues(cnfgLogging) == 1) {/*Open log file to clear it*/ logFile = fopen(DEFINED_LOG_FILE_NAME,"w"); fclose(logFile);}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 clsEntity::~clsEntity() {
+    /////////////////////////////////////////////////
+    /// @brief Default deconstructor. Will delete pmstMonsters from memory.
+    /////////////////////////////////////////////////
+
 	if(Global::blnDebugMode) {printf("Entity Destructor called.\n");}
 	delete[] pmstMonsters;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::nextplayer(char death) {
+    /////////////////////////////////////////////////
+    /// @brief Sets things up for the next player in a generation by doing the following
+    ///        * Add the player's inputs and cause of death if logging is enabled.
+    ///        * Stores the player's fitness and inputs into the genPastPlayers array
+    ///        * Resets player values back to default
+    /// @param death = The death of the last player, see status
+    /// @return void
+    /////////////////////////////////////////////////
+
 
 	Configures CnfgValues;
 	CnfgValues = Global::Cnfg.getvalues();
@@ -75,7 +104,7 @@ void clsEntity::nextplayer(char death) {
 		}// End logging if
 	}//end for
 
-    /* TODO (xPUREx#9#): Find unicode symbols for each death. */
+    /** \todo (xPUREx#9#): Find unicode symbols for each death. */
 	if (CnfgValues.blnLogging) {
         //Write cause of death to log
         switch (death) {
@@ -115,26 +144,25 @@ void clsEntity::nextplayer(char death) {
 		fclose(logFile);
 	} //end of if logging
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::newplayer(void) {
-	/*
-	This is a pretty confusing function so I'll try to explain it best I can.
-
-	It first checks to see what step of the program we are in, First, Growth or Steady.
-	This changes how it makes the plyPlayer.
-
-	If its in the First phase. It will just generate rand directions for the player until it hits
-	the cap specified in the config file. With directions being Up, Right or Left (down does nothing at the moment)
-
-	During the growth phase and steady phases:
-	First it generates a random number that it uses as a reference to a player in the best player array
-	Next it randomly generates a Number that is the amount of steps it will take from that player
-	(I tried to make it so it wouldn't be more than half of the last generation's inputs)
-	It will then go back and repeat getting a new player and new section number until it has filled the directions
-	with however many steps the last generation took. If the generation is increasing (by being less than the maximum)
-	then it will generate random directions until full.
-	*/
-
+    /////////////////////////////////////////////////
+    /// @brief This is a pretty confusing function so I'll try to explain it best I can.
+    ///        It first checks to see what step of the program we are in, First, Growth or Steady.
+	///        This changes how it makes the plyPlayer.
+    ///
+	///        If its in the First phase. It will just generate rand directions for the player until it hits
+	///        the cap specified in the config file. With directions being Up, Right or Left (down does nothing at the moment)
+    ///
+    ///        During the growth phase and steady phases:
+	///        First it generates a random number that it uses as a reference to a player in the best player array
+	///        Next it randomly generates a Number that is the amount of steps it will take from that player
+	///        (I tried to make it so it wouldn't be more than half of the last generation's inputs)
+	///        It will then go back and repeat getting a new player and new section number until it has filled the directions
+	///        with however many steps the last generation took. If the generation is increasing (by being less than the maximum)
+	///        then it will generate random directions until full.
+    /// @return void
+    /////////////////////////////////////////////////
     uchrPlayerNum++;
 
 	Configures CnfgValues;
@@ -162,15 +190,18 @@ void clsEntity::newplayer(void) {
 		}
 	}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::getFitness(void) {
-	/*
-	Calculates the fitness of the plyPlayer.
-	If it is hard mode then the longer the player takes
-	the more fitness will decrease
-	Note that 204 is considered the "finish" line.
-	*/
-
+    /////////////////////////////////////////////////
+    /// @brief Gets the fitness for the Current Player. Fitness is based on the following
+    ///        * How far left the player is
+    ///        * How high the player is
+    ///        * Their Score
+    ///        * How many steps they have taken so far
+    ///        If Hard mode is enabled the fitness will update every time the player moved
+    ///        if not fitness will only update if it is higher than current fitness.
+    /// @return void (Fitness is placed in the player structure)
+    /////////////////////////////////////////////////
 	float temp = 0.00f;
 
 	//Get the spot that the player starts at for reference
@@ -188,8 +219,14 @@ void clsEntity::getFitness(void) {
     //it will only update if the new fitness value is higher than the old one.
 	if (Global::Cnfg.getvalues(cnfgHardMode) == 1 || temp > plyPlayer.fitness) {plyPlayer.fitness = temp;}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::getBest(void) {
+    /////////////////////////////////////////////////
+    /// @brief Finds the players with the highest fitnesses in genPastPlayers and
+    ///        moves them to genBestPlayers.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	//Gets best players in a generation.
 	float fTempfit = 0;
 	uchar uchrBestNum = 0;
@@ -207,15 +244,19 @@ void clsEntity::getBest(void) {
 		genPastPlayers[uchrBestNum].fitness = 0.00f; //set fitness to 0 so they aren't recorded again.
 	}
 }
-/**********************************************************************************************************************************************/
-void clsEntity::killMonster(uchar xplace,uchar yplace) {
-	//Finds monster at specified place and kills them.
+/*****************************************************************************/
+void clsEntity::killMonster(LOC place) {
+    /////////////////////////////////////////////////
+    /// @brief Will kill a monster at place.
+    /// @param place = Location of the top left spot where to check for monster to kill.
+    /// @return void
+    /////////////////////////////////////////////////
 
     BOX A;
-    A.left = xplace;
-    A.right = xplace + DEFINED_PIC_SIZE;
-    A.top = yplace;
-    A.bottom = yplace + DEFINED_PIC_SIZE;
+    A.left = place.x;
+    A.right = place.x + DEFINED_PIC_SIZE;
+    A.top = place.y;
+    A.bottom = place.y + DEFINED_PIC_SIZE;
     BOX B;
 
 	for (uchar i = 0; i < Global::Map.numMonsters; i++) {
@@ -226,9 +267,13 @@ void clsEntity::killMonster(uchar xplace,uchar yplace) {
 		if (Global::Map.checkOverlap(A,B)) {pmstMonsters[i].living = false;}
 	}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::allocateMonsters(uchar amount) {
-	//Allocate memory for the monsters
+    /////////////////////////////////////////////////
+    /// @brief Grows pmstMonsters to be an array of size amount.
+    /// @param amount = number of array spots that need to be made.
+    /// @return void
+    /////////////////////////////////////////////////
 	pmstMonsters = new (std::nothrow) MNSTR [amount];
 
 	//Quick Note: the no throw is used here so that the program doesn't just end when
@@ -244,8 +289,14 @@ void clsEntity::allocateMonsters(uchar amount) {
 		if (Global::blnDebugMode) {printf("Monsters correctly allocated\n");}
 	}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 MNSTR clsEntity::getMonster(uchar num) {
+    /////////////////////////////////////////////////
+    /// @brief Returns monster number num.
+    /// @param num = Array spot of the monster to return.
+    /// @return MNSTR
+    /////////////////////////////////////////////////
+
 	MNSTR tempMNSTR;
 	tempMNSTR.location.x = pmstMonsters[num].location.x;
 	tempMNSTR.location.y = pmstMonsters[num].location.y;
@@ -255,8 +306,15 @@ MNSTR clsEntity::getMonster(uchar num) {
 	tempMNSTR.state = pmstMonsters[num].state;
 	return tempMNSTR;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
+    /////////////////////////////////////////////////
+    /// @brief Sets Monster.
+    /// @param num = Number array spot of monster to change.
+    /// @param MonsterSet = MNSTR structure of what the monster is being set to.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	pmstMonsters[num].location.x = MonsterSet.location.x;
 	pmstMonsters[num].location.y = MonsterSet.location.y;
     pmstMonsters[num].vel.x = MonsterSet.vel.x;
@@ -264,19 +322,37 @@ void clsEntity::setMonster(uchar num, MNSTR MonsterSet) {
 	pmstMonsters[num].living = MonsterSet.living;
 	pmstMonsters[num].state = MonsterSet.state;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 PLYR clsEntity::getPlayer(void) {
+    /////////////////////////////////////////////////
+    /// @brief Get player values
+    /// @return plyPlayer
+    /////////////////////////////////////////////////
+
 	return plyPlayer;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::setPlayer(BPLYR baseplayer) {
+    /////////////////////////////////////////////////
+    /// @brief Sets player (will only set its location and velocity)
+    /// @param baseplayer = Location and Velocity values to set player to.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	plyPlayer.location.x = (uint) baseplayer.location.x;
 	plyPlayer.location.y = (uint) baseplayer.location.y;
 	plyPlayer.vel.x = baseplayer.vel.x;
 	plyPlayer.vel.y = baseplayer.vel.y;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsEntity::doPlayerStep(uint stepnum, char stage) {
+    /////////////////////////////////////////////////
+    /// @brief This is called to have player to input stepnum in their direction array.
+    /// @param stepnum = The Array spot of the direction to pass to the map.
+    /// @param stage = The stage the program is in
+    /// @return Player's status
+    /////////////////////////////////////////////////
+
     char chrPlayerStatus;
     switch (plyPlayer.direction[stepnum]) {
     case dirNone:
@@ -313,8 +389,16 @@ char clsEntity::doPlayerStep(uint stepnum, char stage) {
     }
     return chrPlayerStatus;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::doNextGeneration(char stage) {
+    /////////////////////////////////////////////////
+    /// @brief Gets ready to run the next generation by:
+    ///        * Getting best PLayers
+    ///        * Incrementing uintGenSteps based on stage
+    /// @param stage = Stage the program is in.
+    /// @return void
+    /////////////////////////////////////////////////
+
     uchrPlayerNum = 0;
     getBest();
     if(Global::Cnfg.getvalues(cnfgShowMap) != 1) {
@@ -329,19 +413,32 @@ void clsEntity::doNextGeneration(char stage) {
     else if (stage == stageGrowth) {uintGenSteps += Global::Cnfg.getvalues(cnfgGenIncrease);}
     else {uintGenSteps = DEFINED_MAX_PLAYER_STEPS;}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 BPLYR clsEntity::getPlayerBase() {
+    /////////////////////////////////////////////////
+    /// @brief Gets base player values (location and velocity)
+    /// @return BPLYR
+    /////////////////////////////////////////////////
+
     BPLYR temp;
     temp.location = plyPlayer.location;
     temp.vel = plyPlayer.vel;
     return temp;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsEntity::getPlayerState() {
+    /////////////////////////////////////////////////
+    /// @brief Gets player state
+    /// @return plyPlayer.state
+    /////////////////////////////////////////////////
+
     return plyPlayer.state;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsEntity::setPlayerState(char newstate) {
+    /////////////////////////////////////////////////
+    /// @brief Sets player state
+    /////////////////////////////////////////////////
     plyPlayer.state = newstate;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/

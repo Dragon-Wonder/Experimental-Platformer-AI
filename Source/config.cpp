@@ -1,13 +1,30 @@
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 #include "config.h"
 #include "globals.h"
 #include "version.h"
-/**********************************************************************************************************************************************/
-/*
-This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
-*/
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file config.cpp
+/// @brief Holds all of the functions for the Config Class
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsConfig::clsConfig() {
+    /////////////////////////////////////////////////
+    /// @brief This is the default constructor for the Config Class, set values as
+    ///        the following defaults before loaded from the file.
+    ///        * Logging = true
+    ///        * Show Map = true
+    ///        * Append Time = true
+    ///        * Hard Mode = false
+    ///        * First Gen = 100
+    ///        * Gen Increase = 100
+    ///        * Gens past growth = 10
+    ///        * Mutation Chance = 15
+    ///        * Seed = 12345
+    ///        * Screen Height = 0
+    ///        * Screen Width = 0
+    /////////////////////////////////////////////////
+
 	//Set the values as some default value.
 	values.blnLogging = true;
 	values.blnShowMap = true;
@@ -22,19 +39,26 @@ clsConfig::clsConfig() {
 	values.uintScreenWidth = 0;
 	if (Global::blnDebugMode) {printf("Config Constructor called.\n");}
 }
-/**********************************************************************************************************************************************/
-clsConfig::~clsConfig() {
-	if(Global::blnDebugMode) {printf("Config Destructor called.\n");}
-}
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 bool clsConfig::exists(void) {
+    /////////////////////////////////////////////////
+    /// @brief Checks if Config.ini already exists
+    /// @return TRUE / FALSE Config file exists
+    /////////////////////////////////////////////////
+
 	//Returns true or false if config file exists
 	FILE* pTempFile = fopen(FileName, "r");
 	if (pTempFile == NULL) {return false;}
 	else {return true;}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::make(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will create a new config file, with all of the defaults set in the
+    ///        constructor.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	//Makes the config file
 	configFile = fopen(FileName,"w");
 	printf("Config File will now be created!\n");
@@ -57,14 +81,19 @@ void clsConfig::make(void) {
 	fprintf(configFile, "Screen Width: 0\n");
 	fclose(configFile);
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsConfig::verisonCheck(const char *ConfigVerison) {
-	//This checks the version number written at the top of the config file
-	//against the internal version number of the program.
-	//If it finds a difference in Software status or a Major revision change the config HAS to be replaced.
-	//A Minor revision will result in a prompt to the user about if it should be replaced.
-	//And if only a patch change is found then it will just use the old config
-	//Lastly if no change is found then use the config of course
+    /////////////////////////////////////////////////
+    /// @brief 	This checks the version number written at the top of the config file
+	///         against the internal version number of the program.
+	///         If it finds a difference in Software status or a Major revision change the config HAS to be replaced.
+	///         A Minor revision will result in a prompt to the user about if it should be replaced.
+	///         And if only a patch change is found then it will just use the old config
+	///         Lastly if no change is found then use the config of course.
+    ///
+    /// @param ConfigVersion = The Version number loaded from the config file
+    /// @return NEWCONFIG / USECONFIG / PROMPTUSER
+    /////////////////////////////////////////////////
 
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
 	char C_SoftwareStatus[15], P_SoftwareStatus[15];
@@ -100,9 +129,14 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
     }
     return USECONFIG;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::load(void) {
-	//Loads all of the config values
+    /////////////////////////////////////////////////
+    /// @brief Loads all of the values from the config file and places them where
+    ///        they need to go. Will also check these values can if they are not what they
+    ///        should be (A floating point on an int value) it will set them back to default.
+    /// @return void
+    /////////////////////////////////////////////////
 
 	char chrTempString[50];
 	int intTempBool, intValuesScanned;
@@ -187,11 +221,19 @@ void clsConfig::load(void) {
 	fclose(configFile);
 	printf("\n\n");
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::Check(void) {
+    /////////////////////////////////////////////////
+    /// @brief This is the main function that should be called to check the
+    ///        config file. It will check if the config exists, (create one if it doesn't).
+    ///        If it does check the version number and do what needs to be done there. Then
+    ///        finally load all the values if safe to do so.
+    /// @return void
+    /////////////////////////////////////////////////
+
 	char chrTempString[50], chrConfigVerison;
 	bool blnAnswered = false; //this is used for a fix for an issue I was facing.
-                          //I'll figure out a better method later.
+                              //I'll figure out a better method later.
 
 	if (exists() != true) {
 		printf("Config file was not found; creating now one\n");
@@ -237,12 +279,26 @@ void clsConfig::Check(void) {
 		} else { load();}
 	} //end if exists
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 Configures clsConfig::getvalues(void) {
+    /////////////////////////////////////////////////
+    /// @brief Returns all the config values in the structure.
+    /// @return clsConfig::values
+    /////////////////////////////////////////////////
+
 	return values;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 uint clsConfig::getvalues(uchar Spot) {
+    /////////////////////////////////////////////////
+    /// @brief Returns a specific config values.
+    /// @param Spot = Number from configValueSpot that references a specific config
+    ///               value.
+    /// @return Unsigned int from that specifc config value (the boolean will return a 1
+    ///         if true or a 0 if false). It will also return a 9999 if the spot entered doesn't
+    ///         match a value.
+    /////////////////////////////////////////////////
+
 	//Returns just one value from the config.
 	//Useful when I don't need ALL the values.
 	switch (Spot) {
@@ -280,10 +336,10 @@ uint clsConfig::getvalues(uchar Spot) {
             return values.uintScreenWidth;
             break;
 		default :
-			return 0;
+			return 9999;
 			break;
 	}; //end switch
 
 	return 9999;
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/

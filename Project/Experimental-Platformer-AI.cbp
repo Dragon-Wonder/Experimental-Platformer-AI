@@ -164,13 +164,13 @@
 		<Unit filename="../Source/version.h" />
 		<Extensions>
 			<DoxyBlocks>
-				<comment_style block="5" line="1" />
-				<doxyfile_project project_number="4.0.0.137" output_directory="deoxy" />
-				<doxyfile_build />
+				<comment_style block="5" line="0" />
+				<doxyfile_project project_number="v4.2.0-Beta.5" />
+				<doxyfile_build extract_all="1" extract_private="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />
-				<doxyfile_dot />
-				<general />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
+				<general use_at_in_tags="1" />
 			</DoxyBlocks>
 			<code_completion />
 			<envvars />

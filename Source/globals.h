@@ -1,14 +1,22 @@
 #ifndef __GLOBAL__HEADER__
 #define __GLOBAL__HEADER__
-/**********************************************************************************************************************************************/
-//This will hold the global namespace with the global values.
-/**********************************************************************************************************************************************/
-//Call the headers so the classes can be found.
-#include "config.h"
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file globals.h
+/// @brief This file holds all of the references to variables declared in the
+///        Global namespace. See Main.cpp for more details
+/////////////////////////////////////////////////
+/*****************************************************************************/
+//Make some prototype classes
+class clsConfig;
+class clsEntity;
+class clsMap;
+class clsTick;
+/*#include "config.h"
 #include "tick.h"
 #include "map.h"
-#include "entity.h"
-/**********************************************************************************************************************************************/
+#include "entity.h"*/
+/*****************************************************************************/
 //Globals
 namespace Global {
 	extern const bool blnDebugMode; //Holds if in debug mode or not. Causes more messages to appear in the console
@@ -28,5 +36,5 @@ namespace Global {
 	    extern const float fRecoil; //Recoil for when hitting an object
 	};
 };
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 #endif

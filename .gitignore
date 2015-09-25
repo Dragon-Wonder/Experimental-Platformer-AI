@@ -70,3 +70,5 @@
 # Other Libraries (such as libjpeg-9) that I store the dll & license files here in case I decide to use them later.
 /OtherLibraries/
 /OtherLibraries/*
+
+/gh-pages/

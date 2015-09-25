@@ -1,7 +1,14 @@
-/**********************************************************************************************************************************************/
-//The main function, most of the actual program is found in Entity.cpp under start.
-//So see there for most of the functions.
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file       Main.cpp
+/// @brief      Holds all the main functions.
+/// @author     GamerMan7799
+/// @author     xPUREx
+/// @version    4.2.0-Beta.5
+/// @date       2015
+/// @copyright  Public Domain Unlicense.
+/////////////////////////////////////////////////
+/*****************************************************************************/
 #include "version.h"
 #include "main.h"
 #include "config.h"
@@ -10,39 +17,57 @@
 #include "entity.h"
 #include "globals.h"
 #include "screen.h"
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 //General Todos
-// TODO (xPUREx#2#): Add a short message the varies with the Software status (ex warning if using a beta or alpha)
-/**********************************************************************************************************************************************/
-//Globals
+/** \todo (xPUREx#2#): Add a short message the varies with the Software status (ex warning if using a beta or alpha) */
+/*****************************************************************************/
+/** This is the namespace that is meant to hold things that need to be referenced between
+    different files */
 namespace Global {
-    //Holds if in debug mode or not. Causes more messages to appear in the console.
-    //Defined in version.h
+    /** This will hold if this build is meant for debugging. While in debugging mode the
+        program will print many more messages to the console. It is set to true if
+        DEFINED_BUILD_MODE_PRIVATE is defined in version.h or during compiling. */
     #ifndef DEFINED_BUILD_MODE_PRIVATE
         const bool blnDebugMode = false;
     #else
         const bool blnDebugMode = true;
     #endif // DEFINED_BUILD_MODE_PRIVATE
 
-	bool blnError = false; //if there was an error; then the program will exit when it checks this.
+
+	bool blnError = false; /**< If there was an error; then the program will exit when it checks this. */
 
 	//Call all of the classes as globals so they are the same everywhere.
-	clsConfig Cnfg;
-	clsEntity Enty;
-	clsMap Map;
-	clsTick Tick;
+	clsConfig Cnfg; /**< Call Config Class on a global scope so it may be referenced in other classes */
+	clsEntity Enty; /**< Call Entity Class on a global scope so it may be referenced in other classes */
+	clsMap Map; /**< Call Map Class on a global scope so it may be referenced in other classes */
+	clsTick Tick; /**< Call Tick Class on a global scope so it may be referenced in other classes */
 
-    namespace Physics { //Constants that are gonna be used for physics in later versions
-	    const float fGravityAcceleration = 9.81;
-	    const float fFriction = 0.089; //factor by which velocity will be decreased by.
-	    const float fMaxVelocity = 200;
-	    const float fMonsMaxVelocity = 44.25;
-	    const float fIncVelocity = 32; //How much velocity increments by for an input
-	    const float fRecoil = -0.595;
-	};
-};
-/**********************************************************************************************************************************************/
+    /** This namespace holds values based on the physics that are used in the program */
+    namespace Physics {
+	    const float fGravityAcceleration = 9.81; /** The acceleration downward due to gravity.
+                                                     in pixels / sec<sup>2</sup> */
+	    const float fFriction = 0.089; /** Velocity will be decreased by this number times
+                                           current velocity. */
+	    const float fMaxVelocity = 200; /** The max velocity (pixels / sec) the player can reach. */
+	    const float fMonsMaxVelocity = 44.25; /** The max velocity (pixels / sec) the monster can reach. */
+	    const float fIncVelocity = 32; /** How much velocity (pixels / sec) increments by for an input. */
+	    const float fRecoil = -0.595; /** When the player or monster runs into a wall their velocity will
+                                          be multiplied by this value. The negative means that they will bounce
+                                          off the wall. Setting it to 0 will cause them to come to a complete stop. */
+	}; //end namespace physics
+}; //end namespace Global
+/*****************************************************************************/
 int main(int argc, char *argv[]) {
+    /////////////////////////////////////////////////
+    /// @brief Holds the main function.
+    ///
+    /// @param argc = Something required by SDL
+    /// @param argv = Something required by SDL
+    /// @return 1 / 0: 1 Means exiting with an error. 0 means exiting as program
+    ///                  has completed its run.
+    ///
+    /////////////////////////////////////////////////
+
 	Global::Cnfg.Check(); //Load the config file's values
 	if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
 
@@ -55,7 +80,7 @@ int main(int argc, char *argv[]) {
     //check if there was an error creating the SDL window
     //exit program if there was
     if (Global::blnError) {printf("\nThere was an error!\n"); return 1;}
-#ifndef DEFINED_BUILD_HUMAN
+#if DEFINED_BUILD_HUMAN != 1
 	//Seed rand as defined in the config options.
 
 	srand(CnfgValues.uintSeed + ( CnfgValues.blnAppendTime ? time(NULL) : 0 ) );
@@ -181,5 +206,5 @@ int main(int argc, char *argv[]) {
     Screen.~clsScreen();
 	printf("\nDone\n");
 	return 0;
-}
-/**********************************************************************************************************************************************/
+} //end main
+/*****************************************************************************/

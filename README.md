@@ -1,5 +1,7 @@
 # Experimental Platformer AI
 
+(Check out the gh-pages of this project by going to [http://gamerman7799.github.io/Experimental-Platformer-AI/])
+
 ## Introduction
 
 The idea behind this project is a simple AI that will try and "learn" to go through a platforming course. By generating a number of players for a generation. 

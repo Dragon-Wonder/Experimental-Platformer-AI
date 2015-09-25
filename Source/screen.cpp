@@ -1,14 +1,30 @@
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 #include "screen.h"
 #include "map.h"
 #include "config.h"
+#include "entity.h"
+#include "tick.h"
 #include "globals.h"
 #include "image_error.xpm"
-/**********************************************************************************************************************************************************************/
-/* TODO (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
+/*****************************************************************************/
+/** \todo (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
                            Consider hiring someone? */
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file screen.cpp
+/// @brief Holds all of the functions for the Screen Class
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsScreen::clsScreen() {
+    /////////////////////////////////////////////////
+    /// @brief The default constructor for the SDL screen
+    ///        it will try start SDL, and create and window and a renderer,
+    ///        then try to load the textures it will need, if any of these fail
+    ///        it will set bln_SDL_Started to false and return void, when main in main.cpp
+    ///        checks bln_SDL_Started and ends the entire program will it is false.
+    ///        If, however, bln_SDL_Started is true it will continue on with the rest of the program.
+    /////////////////////////////////////////////////
+
     if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
                                                     //useful so if show map is disabled you don't need the images folder.
         //Figure out screen size
@@ -77,8 +93,13 @@ clsScreen::clsScreen() {
         update();
     } //end if blnShowMap
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 clsScreen::~clsScreen() {
+    /////////////////////////////////////////////////
+    /// @brief This is the default deconstructor, it will just call
+    ///        clsScreen::cleanup to ensure everything is cleared from memory,
+    ///        and then quit SDL.
+    /////////////////////////////////////////////////
     if (Global::Cnfg.getvalues(cnfgShowMap) == 1) { //if nothing was really loaded then don't need to clean anything up
         cleanup();
         TTF_Quit();
@@ -87,8 +108,12 @@ clsScreen::~clsScreen() {
         if (Global::blnDebugMode) {printf("SDL quit\n");}
     } //end if show map
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::update(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will update the SDL screen based on the map and player / monster locations.
+    /// @return void
+    /////////////////////////////////////////////////
     //clear renderer
     SDL_RenderClear(ren);
     //copy sky to cover entire screen.
@@ -153,8 +178,20 @@ void clsScreen::update(void) {
     SDL_RenderPresent(ren);
     Global::Tick.wait();
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::cleanup(void) {
+    /////////////////////////////////////////////////
+    /// @brief This will attempt to delete Textures, and the Window / Renderer
+    ///        from memory if their representative loaded boolean is true. Will delete
+    ///        * Map tile textures
+    ///        * Error textures
+    ///        * Message Font
+    ///        * Message texture
+    ///        * Renderer
+    ///        * Window
+    ///
+    /// @return void
+    /////////////////////////////////////////////////
     if (blnloaded.blnMapTiles) {
         SDL_DestroyTexture(textures.maptiles);
         blnloaded.blnMapTiles = false;
@@ -190,8 +227,12 @@ void clsScreen::cleanup(void) {
         if (Global::blnDebugMode) {printf("Window destroyed\n");}
     }
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::error(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will print out the error generated by SDL if something goes wrong
+    /// @return void
+    /////////////////////////////////////////////////
     cleanup();
     Global::blnError = true;
     printf("SDL error: %s\n", SDL_GetError());
@@ -200,8 +241,13 @@ void clsScreen::error(void) {
     bln_SDL_started = false;
 	getchar();
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::loadTextures() {
+    /////////////////////////////////////////////////
+    /// @brief Will load all the images that will be needed.
+    /// @return void
+    ////////////////////////////////////////////////
+
     std::string path = DEFINED_DEFAULT_IMAGE_PATH;
     path += "tiles.png";
 
@@ -235,15 +281,18 @@ void clsScreen::loadTextures() {
 	    blnloaded.blnMapTiles = true;
     }
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::playerDeath(void) {
-	//Plays short death animation
-	//only shows up if the Map::move returns DEAD
-	//The games "pauses" for a second then the player will move up
-	//3 spaces then down about 4 spaces (depending on starting point)
-	//the whole thing happens in 5 frames.
+    /////////////////////////////////////////////////
+    /// @brief Plays short death animation
+	///        only shows up if the Map::move returns DEAD
+	///        The games "pauses" for a second then the player will move up
+	///        3 spaces then down about 4 spaces (depending on starting point)
+	///        the whole thing happens in 5 frames.
+    /// @return void
+    /////////////////////////////////////////////////
 
-    /* TODO (GamerMan7799#1#): Add tileDeadPlayer with its own image to better tell when the death animation is happening */
+    /** \todo (GamerMan7799#1#): Add tileDeadPlayer with its own image to better tell when the death animation is happening */
 	BPLYR tempPlayer;
 	tempPlayer = Global::Enty.getPlayerBase();
 	//show();
@@ -259,20 +308,23 @@ void clsScreen::playerDeath(void) {
 		update();
 	}
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::writemessage(void) {
-    //Now work on Making the messages that will appear on the screen
+    /////////////////////////////////////////////////
+    /// @brief Now work on Making the messages that will appear on the screen
+    ///
+    ///        I imagine that I am doing terrible programing things
+    ///        With how I'm switch between char's and strings but whatever
+    /// @return void
+    /////////////////////////////////////////////////
 
-    //I imagine that I am doing terrible programing things
-    //With how I'm switch between char's and strings but whatever
-
-    //These are char arrays that will act as "Strings" for building the messages to appear
+    // These are char arrays that will act as "Strings" for building the messages to appear
     char strClock[8];
     char strGenNum[5];
     char strPlayerNum[4];
     char strFitness[7];
 
-    /* TODO (GamerMan7799#5#): Somehow detect if over wall and change color of text */
+    /** \todo (GamerMan7799#5#): Somehow detect if over wall and change color of text */
     std::string message;
     sprintf(strClock, "%8u", Global::Tick.getClockTime());
 
@@ -340,10 +392,14 @@ void clsScreen::writemessage(void) {
     SDL_RenderCopy(ren, textures.texmessage, NULL, &dst);
     SDL_FreeSurface(surmessage);
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::set_clips() {
-    //Set all the locations of the specific tiles in the tiles.png
-     //Since all of the sizes are the same we will do this all together to save space
+    /////////////////////////////////////////////////
+    /// @brief Set all the locations of the specific tiles in the tiles.png
+    ///        Since all of the sizes are the same we will do this all together to save space
+    /// @return void
+    /////////////////////////////////////////////////
+
      for (uchar i = 0; i < DEFINED_NUM_MAP_TILES; i++) {
         clips[i].w = clips[i].h = pic_size;
      }
@@ -400,4 +456,4 @@ void clsScreen::set_clips() {
 
 
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
