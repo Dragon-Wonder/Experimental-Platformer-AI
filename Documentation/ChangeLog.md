@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Added 5 new brick textures
 * Map loading functionality
 * Doxygen Support
+* Messages that informs the user about the software status.
 
 ### Changed
 * Player and Monster movement is now velocity based.

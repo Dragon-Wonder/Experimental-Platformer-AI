@@ -15,16 +15,16 @@
 /*****************************************************************************/
 //Date Version Types
 /** The day of the last build of the program, currently not used. */
-#define DEFINED_VER_DATE "25"
+#define DEFINED_VER_DATE "17"
 
 /** The month of the last build of the program, currently not used. */
-#define DEFINED_VER_MONTH "09"
+#define DEFINED_VER_MONTH "10"
 
 /** The year of the last build of the program, currently not used. */
 #define DEFINED_VER_YEAR "2015"
 
 /** The Ubuntu style of the date of the last build. It is in YY.MM format. */
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.09"
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.10"
 /*****************************************************************************/
 /** The Major number of the version number */
 #define DEFINED_VER_MAJOR  4
@@ -37,13 +37,13 @@
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 4,2,0,38
+#define DEFINED_VER_RC_FILEVERSION 4,2,0,42
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 38\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 42\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.5\0"
+#define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.6\0"
 
 //Software Status
 /**
