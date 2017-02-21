@@ -25,6 +25,9 @@ struct ConfigValues {
 	uint uintSeed;              /**< The seed that is used with srand(). */
 	uint uintScreenWidth;       /**< Screen width, only used if specifically called. */
 	uint uintScreenHeight;      /**< Screen height, only used if specifically called. */
+	uint uintMaxPlayerSteps;    /**< Max steps player can take */
+	uint uintPlayersPerGen;     /**< Number of players in each generation */
+	uint uintNumberOfBreed;     /**< Number of players for each generation to breed in the next. */
 };
 
 /** @enum configValueSpot
@@ -42,7 +45,10 @@ enum configValueSpot {
 	cnfgMutationChance, /**< 7: Spot for mutation chance value. */
 	cnfgSeed,           /**< 8: Spot for seed value. */
 	cnfgScreenWidth,    /**< 9: Spot for screen width value. */
-	cnfgScreenHeight    /**< 10: Spot for screen height value. */
+	cnfgScreenHeight,   /**< 10: Spot for screen height value. */
+	cnfgMaxSteps,       /**< 11: Spot for max steps. */
+	cnfgPlayerGen,      /**< 12: Spot for players per generation. */
+	cnfgPlayerBreed     /**< 13: Spot for players to breed. */
 };
 
 typedef struct ConfigValues Configures;
@@ -55,10 +61,10 @@ typedef struct ConfigValues Configures;
 
 class clsConfig {
 	public:
-	//private:
-		//Members
-		/** The config file name. */
-		const char* FileName = DEFINED_CONFIG_FILE_NAME;
+    clsConfig();
+
+    /** The config file name. */
+		static constexpr char* FileName = defined::kConfigFileName;
 
 		/** Pointer to the config file open in memory. */
 		FILE* configFile;
@@ -71,11 +77,6 @@ class clsConfig {
 		bool exists(void);
 		void make(void);
 		void load(void);
-
-	//public:
-		//Default Constructor
-		clsConfig();
-		//Functions
 		void Check(void);
 		Configures getvalues(void); //Get all values
 		uint getvalues(uchar); //Get just one value (use enum above to define which one).

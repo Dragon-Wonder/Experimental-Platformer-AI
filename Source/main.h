@@ -8,13 +8,7 @@
 ///        centrally referenced.
 /////////////////////////////////////////////////
 /*****************************************************************************/
-/** This defines the Map height, unless a map you are trying to load is more than
-    this it should be kept at 14 */
-#define DEFINED_MAP_HEIGHT 14
-
-/** This defines the Map width, unless a map you are trying to load is more than
-    this it should be kept at 217 */
-#define DEFINED_MAP_WIDTH 217
+#include <vector>
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @defgroup ChangeableDefines Easily Changeable Defines
@@ -22,69 +16,41 @@
 /// @{
 /////////////////////////////////////////////////
 
-
-/** What the target FPS is for the program, only effects things when show map is true
-    See tick.cpp for what it does */
-#define DEFINED_GOAL_FPS 30
-
-/** The most steps a single player can take. */
-#define DEFINED_MAX_PLAYER_STEPS 1000
-
-/** The number of players in each generation. */
-#define DEFINED_PLAYERS_PER_GEN 40
-
-/** The max number of times a player can jump before hitting the ground again. */
-#define DEFINED_MAX_JUMP_COUNT 2
-
-/** The points the player gets for collecting a coin. */
-#define DEFINED_COIN_WORTH 100
-
-/** The points the player gets for killing a monster. */
-#define DEFINED_MONS_KILL_POINTS 500
-
-/** How many seconds to complete the level, before player is killed */
-#define DEFINED_TICK_LIMIT 300
-
-/** How many best players are called at the end of each generation. */
-#define DEFINED_BEST_PLAYER_NUM 10
-
-/** How many different map tiles there are (used to make the array for clipping). */
-#define DEFINED_NUM_MAP_TILES 11
-
-/** Size of each tile in pixels. */
-#define DEFINED_PIC_SIZE 24
-
+namespace defined {
+  constexpr unsigned char kGoalFPS = 30;
+      /**< What the target FPS is for the program, only effects things when show map is true
+      See tick.cpp for what it does */
+  constexpr unsigned char kMaxJumpCount = 2;
+      /**< The max number of times a player can jump before hitting the ground again. */
+  constexpr unsigned int kCoinWorth = 100;
+      /**< The points the player gets for collecting a coin. */
+  constexpr unsigned int kMonsterKillWorth = 500;
+      /**< The points the player gets for killing a monster. */
+  constexpr unsigned int kTickLimit = 300;
+      /**< How many seconds to complete the level, before player is killed */
+  constexpr unsigned char kNumMapTiles = 11;
+      /**< How many different map tiles there are (used to make the array for clipping). */
+  constexpr unsigned char kPicSize = 24;
+      /**< Size of each tile in pixels. */
+  constexpr char* kConfigFileName = "Config.ini";
+      /**< The name of the config file that will be made / read from. */
+  constexpr char* kLogFileName = "Player.log";
+      /**< The name of the log file that will have player actions written to. */
+  constexpr unsigned char kMapHeight = 14;
+      /**< This defines the Map height, unless a map you are trying to load is more than
+            this it should be kept at 14 */
+  constexpr unsigned char kMapWidth = 217;
+      /**< This defines the Map width, unless a map you are trying to load is more than
+        this it should be kept at 217 */
+}
 /** Setting this to 1 will switch the program from being AI based to being Human based.
     It is useful to debugging. */
 #define DEFINED_BUILD_HUMAN 1
-
-/** The name of the config file that will be made / read from. */
-#define DEFINED_CONFIG_FILE_NAME "Config.ini"
-
-/** The name of the log file that will have player actions written to. */
-#define DEFINED_LOG_FILE_NAME "Player.log"
-
 /// @}
 /*****************************************************************************/
-/////////////////////////////////////////////////
-/// @defgroup ConfigReturns Returns for the Config
-/// @brief These are defines that just allow returns from clsConfig::verisonCheck
-///        to be more human readable.
-/// @{
-/////////////////////////////////////////////////
-
-/** Return to make a new config file. */
-#define NEWCONFIG 'N'
-
-/** Return to use the current config file. */
-#define USECONFIG 'U'
-
-/** Return to prompt the user if they should use / make new config file. */
-#define PROMPTUSER 'P'
-/// @}
+typedef std::vector<char> VectorSteps;
 /*****************************************************************************/
 //Structures for varies uses
-
 /** @struct stcLoc
     Holds the location of the Monster / Player in terms of pixels.
     It is its own structure so that I can pass these values together through functions */
@@ -94,19 +60,19 @@ struct stcLoc {
 }; //prefix = loc
 
 /** @struct stcVel
-    Holds the velocity of the Monster / Player in terms of pixels / second.
-    It is its own structure so that I can pass these values together through functions */
+  Holds the velocity of the Monster / Player in terms of pixels / second.
+  It is its own structure so that I can pass these values together through functions */
 struct stcVel {
-    float x; /**< X direction value. */
-    float y; /**< Y direction value. */
+  float x; /**< X direction value. */
+  float y; /**< Y direction value. */
 }; //prefix = vel
 
 /** @struct stcGeneration
-    Holds a single player's values that are needed when going to the next generation
-    It is different from stcPlayer because I only need the player's fitness and inputs. */
+  Holds a single player's values that are needed when going to the next generation
+  It is different from stcPlayer because I only need the player's fitness and inputs. */
 struct stcGeneration {
 	float fitness; /**< The fitness of the player. */
-	unsigned char direction[DEFINED_MAX_PLAYER_STEPS]; /**< All of the player's inputs. */
+	VectorSteps steps; /**< All of the player's inputs. */
 }; //prefix = gen
 
 /** @struct stcPlayer
@@ -117,7 +83,7 @@ struct stcPlayer {
 	float fitness; /**< Player's fitness. */
 	unsigned int score; /**< Player's score (gained by collecting coins and killing monsters
                              it will effect their fitness. */
-	unsigned char direction[DEFINED_MAX_PLAYER_STEPS]; /**< All of the player's inputs. */
+	VectorSteps direction; /**< All of the player's inputs. */
 	unsigned char state; /**< Player's state (examples: left, right, jumping, etc...). Currently does nothing. */
 }; //prefix = ply
 
@@ -157,6 +123,8 @@ typedef struct stcMonster MNSTR; /**< Change structure typedef for easier refere
 typedef struct stcLoc LOC; /**< Change structure typedef for easier reference. */
 typedef struct stcVel VEL; /**< Change structure typedef for easier reference. */
 typedef struct stcBasePlayer BPLYR; /**< Change structure typedef for easier reference. */
+typedef std::vector<MNSTR> VectorMonsters; /**< Define a vector for the monsters */
+typedef std::vector<GEN> VectorGeneration; /**< Define a vector for the generation */
 
 //Ahh laziness at its finest
 typedef unsigned char uchar; /**< Change unsigned char to uchar because I'm lazy. */

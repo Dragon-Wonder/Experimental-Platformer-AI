@@ -13,38 +13,37 @@
 /////////////////////////////////////////////////
 
 class clsTick {
-    public:
-		//Default Constructor
-		clsTick();
+  public:
+  //Default Constructor
+  clsTick();
 
-		//Functions
-		void wait(void); //Call this to activate the wait
-		void resetClock(void);
-		void startTimer(void);
+  //Functions
+  void wait(void); //Call this to activate the wait
+  void resetClock(void);
+  void startTimer(void);
 
-		void decClock(void); //This is so the clock will decrement even when show map is false.
-		uint getClockTime(void);
+  void decClock(void); //This is so the clock will decrement even when show map is false.
+  uint getClockTime(void);
 
-    private:
-		//Members
-		/** The Frame per second we want to see. */
-		uchar uchrFPS;
+  private:
+  //Members
+  /** The Frame per second we want to see. */
+  uchar uchrFPS;
 
-		/** How long (in milliseconds) the program should wait for. */
-		ulong ulngSleepTime;
+  /** How long (in milliseconds) the program should wait for. */
+  ulong ulngSleepTime;
 
-		/** The time the player has left to complete the map (in seconds). */
-		uint uClock;
+  /** The time the player has left to complete the map (in seconds). */
+  uint uClock;
 
-		/** The clock as a floating point, will be converted to uint. */
-		float fClock;
+  /** The clock as a floating point, will be converted to uint. */
+  float fClock;
 
-		/** The start of the timer since the last pause. */
-		clock_t timerStart;
+  /** The start of the timer since the last pause. */
+  clock_t timerStart;
 
-		/** The start of the clock. */
-		clock_t clockStart;
-
+  /** The start of the clock. */
+  clock_t clockStart;
 };
 /*****************************************************************************/
 #endif

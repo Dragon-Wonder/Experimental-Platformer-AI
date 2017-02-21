@@ -15,35 +15,35 @@
 /*****************************************************************************/
 //Date Version Types
 /** The day of the last build of the program, currently not used. */
-#define DEFINED_VER_DATE "17"
+#define DEFINED_VER_DATE "21"
 
 /** The month of the last build of the program, currently not used. */
-#define DEFINED_VER_MONTH "10"
+#define DEFINED_VER_MONTH "02"
 
 /** The year of the last build of the program, currently not used. */
-#define DEFINED_VER_YEAR "2015"
+#define DEFINED_VER_YEAR "2017"
 
 /** The Ubuntu style of the date of the last build. It is in YY.MM format. */
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.10"
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "17.02"
 /*****************************************************************************/
 /** The Major number of the version number */
-#define DEFINED_VER_MAJOR  4
+#define DEFINED_VER_MAJOR  5
 
 /** The Minor number of the version number */
-#define DEFINED_VER_MINOR  2
+#define DEFINED_VER_MINOR  0
 
 /** The Patch number of the version number */
 #define DEFINED_VER_PATCH  0
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 4,2,0,42
+#define DEFINED_VER_RC_FILEVERSION 5,0,0,10
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 2, 0, 42\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "5, 0, 0, 10\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "4.2.0-beta.6\0"
+#define DEFINED_VER_FULLVERSION_STRING  "5.0.0-r\0"
 
 //Software Status
 /**
@@ -55,10 +55,10 @@ Software Status can be the following:
 | Beta | b | This version will compile and / or run but does not work as expected (or crashes often). |
 | Alpha | a | This version does not work at all; it usually won't compile at all or crashes more times than it works; best not to use versions in this state. |
 */
-#define DEFINED_VER_STATUS 	"Beta"
+#define DEFINED_VER_STATUS 	"Release"
 
 /** See the table for DEFINED_VER_STATUS */
-#define DEFINED_VER_STATUS_SHORT  "b"
+#define DEFINED_VER_STATUS_SHORT  "r"
 /// @}
 /*****************************************************************************/
 #endif //__VERSION_HEADER__

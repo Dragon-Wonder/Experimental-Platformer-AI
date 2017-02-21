@@ -46,7 +46,6 @@
 				<Option projectLibDirsRelation="0" />
 				<Compiler>
 					<Add option="-Os" />
-					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add option="-D__NO_INLINE__" />
 					<Add directory="../SDL2Stuff/include" />
@@ -88,13 +87,21 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
+				<Option projectCompilerOptionsRelation="2" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Option projectIncludeDirsRelation="0" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Option projectLibDirsRelation="0" />
 				<Compiler>
 					<Add option="-Os" />
-					<Add option="-std=c++11" />
 					<Add option="-w" />
+					<Add option="-D__NO_INLINE__" />
+					<Add directory="../SDL2Stuff/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="mingw32" />
+					<Add directory="../SDL2Stuff/lib" />
 				</Linker>
 			</Target>
 		</Build>
@@ -166,7 +173,7 @@
 		<Extensions>
 			<DoxyBlocks>
 				<comment_style block="5" line="0" />
-				<doxyfile_project project_number="v4.2.0-Beta.5" />
+				<doxyfile_project project_number="v5.0.0" />
 				<doxyfile_build extract_all="1" extract_private="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />

@@ -1,6 +1,6 @@
 # Experimental Platformer AI
 
-(Check out the gh-pages of this project by going to [http://gamerman7799.github.io/Experimental-Platformer-AI/])
+(Check out the gh-pages of this project by going to [http://dragon-wonder.github.io/Experimental-Platformer-AI/])
 
 ## Introduction
 
@@ -31,7 +31,7 @@ We are pretty novice programmers at best. Part of the reason we made this was to
 
 We are always open to people contributing to the project by giving suggestions, or helping us with improvements. 
 
-If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab] (https://github.com/GamerMan7799/Experimental-Platformer-AI/issues).
+If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab] (https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues).
 
 ## Building the Project
 
@@ -70,7 +70,7 @@ FolderName\Images\tiles.png
 
 ### Windows
 
-You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you will need the SDL2 runtime binaries (see above).
+You can download the .exe under the [Releases Tab](https://github.com/Dragon-Wonder/Experimental-Platformer-AI/releases) you will need the SDL2 runtime binaries (see above).
 
 If you wish to compile it yourself you can use the Compile.bat files if you have MinGW on your computer, or you can use the Compile.sh in the Debug folder if you have Cygwin, or you can open the Code Block project file and compile it that way.
 

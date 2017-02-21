@@ -14,233 +14,113 @@
 /////////////////////////////////////////////////
 /*****************************************************************************/
 clsMap::clsMap() {
-    /////////////////////////////////////////////////
-    /// @brief Default constructor.
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Default constructor.
+  /////////////////////////////////////////////////
 
-	if (Global::blnDebugMode) {printf("Map Constructor called.\n");}
+	if (global::blnDebugMode) { printf("Map Constructor called.\n"); }
 }
 /*****************************************************************************/
 clsMap::~clsMap() {
-    /////////////////////////////////////////////////
-    /// @brief Default deconstructor, deletes pmstBaseMonsters.
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Default deconstructor, deletes mstBaseMonsters.
+  /////////////////////////////////////////////////
 
-	if(Global::blnDebugMode) {printf("Map Destructor called.\n");}
-	delete[] pmstBaseMonsters;
+	if(global::blnDebugMode) { printf("Map Destructor called.\n"); }
+	mstBaseMonsters.clear();
 }
 /*****************************************************************************/
 void clsMap::restart(void) {
-    /////////////////////////////////////////////////
-    /// @brief Resets the following:
-    ///        * Map Tiles
-    ///        * Clock
-    ///        * Player Values
-    ///        * Monster Values
-    /// @return void
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Resets the following:
+  ///        * Map Tiles
+  ///        * Clock
+  ///        * Player Values
+  ///        * Monster Values
+  /// @return void
+  /////////////////////////////////////////////////
 
-	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y ++) {
-		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
+	for (uint y = 0; y < defined::kMapHeight; ++y) {
+		for (uint x = 0; x < defined::kMapWidth; ++x) {
 			map[y][x] = basemap[y][x];
 		}
 	}
-	if (Global::blnDebugMode) {printf("Base map put into map.\n");}
+	if (global::blnDebugMode) { printf("Base map put into map.\n"); }
 
-	Global::Tick.resetClock();
-	if (Global::blnDebugMode) {printf("Clock reset.\n");}
+	global::tick.resetClock();
+	if (global::blnDebugMode) {printf("Clock reset.\n");}
 
-	MNSTR tempMonster;
+  for (uchar i = 0; i < numMonsters; ++i) {
+    global::enty.setMonster(i,mstBaseMonsters[i]);
+    if (global::blnDebugMode) { printf("Finished Monster %d.\n",i); }
+  }
+  if (global::blnDebugMode) { printf("Base monsters placed.\n"); }
 
-	if (pmstBaseMonsters != nullptr) {
-		for (uchar i = 0; i < numMonsters; i++) {
-			tempMonster.location.x = pmstBaseMonsters[i].location.x;
-			tempMonster.location.y = pmstBaseMonsters[i].location.y;
-			tempMonster.vel.x = pmstBaseMonsters[i].vel.x;
-			tempMonster.vel.y = pmstBaseMonsters[i].vel.y;
-			tempMonster.living = pmstBaseMonsters[i].living;
-			tempMonster.state = pmstBaseMonsters[i].state;
-			Global::Enty.setMonster(i,tempMonster);
-			if (Global::blnDebugMode) {printf("Finished Monster %d.\n",i);}
-		}
-		if (Global::blnDebugMode) {printf("Base monsters placed.\n");}
-	} else {if (Global::blnDebugMode) {printf("Base monsters equals nullptr.\n");}}
-	Global::Enty.setPlayer(bplyBasePlayer);
-	if (Global::blnDebugMode) {printf("Player reset.\n");}
+	global::enty.setPlayer(bplyBasePlayer);
+	if (global::blnDebugMode) { printf("Player reset.\n"); }
 }
 /*****************************************************************************/
 char clsMap::move(uchar direction) {
-    /////////////////////////////////////////////////
-    /// @brief Will move the player a direction specificied, checking for collisions
-    ///        and monsters and all that. (Its a long function)
-    /// @param direction = Direction to move the player. See dir
-    /// @return Player Status. See status
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Will move the player a direction specified, checking for collisions
+  ///        and monsters and all that. (Its a long function)
+  /// @param direction = Direction to move the player. See dir
+  /// @return Player Status. See status
+  /////////////////////////////////////////////////
 
 	static uchar jumpcount; //how many times the player has jumped
 	static bool playerfalling; //if the player is falling
-	float deltat = 1.0 / DEFINED_GOAL_FPS;
+	float deltat = 1.0 / defined::kGoalFPS;
 	BPLYR tempEntity; //keeps track of x, y, and velocity.
-	if (!playerfalling) {jumpcount = 0;}
-    bool blnLoop = true;
+	if (!playerfalling) { jumpcount = 0; }
+  bool blnLoop = true;
+
 	//Move monsters first, to see if player dies and we can then skip the rest
 	MNSTR tempMonster;
 
-	for (uchar i = 0; i < numMonsters; i++) {
-		tempMonster = Global::Enty.getMonster(i);
+	for (uchar i = 0; i < numMonsters; ++i) {
+		tempMonster = global::enty.getMonster(i);
 		if (tempMonster.living) {
 			tempEntity.location = tempMonster.location;
 			tempEntity.vel = tempMonster.vel;
 
-            //Decrease velocities by friction
-            tempEntity.vel.x -= tempEntity.vel.x * Global::Physics::fFriction;
-            tempEntity.vel.y -= tempEntity.vel.y * Global::Physics::fFriction;
+      //Decrease velocities by friction
+      tempEntity.vel.x -= tempEntity.vel.x * global::physics::fFriction;
+      tempEntity.vel.y -= tempEntity.vel.y * global::physics::fFriction;
 
 			if (tempMonster.state == stateRight) {
-                tempEntity.vel.x = (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMonsMaxVelocity) ?
-                                    tempEntity.vel.x + Global::Physics::fIncVelocity : Global::Physics::fMonsMaxVelocity;
-            } else if (tempMonster.state == stateLeft) {
-                tempEntity.vel.x = (abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMonsMaxVelocity) ?
-                                    tempEntity.vel.x - Global::Physics::fIncVelocity : -1 * Global::Physics::fMonsMaxVelocity;
-            }
+        tempEntity.vel.x = (tempEntity.vel.x + global::physics::fIncVelocity < global::physics::fMonsMaxVelocity) ?
+                            tempEntity.vel.x + global::physics::fIncVelocity : global::physics::fMonsMaxVelocity;
+      } else if (tempMonster.state == stateLeft) {
+        tempEntity.vel.x = (abs(tempEntity.vel.x - global::physics::fIncVelocity) < global::physics::fMonsMaxVelocity) ?
+                            tempEntity.vel.x - global::physics::fIncVelocity : -1 * global::physics::fMonsMaxVelocity;
+      }
 
-            //Apply Gravity
-            tempEntity.vel.y = (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) ?
-                                tempEntity.vel.y + Global::Physics::fGravityAcceleration : Global::Physics::fMaxVelocity;
+      //Apply Gravity
+      tempEntity.vel.y = (tempEntity.vel.y + global::physics::fGravityAcceleration < global::physics::fMaxVelocity) ?
+                          tempEntity.vel.y + global::physics::fGravityAcceleration : global::physics::fMaxVelocity;
 
-            //Update location based on delta t
-            tempEntity.location.x += round(tempEntity.vel.x * deltat);
-            tempEntity.location.y += round(tempEntity.vel.y * deltat);
+      //Update location based on delta t
+      tempEntity.location.x += round(tempEntity.vel.x * deltat);
+      tempEntity.location.y += round(tempEntity.vel.y * deltat);
 
-            //Check for Collisions
-            do {
-                switch ( checkCollision(tempEntity.location, tileMonster) ) {
-                case tileCoin:
-                    //Replace the coin tile with space
-                    map[(uint)round(tempMonster.location.y / DEFINED_PIC_SIZE)][(uint)round(tempMonster.location.x / DEFINED_PIC_SIZE)] = tileSpace;
-                case tilePole:
-                case tileSpace:
-                    tempMonster.location = tempEntity.location;
-                    tempMonster.vel = tempEntity.vel;
-                    blnLoop = false;
-                    break;
-                case tilePlayer:
-                    //Monster runs into player, kill the player
-                    blnLoop = false;
-                    return deathMonster;
-                    break;
-                case tileBricksGray:
-                case tileBricksGreen:
-                case tileBricksLarge:
-                case tileBricksOrange:
-                case tileBricksRed:
-                case tileBricksSmall:
-                default:
-                    //Collision with wall first reset y
-                    if (tempEntity.location.y != tempMonster.location.y) {
-                        //Change y and try again.
-                        tempEntity.location.y = tempMonster.location.y;
-                        tempEntity.vel.y = 0;
-                        blnLoop = true;
-                    } else if (tempEntity.location.x != tempMonster.location.x) {
-                        //Change x and try again.
-                        //recoil off the wall as well
-                        tempEntity.location.x = tempMonster.location.x;
-                        tempEntity.vel.x *= Global::Physics::fRecoil;
-                        if (tempMonster.state == stateLeft) {tempMonster.state = stateRight;}
-                        else {tempMonster.state = stateLeft;}
-                        blnLoop = true;
-                    } else { tempMonster.living = false; blnLoop = false; }
-                } //end switch check Collision
-            } while (blnLoop);
-            //do a check if monster is in the kill planes
-            if (tempMonster.location.y < 0 || tempMonster.location.x < 0 ||
-                tempMonster.location.y > DEFINED_MAP_HEIGHT * DEFINED_PIC_SIZE ||
-                tempMonster.location.x > DEFINED_MAP_WIDTH * DEFINED_PIC_SIZE)
-            {
-                tempMonster.living = false;
-            }
-
-            Global::Enty.setMonster(i,tempMonster);
-		} // end if living
-    }//End of for monsters
-
-
-	//Now the player can move.
-	PLYR tempPlayer;
-	tempPlayer = Global::Enty.getPlayer();
-    //Kill Player if their fitness gets too low in hard mode
-    if (tempPlayer.fitness < -2.5 && (Global::Cnfg.getvalues(cnfgHardMode) == 1) ) {return deathDecay;}
-
-    tempEntity.location = tempPlayer.location;
-    tempEntity.vel = tempPlayer.vel;
-
-    //Decrease velocities by friction
-    tempEntity.vel.x -= tempEntity.vel.x * Global::Physics::fFriction;
-    tempEntity.vel.y -= tempEntity.vel.y * Global::Physics::fFriction;
-
-	switch (direction) {
-		case dirLeft :
-		    tempPlayer.state = stateLeft;
-            tempEntity.vel.x = (abs(tempEntity.vel.x - Global::Physics::fIncVelocity) < Global::Physics::fMaxVelocity) ?
-                                tempEntity.vel.x - Global::Physics::fIncVelocity : -1 * Global::Physics::fMaxVelocity;
-			break;
-		case dirRight :
-		    tempPlayer.state = stateRight;
-            tempEntity.vel.x = (tempEntity.vel.x + Global::Physics::fIncVelocity < Global::Physics::fMaxVelocity) ?
-                                tempEntity.vel.x + Global::Physics::fIncVelocity : Global::Physics::fMaxVelocity;
-			break;
-		case dirUp :
-		    if (jumpcount < DEFINED_MAX_JUMP_COUNT) {
-                tempPlayer.state = stateJump;
-                jumpcount++;
-                playerfalling = true;
-                tempEntity.vel.y -= 1.325 * Global::Physics::fMaxVelocity;
-		    } //end if less than jump count
-			break;
-        case dirDown :
-            tempPlayer.state = stateDuck;
-            tempEntity.vel.y += Global::Physics::fMaxVelocity;
-            break;
-        case dirNone:
-        default:
-            tempPlayer.state = stateRest;
-            break;
-	};
-
-    //Apply Gravity
-    tempEntity.vel.y = (tempEntity.vel.y + Global::Physics::fGravityAcceleration < Global::Physics::fMaxVelocity) ?
-                    tempEntity.vel.y + Global::Physics::fGravityAcceleration : Global::Physics::fMaxVelocity;
-
-    //Update location based on delta t
-    tempEntity.location.x += round(tempEntity.vel.x * deltat);
-    tempEntity.location.y += round(tempEntity.vel.y * deltat);
-
-	blnLoop = true;
-	//Check collisions
-	do {
-        switch ( checkCollision(tempEntity.location, tilePlayer) ) {
+      //Check for Collisions
+      do {
+        switch ( checkCollision(tempEntity.location, tileMonster) ) {
         case tileCoin:
-            //Replace the coin tile with space
-            map[(uint)(tempPlayer.location.y / DEFINED_PIC_SIZE)][(uint)(tempPlayer.location.x / DEFINED_PIC_SIZE)] = tileSpace;
-            tempPlayer.score += DEFINED_COIN_WORTH;
+          //Replace the coin tile with space
+          map[(uint)round(tempMonster.location.y / defined::kPicSize)][(uint)round(tempMonster.location.x / defined::kPicSize)] = tileSpace;
         case tilePole:
         case tileSpace:
-            tempPlayer.location.x = tempEntity.location.x;
-            tempPlayer.location.y = tempEntity.location.y;
-            tempPlayer.vel.x = tempEntity.vel.x;
-            tempPlayer.vel.y = tempEntity.vel.y;
-            if (tempEntity.vel.y > 0) {playerfalling = true;}
-            blnLoop = false;
-            break;
-        case tileMonster:
-            //Player is running into monster
-            if (playerfalling) { //kill monster if falling on it
-                Global::Enty.killMonster(tempEntity.location);
-                tempPlayer.score += DEFINED_MONS_KILL_POINTS;
-            } else { return deathMonster;}
-            blnLoop = false;
-            break;
+          tempMonster.location = tempEntity.location;
+          tempMonster.vel = tempEntity.vel;
+          blnLoop = false;
+          break;
+        case tilePlayer:
+          //Monster runs into player, kill the player
+          blnLoop = false;
+          return deathMonster;
+          break;
         case tileBricksGray:
         case tileBricksGreen:
         case tileBricksLarge:
@@ -248,60 +128,169 @@ char clsMap::move(uchar direction) {
         case tileBricksRed:
         case tileBricksSmall:
         default:
-            //Collision with wall first reset y
-            if (tempEntity.location.y != tempPlayer.location.y) {
-                //Change y and try again.
-                tempEntity.location.y = tempPlayer.location.y;
-                tempEntity.vel.y *= Global::Physics::fRecoil;
-                playerfalling = false;
-                jumpcount = 0;
-                blnLoop = true;
-            } else if (tempEntity.location.x != tempPlayer.location.x) {
-                //Change x and try again.
-                //recoil off the wall as well
-                tempEntity.location.x = tempPlayer.location.x;
-                tempEntity.vel.x *= Global::Physics::fRecoil;
-                blnLoop = true;
-            } else {
-                tempEntity.vel.y *= Global::Physics::fRecoil;
-                tempEntity.vel.x *= Global::Physics::fRecoil;
-                blnLoop = false;
-            }
+          //Collision with wall, first reset y
+          if (tempEntity.location.y != tempMonster.location.y) {
+            //Change y and try again.
+            tempEntity.location.y = tempMonster.location.y;
+            tempEntity.vel.y = 0;
+            blnLoop = true;
+          } else if (tempEntity.location.x != tempMonster.location.x) {
+            //Change x and try again.
+            //recoil off the wall as well
+            tempEntity.location.x = tempMonster.location.x;
+            tempEntity.vel.x *= global::physics::fRecoil;
+            if (tempMonster.state == stateLeft) {tempMonster.state = stateRight;}
+            else {tempMonster.state = stateLeft;}
+            blnLoop = true;
+          } else { tempMonster.living = false; blnLoop = false; }
         } //end switch check Collision
+      } while (blnLoop);
+      //do a check if monster is in the kill planes
+      if ( inKillPlane(tempMonster.location) ) { tempMonster.living = false; }
+
+      global::enty.setMonster(i,tempMonster);
+    } // end if living
+  }//End of for monsters
+
+
+	//Now the player can move.
+	PLYR tempPlayer;
+	tempPlayer = global::enty.getPlayer();
+  //Kill Player if their fitness gets too low in hard mode
+  if (tempPlayer.fitness < -2.5 && (global::cnfg.getvalues(cnfgHardMode) == 1) )
+    {return deathDecay;}
+
+  tempEntity.location = tempPlayer.location;
+  tempEntity.vel = tempPlayer.vel;
+
+  //Decrease velocities by friction
+  tempEntity.vel.x -= tempEntity.vel.x * global::physics::fFriction;
+  tempEntity.vel.y -= tempEntity.vel.y * global::physics::fFriction;
+
+	switch (direction) {
+  case dirLeft :
+    tempPlayer.state = stateLeft;
+    tempEntity.vel.x -= global::physics::fIncVelocity;
+    if (abs(tempEntity.vel.x) > global::physics::fMaxVelocity )
+      { tempEntity.vel.x = -1 * global::physics::fMaxVelocity; }
+    break;
+  case dirRight :
+    tempPlayer.state = stateRight;
+    tempEntity.vel.x += global::physics::fIncVelocity;
+    if (tempEntity.vel.x > global::physics::fMaxVelocity )
+      { tempEntity.vel.x = global::physics::fMaxVelocity; }
+    break;
+  case dirUp :
+    if (jumpcount < defined::kMaxJumpCount) {
+      tempPlayer.state = stateJump;
+      jumpcount++;
+      playerfalling = true;
+      tempEntity.vel.y -= 1.325 * global::physics::fMaxVelocity;
+    } //end if less than jump count
+    break;
+  case dirDown :
+    tempPlayer.state = stateDuck;
+    tempEntity.vel.y += global::physics::fMaxVelocity;
+    break;
+  case dirNone:
+  default:
+    tempPlayer.state = stateRest;
+    break;
+	}; // end switch case
+
+  //Apply Gravity
+  tempEntity.vel.y += global::physics::fGravityAcceleration * deltat;
+  if (tempEntity.vel.y > global::physics::fMaxVelocity)
+    { tempEntity.vel.y = global::physics::fMaxVelocity; }
+
+  //Update location based on delta t
+  tempEntity.location.x += round(tempEntity.vel.x * deltat);
+  tempEntity.location.y += round(tempEntity.vel.y * deltat);
+
+	blnLoop = true;
+	//Check collisions
+	do {
+    switch ( checkCollision(tempEntity.location, tilePlayer) ) {
+    case tileCoin:
+      //Replace the coin tile with space
+      map[(uint)(tempEntity.location.y / defined::kPicSize)][(uint)(tempEntity.location.x / defined::kPicSize)] = tileSpace;
+      tempPlayer.score += defined::kCoinWorth;
+    case tilePole:
+    case tileSpace:
+      tempPlayer.location = tempEntity.location;
+      tempPlayer.vel = tempEntity.vel;
+      if (tempEntity.vel.y > 0) { playerfalling = true; }
+      blnLoop = false;
+      break;
+    case tileMonster:
+      //Player is running into monster
+      if (playerfalling) { //kill monster if falling on it
+        global::enty.killMonster(tempEntity.location);
+        tempPlayer.score += defined::kMonsterKillWorth;
+      } else { return deathMonster;}
+      blnLoop = false;
+      break;
+    case tileBricksGray:
+    case tileBricksGreen:
+    case tileBricksLarge:
+    case tileBricksOrange:
+    case tileBricksRed:
+    case tileBricksSmall:
+    default:
+      //Collision with wall first reset y
+      if (tempEntity.location.y != tempPlayer.location.y) {
+        //Change y and try again.
+        tempEntity.location.y = tempPlayer.location.y;
+        tempEntity.vel.y *= global::physics::fRecoil;
+        playerfalling = false;
+        jumpcount = 0;
+        blnLoop = true;
+      } else if (tempEntity.location.x != tempPlayer.location.x) {
+        //Change x and try again.
+        //recoil off the wall as well
+        tempEntity.location.x = tempPlayer.location.x;
+        tempEntity.vel.x *= global::physics::fRecoil;
+        blnLoop = true;
+      } else {
+        tempEntity.vel.y *= global::physics::fRecoil;
+        tempEntity.vel.x *= global::physics::fRecoil;
+        blnLoop = false;
+      }
+    } //end switch check Collision
 	} while (blnLoop);
 
-    //do a check if player is in the kill planes
-    if (tempPlayer.location.y > DEFINED_MAP_HEIGHT * DEFINED_PIC_SIZE) {
-        return deathFall;
-    }
+  //do a check if player is in the kill planes
+  if ( inKillPlane(tempPlayer.location)) {
+    return deathFall;
+  }
 
-    BPLYR temp;
-    temp.location = tempPlayer.location;
-    temp.vel = tempPlayer.vel;
-    //Check for stupid death (going too far left on hard mode)
-    if (tempPlayer.location.x < bplyBasePlayer.location.x - 2 * DEFINED_PIC_SIZE && (Global::Cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;}
-    Global::Enty.setPlayer(temp);
+  BPLYR temp;
+  temp.location = tempPlayer.location;
+  temp.vel = tempPlayer.vel;
+  //Check for stupid death (going too far left on hard mode)
+  if (tempPlayer.location.x < bplyBasePlayer.location.x - 2 * defined::kPicSize && (global::cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;}
+  global::enty.setPlayer(temp);
 
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
-	Global::Tick.decClock();
-	if (Global::Tick.getClockTime() == 0) {return deathClock;}
+	global::tick.decClock();
+	if (global::tick.getClockTime() == 0) {return deathClock;}
 
 	return statusLiving;
 }
 /*****************************************************************************/
 void clsMap::load(void) {
-    /////////////////////////////////////////////////
-    /// @brief Will load map from file (if it exists) and place that into base map.
-    ///        Then it will find the starting places for all the monsters and the player,
-    ///        and set baseplayer and basemosnters.
-    /// @return void
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Will load map from file (if it exists) and place that into base map.
+  ///        Then it will find the starting places for all the monsters and the player,
+  ///        and set baseplayer and basemosnters.
+  /// @return void
+  /////////////////////////////////////////////////
 
-    /** @todo (GamerMan7799#4#): Dynamically allocate map size */
-	//Finds player and monster on the map, and place them in base stats used
-	//when restarting the map.
+  /** @todo (GamerMan7799#4#): Dynamically allocate map size */
+  //Finds player and monster on the map, and place them in base stats used
+  //when restarting the map.
 
-uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,1},
+uchar tempmap[defined::kMapHeight][defined::kMapWidth] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,1},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,5,1},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,5,1},
@@ -316,237 +305,188 @@ uchar tempmap[DEFINED_MAP_HEIGHT][DEFINED_MAP_WIDTH] = {{1,1,1,1,1,1,1,1,1,1,1,1
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 
-    FILE * mapload = fopen("map.sav", "r");
-    if (mapload == nullptr) {
-        printf("Could not find map save, default will be used.\n");
-        for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-            for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-                basemap[y][x] = tempmap[y][x];
-            } //end for x
-        } //end for y
-    } else {
-        printf("Map Found, will load.\n");
-        for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-            for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-                fscanf( mapload, "%2x", &basemap[y][x] );
-            } //end for x
-        } //end for y
-    } //end file exists
+  FILE * mapload = fopen("map.sav", "r");
+  if (mapload == nullptr) {
+    printf("Could not find map save, default will be used.\n");
+    for (uint y = 0; y < defined::kMapHeight; ++y) {
+      for (uint x = 0; x < defined::kMapWidth; ++x) {
+        basemap[y][x] = tempmap[y][x];
+      } //end for x
+    } //end for y
+  } else {
+    printf("Map Found, will load.\n");
+    for (uint y = 0; y < defined::kMapHeight; ++y) {
+      for (uint x = 0; x < defined::kMapWidth; ++x) {
+        fscanf( mapload, "%2x", &basemap[y][x] );
+      } //end for x
+    } //end for y
+  } //end file exists
 
-    //set base map (I couldn't do it as a const anymore because I'm trying to modify it)
-
-    /** \todo (xPUREx#5#): Look into vectors for basemonsters */
 	numMonsters = 0;
-	for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-		for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
+	MNSTR tempmonster;
+  tempmonster.vel = {0,0};
+  tempmonster.living = true;
+  tempmonster.state = stateRight;
+
+	for (uint y = 0; y < defined::kMapHeight; ++y) {
+		for (uint x = 0; x < defined::kMapWidth; ++x) {
 			if (basemap[y][x] == tilePlayer) {
-				if (Global::blnDebugMode) {printf("Found Player at (%d,%d).\n",x,y);}
-				bplyBasePlayer.location.x = x * DEFINED_PIC_SIZE;
-				bplyBasePlayer.location.y = y * DEFINED_PIC_SIZE;
-				bplyBasePlayer.vel.x = 0;
-				bplyBasePlayer.vel.y = 0;
+				if (global::blnDebugMode) { printf("Found Player at (%d,%d).\n",x,y); }
+				bplyBasePlayer.location = {x * defined::kPicSize, y * defined::kPicSize};
+				bplyBasePlayer.vel = {0,0};
 				basemap[y][x] = tileSpace; //Once we find the player they are going
-                                           //to be moving in a velocity based pattern
-                                           //so delete that tile
-			}
-			else if (basemap[y][x] == tileMonster) {
-                basemap[y][x] = tileSpace;
+                                   //to be moving in a velocity based pattern
+                                   //so delete that tile
+			} else if (basemap[y][x] == tileMonster) {
+        basemap[y][x] = tileSpace;
 				numMonsters++;
-				if (Global::blnDebugMode) {printf("Found Monster at (%d,%d)\n",x,y);}
-				if (numMonsters == 1) {
-					pmstBaseMonsters = new (std::nothrow) MNSTR[1];
-					if (pmstBaseMonsters == nullptr) {
-						//Could not allocate the memory
-						Global::blnError = true;
-						return;
-					}
-					pmstBaseMonsters[0].location.x = x * DEFINED_PIC_SIZE;
-					pmstBaseMonsters[0].location.y = y * DEFINED_PIC_SIZE;
-                    pmstBaseMonsters[0].vel.x = 0;
-                    pmstBaseMonsters[0].vel.y = 0;
-					pmstBaseMonsters[0].living = true;
-					pmstBaseMonsters[0].state = stateRight;
-				} else {
-					//Allocate a temp array to hold the old array + the new monster
-					MNSTR* pTemp = new (std::nothrow) MNSTR[numMonsters];
-					if (pTemp == nullptr) {
-						//Could not allocate the memory
-						Global::blnError = true;
-						return;
-					}
-
-					for (uchar i = 0; i < numMonsters - 1; i++) {
-                        /** \todo (GamerMan7799#5#): Consider using std::copy from algorithm library
-                            Do not worry about if xPUREx converts to vectors.*/
-						//std::copy(pmstBaseMonsters, pmstBaseMonsters + numMonsters - 1, pTemp);
-						pTemp[i].location = pmstBaseMonsters[i].location;
-						pTemp[i].vel = pmstBaseMonsters[i].vel;
-						pTemp[i].living = pmstBaseMonsters[i].living;
-						pTemp[i].state = pmstBaseMonsters[i].state;
-					}
-					//Delete old array as it isn't needed.
-					delete[] pmstBaseMonsters;
-
-					//Place newest Monster values into temp array.
-					pTemp[numMonsters - 1].location.x = x * DEFINED_PIC_SIZE;
-					pTemp[numMonsters - 1].location.y = y * DEFINED_PIC_SIZE;
-                    pTemp[numMonsters - 1].vel.x = 0;
-                    pTemp[numMonsters - 1].vel.y = 0;
-					pTemp[numMonsters - 1].living = true;
-					pTemp[numMonsters - 1].state = stateRight;
-
-					//Generate new Base Monster array
-					pmstBaseMonsters = new (std::nothrow) MNSTR[numMonsters];
-					if (pmstBaseMonsters == nullptr) {
-						//Could not allocate the memory
-						Global::blnError = true;
-						return;
-					}
-
-					for (uchar i = 0; i < numMonsters; i++) {
-						//Copy Temp Array into new array.
-						pmstBaseMonsters[i].location = pTemp[i].location;
-						pmstBaseMonsters[i].vel = pTemp[i].vel;
-						pmstBaseMonsters[i].living = pTemp[i].living;
-						pmstBaseMonsters[i].state = pTemp[i].state;
-					}
-
-					//Delete Temp Array
-					delete [] pTemp;
-
-				} //end if first or not
+				if (global::blnDebugMode) { printf("Found Monster at (%d,%d)\n",x,y); }
+				tempmonster.location = {x * defined::kPicSize, y * defined::kPicSize};
+        mstBaseMonsters.push_back(tempmonster);
 			} //end if monster tile
 		} //end for width
 	} //end for height
-	if (Global::blnDebugMode) {printf("Found %d Monsters.\n",numMonsters);}
+	if (global::blnDebugMode) {printf("Found %d Monsters.\n",numMonsters);}
 
-	Global::Enty.allocateMonsters(numMonsters);
-	if (Global::blnError) {printf("Could not allocate the memory!\n"); return;}
+	global::enty.allocateMonsters(numMonsters);
+	if (global::blnError) {printf("Could not allocate the memory!\n"); return;}
 }
 /*****************************************************************************/
 uchar clsMap::getMapCell(uint x, uint y) {
-    /////////////////////////////////////////////////
-    /// @brief Gets Map tile.
-    /// @param x = X spot in array.
-    /// @param y = Y spot in array.
-    /// @return tile
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Gets Map tile.
+  /// @param x = X spot in array.
+  /// @param y = Y spot in array.
+  /// @return tile
+  /////////////////////////////////////////////////
 
 	return map[y][x];
 }
 /*****************************************************************************/
 void clsMap::setMapCell(uint x, uint y, uchar tile) {
-    /////////////////////////////////////////////////
-    /// @brief Sets Map tile.
-    /// @param x = X spot in array.
-    /// @param y = Y spot in array.
-    /// @param tile = tile to set it to.
-    /// @return void
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Sets Map tile.
+  /// @param x = X spot in array.
+  /// @param y = Y spot in array.
+  /// @param tile = tile to set it to.
+  /// @return void
+  /////////////////////////////////////////////////
 
 	map[y][x] = tile;
 }
 /*****************************************************************************/
 BPLYR clsMap::getbasePlayer(void) {
-    /////////////////////////////////////////////////
-    /// @brief Returns bplyBasePlayer
-    /// @return bplyBasePlayer
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Returns bplyBasePlayer
+  /// @return bplyBasePlayer
+  /////////////////////////////////////////////////
 
 	return bplyBasePlayer;
 }
 /*****************************************************************************/
 char clsMap::checkCollision(LOC placement, uchar tile) {
-    /////////////////////////////////////////////////
-    /// @brief Will check if Monster / Player is colliding with anything.
-    /// @param placement = Monster / Player's location
-    /// @param tile = This is used because the collision checking between the monsters
-    ///               and the players is slightly different.
-    /// @return They tile they are colliding with (or space if not colliding).
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Will check if Monster / Player is colliding with anything.
+  /// @param placement = Monster / Player's location
+  /// @param tile = This is used because the collision checking between the monsters
+  ///               and the players is slightly different.
+  /// @return They tile they are colliding with (or space if not colliding).
+  /////////////////////////////////////////////////
 
-    //First convert pixel
+  //First convert pixel
 
-    BOX A;
-    BOX B;
+  BOX A;
+  BOX B;
 
-    A.left = placement.x;
-    A.right = placement.x + DEFINED_PIC_SIZE;
-    A.top = placement.y;
-    A.bottom = placement.y + DEFINED_PIC_SIZE;
+  A.left = placement.x;
+  A.right = placement.x + defined::kPicSize;
+  A.top = placement.y;
+  A.bottom = placement.y + defined::kPicSize;
 
-    if (tile == tilePlayer) { //shrink the player hitbox
-        A.left += 4;
-        A.right -= 2;
-        //A.top += 3;
-        A.bottom -= 3;
-    }
+  if (tile == tilePlayer) { //shrink the player hitbox
+    A.left += 4;
+    A.right -= 2;
+    //A.top += 3;
+    A.bottom -= 3;
+  }
 
-    //Check if collision with a player (if monster)
-    if (tile == tileMonster) {
-        PLYR tempPlayer = Global::Enty.getPlayer();
-        B.left = tempPlayer.location.x + 4;
-        B.right = B.left + DEFINED_PIC_SIZE - 2;
-        B.top = tempPlayer.location.y;
-        B.bottom = B.top + DEFINED_PIC_SIZE - 3;
+  //Check if collision with a player (if monster)
+  if (tile == tileMonster) {
+    PLYR tempPlayer = global::enty.getPlayer();
+    B.left = tempPlayer.location.x + 4;
+    B.right = B.left + defined::kPicSize - 2;
+    B.top = tempPlayer.location.y;
+    B.bottom = B.top + defined::kPicSize - 3;
+
+    if ( checkOverlap(A, B) ) {
+      if (global::blnDebugMode) { printf("Monster collided with player.\n"); }
+      return tilePlayer;
+    } //end if overlap
+  } //end if monster
+
+  //Check if collision with a monster (if player)
+  if (tile == tilePlayer) {
+    MNSTR tempMonster;
+    for (uchar i = 0; i < numMonsters; ++i) {
+      tempMonster = global::enty.getMonster(i);
+      if(tempMonster.living) {
+        B.left = tempMonster.location.x;
+        B.right = B.left + defined::kPicSize;
+        B.top = tempMonster.location.y;
+        B.bottom = B.top + defined::kPicSize;
 
         if ( checkOverlap(A, B) ) {
-            if (Global::blnDebugMode) {printf("Monster collided with player.\n");}
-            return tilePlayer;
+          if (global::blnDebugMode) { printf("Player collided with monster.\n"); }
+          return tileMonster;
         } //end if overlap
-    } //end if monster
-
-    //Check if collision with a monster (if player)
-    if (tile == tilePlayer) {
-        MNSTR tempMonster;
-        for (uchar i = 0; i < numMonsters; i++) {
-            tempMonster = Global::Enty.getMonster(i);
-            if(tempMonster.living) {
-                B.left = tempMonster.location.x;
-                B.right = B.left + DEFINED_PIC_SIZE;
-                B.top = tempMonster.location.y;
-                B.bottom = B.top + DEFINED_PIC_SIZE;
-
-                if ( checkOverlap(A, B) ) {
-                    if (Global::blnDebugMode) {printf("Player collided with monster.\n");}
-                    return tileMonster;
-                } //end if overlap
-            } //end if living
-        } //end for monster
-    } //end if player
+      } //end if living
+    } //end for monster
+  } //end if player
 
 
 /** \todo (GamerMan7799#1#): Make it so it doesn't have to check the entire map. */
-    for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++ ) {
-        for (uint x = 0; x < DEFINED_MAP_WIDTH; x++ ) {
-            if (map[y][x] != tileSpace) {
-                B.left = x * DEFINED_PIC_SIZE;
-                B.right = B.left + DEFINED_PIC_SIZE;
-                B.top = y * DEFINED_PIC_SIZE;
-                B.bottom = B.top + DEFINED_PIC_SIZE;
-                if ( checkOverlap(A, B) ) {
-                    if (Global::blnDebugMode) {printf("Map collision found.\n");}
-                    return map[y][x];
-                }
-            } //end if not space
-        } //end for x
-    } //end for y
-    return tileSpace; //return a space, for no collision
+  for (uint y = 0; y < defined::kMapHeight; ++y ) {
+    for (uint x = 0; x < defined::kMapWidth; ++x ) {
+      if (map[y][x] != tileSpace) {
+        B.left = x * defined::kPicSize;
+        B.right = B.left + defined::kPicSize;
+        B.top = y * defined::kPicSize;
+        B.bottom = B.top + defined::kPicSize;
+        if ( checkOverlap(A, B) ) { return map[y][x]; }
+      } //end if not space
+    } //end for x
+  } //end for y
+  return tileSpace; //return a space, for no collision
 }
 /*****************************************************************************/
 bool clsMap::checkOverlap(BOX A, BOX B) {
-    /////////////////////////////////////////////////
-    /// @brief Checks if two collision boxes are overlapping.
-    /// @param A = Collision box for object A
-    /// @param B = Collision box for object B
-    /// @return TURE / FALSE if they overlap.
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Checks if two collision boxes are overlapping.
+  /// @param A = Collision box for object A
+  /// @param B = Collision box for object B
+  /// @return TURE / FALSE if they overlap.
+  /////////////////////////////////////////////////
 
-    if( A.bottom <= B.top ){return false;}
-    if( A.top >= B.bottom ){return false;}
-    if( A.right <= B.left ){return false;}
-    if( A.left >= B.right ){return false;}
-    //If none of the sides from A are outside B
-    return true;
+  if( A.bottom <= B.top ){ return false; }
+  if( A.top >= B.bottom ){ return false; }
+  if( A.right <= B.left ){ return false; }
+  if( A.left >= B.right ){ return false; }
+  //If none of the sides from A are outside B
+  return true;
+}
+/*****************************************************************************/
+bool clsMap::inKillPlane(LOC place) {
+  /////////////////////////////////////////////////
+  /// @brief Checks if location is outside range and in "kill plane"
+  /// @param place = location to check
+  /// @return TURE / FALSE if in kill plane
+  /////////////////////////////////////////////////
+
+  if (place.y < 0) { return true; }
+  if (place.x < 0) { return true; }
+  if (place.y > defined::kMapHeight * defined::kPicSize) { return true; }
+  if (place.x > defined::kMapWidth * defined::kPicSize) { return true; }
+
+  return false;
 }
 /*****************************************************************************/

@@ -1,8 +1,0 @@
-11 September 2015
-   Released version v4.2.0-beta.2
-
-     Change log:
-	  -Fixed: Bugs with edge detection
-	  -Fixed: Bugs with jumping
-	  -Fixed: Bugs with gravity
-	  -Fixed: Monster kill

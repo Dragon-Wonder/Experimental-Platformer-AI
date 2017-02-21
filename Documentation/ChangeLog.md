@@ -3,6 +3,23 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [5.0.0] - 2017-02-21
+### Added
+* Expanded config file. You can now modifiy max number of steps, number of players each generation and number of best players taken each generation.
+
+### Changed
+* Base monsters array is now a vector.
+* Various changes to improve code readiability and performance.
+* Defines changed to constexpr.
+* Lots of code clean up.
+* Removed some unneeded debug messsages.
+* Generations are now vector based.
+* Steps are now vector based.
+
+### Fixed
+* Bug with play sometimes not collecting a coin
+* Bug with gravity not being applied correctly
+
 ## UNRELEASED [4.2.0] - 2015-09-22
 ### Added
 * Human inputs for game under certain builds
@@ -15,6 +32,10 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Player and Monster movement is now velocity based.
 * Map
 * Map tiles now referenced in hexadecimal
+
+### Notes
+* This version was never fully released on its own because I stopped working on it before it was ready for release. 
+  When I came back to it, there were too many things I wanted to changed for me to consider it under the same version number, so I just named those updates as v5.0.0
 
 
 ## [4.1.3] - 2015-09-11
