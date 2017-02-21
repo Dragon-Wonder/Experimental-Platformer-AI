@@ -45,7 +45,7 @@ namespace defined {
 }
 /** Setting this to 1 will switch the program from being AI based to being Human based.
     It is useful to debugging. */
-#define DEFINED_BUILD_HUMAN 1
+#define DEFINED_BUILD_HUMAN 0
 /// @}
 /*****************************************************************************/
 typedef std::vector<char> VectorSteps;

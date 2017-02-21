@@ -3,6 +3,10 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [5.0.1] - 2017-02-21
+### Updated
+* Changed default away from human build
+
 ## [5.0.0] - 2017-02-21
 ### Added
 * Expanded config file. You can now modifiy max number of steps, number of players each generation and number of best players taken each generation.
