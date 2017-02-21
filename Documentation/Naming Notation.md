@@ -10,10 +10,9 @@ This method is slightly based on the [Hungarian Notation] (https://en.wikipedia.
 
 | Scope         | Prefix                       | Example            |
 | ------------- |:----------------------------:|--------------------|
-| Global        | In Global Namespace or g_    | Global::blnLogging |
+| Global        | In Global Namespace or g_    | global::blnLogging |
 | Local         | None                         | strMyString        |
 | Constant      | k                            |  kblnMyConstant    |
-| Define        | DEFINED_ (everything in caps)|  DEFINED_MAP_WIDTH |
 
 
 ## Types

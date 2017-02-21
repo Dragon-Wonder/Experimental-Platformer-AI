@@ -8,14 +8,17 @@ When you first load the program it will create a config file with the default na
 
 ```
 Config File for the program.
-4.1.0-rc.1
+5.0.0-r
 First Generation Steps: 100
 Generation Increase: 100
 Gens Past Growth: 10
+Max Player steps: 500
+Players per Generation: 40
+Best players per generation: 10
 Percent Mutation Chance: 15
 Log to File: 1
-Hard mode: 0
-Show map on update: 1
+Hard mode: 1
+Show map on update: 0
 Random Seed: [12345]
 Append Time: 1
 Only define these if the default screen size doesn't work for you, otherwise leave blank.
@@ -37,7 +40,7 @@ That being said if you notice strange results or the program crashes try replaci
 A Patch to the program will never affect the config file unless the patch is to the config file. In this cause the program will just load the old config file. If we end up making changes to the config file 
 in a patch; then that release will say in it to delete old config files.
 
-The Software status will only appear if it is NOT a release version (such as a Beta, Alpha, or RC). The software will check this and replace the config if it doesn't match the current software status.
+The software status is the status of this version, if a release/release candidate/beta/alpha cand The software will check this and replace the config if it doesn't match the current software status.
 
 The Status Update is an internally number we use to keep track of how far into a Software Status we are. It is meaning less to the program.
 
@@ -54,6 +57,18 @@ A number between 50 and 200 is best; if you set the First Generation to Max Play
 
 This number is the number of generations that will be taken during the steady phase. During this phase the steps will be equal to the Max Player Steps. 
 A number between 0 and 50 is recommended; although the higher the number the "better" the AI should get (in theory).
+
+### Max Player Steps
+
+The most steps allowed for a player. A big number may effect performance drastically due to memory allocation.
+
+### Players Per Generation
+
+How many players are in each generation. A big number may effect performance drastically due to memory allocation.
+ 
+### Best Players Per Generation
+
+How many players are taken from each generation to be used to make the next generation. A big number may effect performance drastically due to memory allocation.
 
 ### Percent Mutation Chance
 
@@ -90,7 +105,7 @@ Disabling it is useful if you want to quickly test if a change has resulted in h
 This is a number that can be between 0 and 65,535 that is used to seed rand and allow each run of the program to be slightly different. Read [this] (https://en.wikipedia.org/wiki/Random_seed) if you want to 
 know more about seeding. Please ensure that the number is between the brackets in order to be read properly.
 
-This is useful because if you set a specific seed and turn of Append Time (see below) then all the random number generators will always give the same number. This is useful for seeing how change to the map, 
+This is useful because if you set a specific seed and turn off Append Time (see below) then all the random number generators will always give the same number. This is useful for seeing how change to the map, 
 or how players are "mated" affect the fitness. 
 
 ### Append Time

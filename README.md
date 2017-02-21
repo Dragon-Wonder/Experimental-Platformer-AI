@@ -1,5 +1,7 @@
 # Experimental Platformer AI
 
+(Check out the gh-pages of this project by going to [http://dragon-wonder.github.io/Experimental-Platformer-AI/])
+
 ## Introduction
 
 The idea behind this project is a simple AI that will try and "learn" to go through a platforming course. By generating a number of players for a generation. 
@@ -29,7 +31,7 @@ We are pretty novice programmers at best. Part of the reason we made this was to
 
 We are always open to people contributing to the project by giving suggestions, or helping us with improvements. 
 
-If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab] (https://github.com/GamerMan7799/Experimental-Platformer-AI/issues).
+If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab] (https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues).
 
 ## Building the Project
 
@@ -50,7 +52,7 @@ If you are running the version in the release tab you WILL need the 32 bit versi
 
 I have also included copies of the 32 bit Runtime binaries in the releases. You can just download these if you don't know what you're doing and you're on Windows.
 
-You will also need to download and extract the Images.rar file provided in the release tab.
+You will also need to download and extract the Images.zip file provided in the release tab.
 
 When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
 
@@ -63,18 +65,12 @@ FolderName\SDL2_image.dll
 FolderName\libfreetype-6.dll
 FolderName\zlib1.dll
 FolderName\libpng16-16.dll
-FolderName\Images\coin.png
-FolderName\Images\error.png
-FolderName\Images\monster.png
-FolderName\Images\player.png
-FolderName\Images\pole.png
-FolderName\Images\sky.png
-FolderName\Images\wall.png
+FolderName\Images\tiles.png
 ```
 
 ### Windows
 
-You can download the .exe under the [Releases Tab](https://github.com/GamerMan7799/Experimental-Platformer-AI/releases) you will need the SDL2 runtime binaries (see above).
+You can download the .exe under the [Releases Tab](https://github.com/Dragon-Wonder/Experimental-Platformer-AI/releases) you will need the SDL2 runtime binaries (see above).
 
 If you wish to compile it yourself you can use the Compile.bat files if you have MinGW on your computer, or you can use the Compile.sh in the Debug folder if you have Cygwin, or you can open the Code Block project file and compile it that way.
 

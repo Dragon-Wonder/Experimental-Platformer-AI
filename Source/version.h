@@ -1,49 +1,64 @@
 #ifndef __VERSION_HEADER__
 #define __VERSION_HEADER__
-
-//Initially was created using Code::Blocks' auto-versifying. However
-//it kept really messing up the system I was using so I turned it off
-
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file version.h
+/// @brief  This is the header which holds all of the defines related to
+/// version information.
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @defgroup VersionInfo Version Information
+/// @brief These are defines hold all the information that is related to program version.
+/// @{
+/////////////////////////////////////////////////
+/*****************************************************************************/
 //Date Version Types
-#define DEFINED_VER_DATE "04"
-#define DEFINED_VER_MONTH "09"
-#define DEFINED_VER_YEAR "2015"
-//I don't know what this is for, but I'll leave it for now.
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.09"
+/** The day of the last build of the program, currently not used. */
+#define DEFINED_VER_DATE "21"
 
-//Standard Version Type
-#define DEFINED_VER_MAJOR  4
-#define DEFINED_VER_MINOR  1
-#define DEFINED_VER_PATCH  2
+/** The month of the last build of the program, currently not used. */
+#define DEFINED_VER_MONTH "02"
 
-//Miscellaneous Version Types
-//Don't forget to increment the build number before each build
-#define DEFINED_VER_RC_FILEVERSION 4,1,2,10
-#define DEFINED_VER_RC_FILEVERSION_STRING "4, 1, 2, 10\0"
-#define DEFINED_VER_FULLVERSION_STRING  "4.1.2"
+/** The year of the last build of the program, currently not used. */
+#define DEFINED_VER_YEAR "2017"
+
+/** The Ubuntu style of the date of the last build. It is in YY.MM format. */
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "17.02"
+/*****************************************************************************/
+/** The Major number of the version number */
+#define DEFINED_VER_MAJOR  5
+
+/** The Minor number of the version number */
+#define DEFINED_VER_MINOR  0
+
+/** The Patch number of the version number */
+#define DEFINED_VER_PATCH  1
+/*****************************************************************************/
+/** The version number in a format used by Boilerplate.rc, It is in the following format
+    [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
+#define DEFINED_VER_RC_FILEVERSION 5,0,1,0
+
+/** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
+#define DEFINED_VER_RC_FILEVERSION_STRING "5, 0, 0, 0\0"
+
+/** A more specific string of the file version */
+#define DEFINED_VER_FULLVERSION_STRING  "5.0.0-r\0"
 
 //Software Status
-#define DEFINED_VER_STATUS 	"Release"
-#define DEFINED_VER_STATUS_SHORT  "r"
-
-/*
+/**
 Software Status can be the following:
-|===================|========|====================================================|
-| Status            | Short  | Description                                        |
-|===================|========|====================================================|
-| Release           | r      | The supported release of the program               |
-|===================|========|====================================================|
-| Release Candidate | rc     | The next likely release version;                   |
-|					|	     | usually only a few bugs / todos separate this from |
-|					|		 | a release. It is pretty safe to use.               |
-|===================|========|====================================================|
-| Beta				| b      | This version will compile and / or run but does not|
-|                   |        | work as expected (or crashes often)                |
-|===================|========|====================================================|
-| Alpha				| a		 | This version does not work at all; it usually won't|
-|                   |        | compile at all or crashes more times than it works |
-|                   |        | best not to use versions in this state             |
-|===================|========|====================================================|
+| Status | Short | Description |
+|-------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| Release | r | The supported release of the program. |
+| Release Candidate | rc | The next likely release version; usually only a few bugs / todos separate this from a release. It is pretty safe to use. |
+| Beta | b | This version will compile and / or run but does not work as expected (or crashes often). |
+| Alpha | a | This version does not work at all; it usually won't compile at all or crashes more times than it works; best not to use versions in this state. |
 */
+#define DEFINED_VER_STATUS 	"Release"
 
+/** See the table for DEFINED_VER_STATUS */
+#define DEFINED_VER_STATUS_SHORT  "r"
+/// @}
+/*****************************************************************************/
 #endif //__VERSION_HEADER__
