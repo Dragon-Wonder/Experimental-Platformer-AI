@@ -10,7 +10,8 @@ all: $(OBJ) $(HEAD)
 	@echo "link $(EXE)"
 	@$(CC) $(OBJ) $(CFLAGS) $(LNFLAGS) -o$(EXE)
 
-source/main.o: source/main.cpp source/version.h source/main.h source/map.h source/config.h source/tick.h source/entity.h source/globals.h source/screen.h
+source/main.o: source/main.cpp source/core.h source/version.h source/main.h source/map.h source/config.h source/tick.h source/entity.h source/globals.h source/screen.h
+source/core.o: source/core.cpp source/version.h source/main.h source/map.h source/config.h source/tick.h source/entity.h source/globals.h source/screen.h
 source/config.o: source/config.cpp source/config.h source/main.h source/version.h source/globals.h 
 source/entity.o: source/entity.cpp source/entity.h source/map.h source/config.h source/globals.h source/main.h
 source/map.o: source/map.cpp source/map.h source/config.h source/tick.h source/entity.h source/globals.h 

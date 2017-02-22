@@ -2,11 +2,11 @@
 
 Please note that this list is more about documents I need to make, folders I need to reorganize or other stuff such as that.
 
-Improvements to the code can be made as [Issues] (https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues) under the label Suggestion.
+Improvements to the code can be made as [Issues](https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues) under the label Suggestion.
 
 ## Todo
 
-* Doxygen (?)
+~~* Doxygen (?)~~
 
 * Wiki for project
 

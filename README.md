@@ -1,6 +1,6 @@
 # Experimental Platformer AI
 
-(Check out the gh-pages of this project by going to [http://dragon-wonder.github.io/Experimental-Platformer-AI/])
+(Check out the gh-pages of this project by going (here)[http://dragon-wonder.github.io/Experimental-Platformer-AI/] )
 
 ## Introduction
 
@@ -14,7 +14,7 @@ There is really no point to this entire project its mostly for my friend and I t
 
 ## License and copyright
 
-All of this project was written from scratch by [GamerMan7799] (https://github.com/GamerMan7799) & [xPUREx](https://github.com/xPUREx) unless otherwise noted.
+All of this project was written from scratch by [GamerMan7799](https://github.com/GamerMan7799) & [xPUREx](https://github.com/xPUREx) unless otherwise noted.
 
 That being said all parts of this project we own have been released to the Public Domain. (This does not apply to parts that were noted as being someone else's). 
 
@@ -31,7 +31,7 @@ We are pretty novice programmers at best. Part of the reason we made this was to
 
 We are always open to people contributing to the project by giving suggestions, or helping us with improvements. 
 
-If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab] (https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues).
+If you have any questions or a suggestions or improvement please feel free to leave it as an issue in [this tab](https://github.com/Dragon-Wonder/Experimental-Platformer-AI/issues).
 
 ## Building the Project
 
@@ -40,11 +40,11 @@ If you have any questions or a suggestions or improvement please feel free to le
 In order to run the program properly you will need to download SDL2-2.0.3 or higher. 
 You will also need SDL2 TTF library, and SDL2 Images library
 
-A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
+A link for SDL2 can be found [here](https://www.libsdl.org/download-2.0.php).
 
-A link for SDL2 TTF can be found [here] (https://www.libsdl.org/projects/SDL_ttf/).
+A link for SDL2 TTF can be found [here](https://www.libsdl.org/projects/SDL_ttf/).
 
-A link for SDL2 Images can be found [here] (https://www.libsdl.org/projects/SDL_image/).
+A link for SDL2 Images can be found [here](https://www.libsdl.org/projects/SDL_image/).
 
 You will want to download the Runtime Binaries (if you have windows I recommend 32 bit over 64 bit; even if you have a 64 bit computer).
 
@@ -96,7 +96,5 @@ I don't know you're on your own. Sorry.
 
 Most of the program will just run by itself because as stated it is meant to be an AI program. When the program is first launched it will create a config file called "Config.ini".
 You can change values in this file to change how the program runs. You should read the manual, under documentation.
-
-Later on we would like to fork this project and develop a Human Controlled version of this game; but that is for a later time.
 
 
