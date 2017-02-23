@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['main',['main',['../d1/dc6/a00037.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
-  ['make',['make',['../da/d45/a00011.html#a52aa46b8ad25ffab50a341e05888dcda',1,'clsConfig']]],
-  ['move',['move',['../d7/dd4/a00013.html#a8f8b70dddcc9c0a3d6802b761d565680',1,'clsMap']]]
+  ['load',['load',['../df/d5d/a00084.html#abc5b56d7d22d1cabc94fdcd97df0b8f6',1,'clsConfig::load()'],['../da/d72/a00124.html#ad3ad2b36b2b679f7bed73e6e92bf4b2a',1,'clsMap::load()']]],
+  ['loadtextures',['loadTextures',['../d5/db1/a00140.html#a0a0a71d75c070386a439593b60e96b3e',1,'clsScreen']]]
 ];

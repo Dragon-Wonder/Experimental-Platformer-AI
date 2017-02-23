@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['map',['map',['../d7/dd4/a00013.html#a88583fe161b1863a9f84cf90a2b0467f',1,'clsMap::map()'],['../d3/dea/a00046.html#a785dc5327b7076fb0ad03a39dce2fe4d',1,'Global::Map()']]],
-  ['maptiles',['maptiles',['../d3/dfe/a00025.html#a0614b66542522a404ac49b4c683dc25d',1,'stcTextures']]],
-  ['messagefont',['MessageFont',['../d2/de7/a00014.html#a8d747d34b33a45e9d12fe3d6ef5c4849',1,'clsScreen']]]
+  ['left',['left',['../d4/d98/a00120.html#ae4c8203e11909681b67f8fe5b581754f',1,'stcBox']]],
+  ['living',['living',['../d4/d3e/a00116.html#ac2ae96d441d54571be44f22021ef7ea5',1,'stcMonster']]],
+  ['location',['location',['../d1/dd6/a00108.html#a9f9b486e047a0913ddf6287f3eb5c882',1,'stcPlayer::location()'],['../db/d57/a00112.html#a5ba888f8b2635c5ff69a33b415186e79',1,'stcBasePlayer::location()'],['../d4/d3e/a00116.html#a159d67f01ee2e84400eade99832228bc',1,'stcMonster::location()']]],
+  ['logfile',['logFile',['../d1/dc1/a00092.html#a9bbcff30307d0ab0b5337dc35ae60913',1,'clsEntity']]]
 ];

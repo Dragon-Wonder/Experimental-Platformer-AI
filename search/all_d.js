@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['returns_20for_20the_20config',['Returns for the Config',['../d2/dee/a00049.html',1,'']]],
-  ['ren',['ren',['../d2/de7/a00014.html#a25bf902b862b9e538063f087a8d9b6cf',1,'clsScreen']]],
-  ['resetclock',['resetClock',['../dd/d1b/a00015.html#a273be798d9d612c20efdecb4b1764326',1,'clsTick']]],
-  ['restart',['restart',['../d7/dd4/a00013.html#af2e87444c20b4ffb1569f969b8b0dd78',1,'clsMap']]],
-  ['right',['right',['../d1/d2b/a00018.html#ab7b00c38e2e06112bf7f6a3f64bccce7',1,'stcBox']]]
+  ['pic_5fsize',['pic_size',['../d5/db1/a00140.html#a2454aaa73267c729dcd88c7654a9493c',1,'clsScreen']]],
+  ['playerdeath',['playerDeath',['../d5/db1/a00140.html#a42e216ff7d4f665365f1b800bd3282c5',1,'clsScreen']]],
+  ['plyplayer',['plyPlayer',['../d1/dc1/a00092.html#abd92f3188de58c0502d0067947e028bb',1,'clsEntity']]],
+  ['plyr',['PLYR',['../d6/d5b/a00026.html#a2fc277a3a91addebbf0491bf63b6a61b',1,'PLYR():&#160;globals.h'],['../dc/d87/a00032.html#a2fc277a3a91addebbf0491bf63b6a61b',1,'PLYR():&#160;main.h']]]
 ];

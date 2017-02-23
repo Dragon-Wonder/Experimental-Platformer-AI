@@ -1,0 +1,5 @@
+<map id="clsMap::checkCollision" name="clsMap::checkCollision">
+<area shape="rect" id="node2" href="$d1/dc1/a00092.html#a44628a49c7f026ecbeca99713752e98a" title="clsEntity::getPlayer" alt="" coords="217,5,353,32"/>
+<area shape="rect" id="node3" href="$da/d72/a00124.html#a6c80e807e8df8a0ba778ddfe16ee7efd" title="clsMap::checkOverlap" alt="" coords="209,56,360,83"/>
+<area shape="rect" id="node4" href="$d1/dc1/a00092.html#abce930b697b192fad910748905e47494" title="clsEntity::getMonster" alt="" coords="211,107,358,133"/>
+</map>

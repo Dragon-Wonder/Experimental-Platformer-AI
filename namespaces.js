@@ -1,4 +1,5 @@
 var namespaces =
 [
-    [ "Global", "d3/dea/a00046.html", "d3/dea/a00046" ]
+    [ "defined", "db/df8/a00076.html", null ],
+    [ "global", "db/db6/a00074.html", "db/db6/a00074" ]
 ];

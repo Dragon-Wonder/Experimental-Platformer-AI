@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['newplayer',['newplayer',['../df/d86/a00012.html#acc38f5f2bdfdf88902498916f5007f69',1,'clsEntity']]],
-  ['nextplayer',['nextplayer',['../df/d86/a00012.html#ae1c2fb4ca35caee5108cfe36571f8a03',1,'clsEntity']]]
+  ['main',['main',['../d5/d16/a00029.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
+  ['make',['make',['../df/d5d/a00084.html#a52aa46b8ad25ffab50a341e05888dcda',1,'clsConfig']]],
+  ['move',['move',['../da/d72/a00124.html#a8f8b70dddcc9c0a3d6802b761d565680',1,'clsMap']]]
 ];

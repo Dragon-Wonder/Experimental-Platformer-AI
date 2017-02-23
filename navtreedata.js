@@ -1,12 +1,12 @@
 var NAVTREE =
 [
   [ "Experimental Platformer AI", "index.html", [
-    [ "Change Log", "d7/d46/a00002.html", null ],
-    [ "Credits", "d0/d0b/a00004.html", null ],
-    [ "LICENSE", "de/d21/a00006.html", null ],
-    [ "Manual for Experimental Platformer AI", "d4/dee/a00008.html", null ],
-    [ "Notation", "d7/dec/a00010.html", null ],
-    [ "Todo List", "d1/d84/a00052.html", null ],
+    [ "Change Log", "da/d1e/a00149.html", null ],
+    [ "Credits", "d9/d7d/a00150.html", null ],
+    [ "LICENSE", "dd/db2/a00151.html", null ],
+    [ "Manual for Experimental Platformer AI", "d7/d9a/a00152.html", null ],
+    [ "Notation", "da/d01/a00153.html", null ],
+    [ "Todo List", "d0/d89/a00071.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -41,7 +41,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"dc/de2/a00024.html#a9f9b486e047a0913ddf6287f3eb5c882"
+"da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca32bd84a4cb1d872eb1b62110913f34ae"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['killmonster',['killMonster',['../df/d86/a00012.html#a468b0ca70467079afa1ce436535ae6ee',1,'clsEntity']]]
+  ['inkillplane',['inKillPlane',['../da/d72/a00124.html#a5a1f1a7366befc97bfa298f61680fd77',1,'clsMap']]]
 ];

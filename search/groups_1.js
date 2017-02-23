@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['returns_20for_20the_20config',['Returns for the Config',['../d2/dee/a00049.html',1,'']]]
+  ['version_20information',['Version Information',['../d1/d6e/a00073.html',1,'']]]
 ];

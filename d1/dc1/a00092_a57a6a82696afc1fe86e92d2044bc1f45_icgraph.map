@@ -1,0 +1,7 @@
+<map id="clsEntity::doPlayerStep" name="clsEntity::doPlayerStep">
+<area shape="rect" id="node2" href="$db/ddf/a00088.html#a026c448342333950e68cbef31cbf3ae6" title="clsCore::doFirstGeneration" alt="" coords="219,5,397,32"/>
+<area shape="rect" id="node5" href="$db/ddf/a00088.html#a2eb72f10686aef4c76ac80641e8cd907" title="clsCore::doGrowthGeneration" alt="" coords="212,56,404,83"/>
+<area shape="rect" id="node6" href="$db/ddf/a00088.html#a189dd1ff63bef7f01e7210c233121e79" title="clsCore::doSteadyGernation" alt="" coords="215,107,401,133"/>
+<area shape="rect" id="node3" href="$db/ddf/a00088.html#a25f9766702ef505b1c33c7603beda847" title="clsCore::start" alt="" coords="452,56,552,83"/>
+<area shape="rect" id="node4" href="$d5/d16/a00029.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="600,56,651,83"/>
+</map>

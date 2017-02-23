@@ -1,8 +1,24 @@
 var searchData=
 [
-  ['values',['values',['../da/d45/a00011.html#a55ed5d1850d77fbab45dd3f56f572a83',1,'clsConfig']]],
-  ['vel',['vel',['../dc/de2/a00024.html#a02978b7df95579f86dfead97a0dbcec8',1,'stcPlayer::vel()'],['../d4/d51/a00017.html#a993159e823e92bb174666aa310b3d83b',1,'stcBasePlayer::vel()'],['../d3/d52/a00023.html#af3cca4d1403a5fa50dbd0e6d5c7fa52b',1,'stcMonster::vel()'],['../d8/d41/a00038.html#a47fcc5831e1fe1b25f0685ed38f9390c',1,'VEL():&#160;main.h']]],
-  ['verisoncheck',['verisonCheck',['../da/d45/a00011.html#a749a942bc506bf69e6b8b228db22bd0e',1,'clsConfig']]],
-  ['version_2eh',['version.h',['../d6/d97/a00045.html',1,'']]],
-  ['version_20information',['Version Information',['../d5/de0/a00050.html',1,'']]]
+  ['uchar',['uchar',['../d6/d5b/a00026.html#a65f85814a8290f9797005d3b28e7e5fc',1,'uchar():&#160;globals.h'],['../dc/d87/a00032.html#a65f85814a8290f9797005d3b28e7e5fc',1,'uchar():&#160;main.h']]],
+  ['uchrfps',['uchrFPS',['../d5/da7/a00144.html#a14a1caea039805924e5b84d38c087072',1,'clsTick']]],
+  ['uchrgennum',['uchrGenNum',['../d1/dc1/a00092.html#aaa44190fd59faeeaa54616aedbde78a7',1,'clsEntity']]],
+  ['uchrplayernum',['uchrPlayerNum',['../d1/dc1/a00092.html#a66ad1a7e4622cc74b2ff81e268b346fc',1,'clsEntity']]],
+  ['uclock',['uClock',['../d5/da7/a00144.html#a95cd0bb2a3444eae6c924371bb423ca6',1,'clsTick']]],
+  ['uint',['uint',['../d6/d5b/a00026.html#a91ad9478d81a7aaf2593e8d9c3d06a14',1,'uint():&#160;globals.h'],['../dc/d87/a00032.html#a91ad9478d81a7aaf2593e8d9c3d06a14',1,'uint():&#160;main.h']]],
+  ['uintfirstgen',['uintFirstGen',['../da/dec/a00080.html#a92c83240c85efebfdfec93900da614ca',1,'ConfigValues']]],
+  ['uintgenincrease',['uintGenIncrease',['../da/dec/a00080.html#a4359c27317506ed5d5793de513c310dd',1,'ConfigValues']]],
+  ['uintgenspastgrowth',['uintGensPastGrowth',['../da/dec/a00080.html#a655e099c94dbef88d879bc2acf7b0d30',1,'ConfigValues']]],
+  ['uintgensteps',['uintGenSteps',['../d1/dc1/a00092.html#ab5db8c7f93fbf7a0dd3d0c82214aa970',1,'clsEntity']]],
+  ['uintmaxplayersteps',['uintMaxPlayerSteps',['../da/dec/a00080.html#ae0a04d719dfb2d1697d6bb455a9a3de1',1,'ConfigValues']]],
+  ['uintmutationchance',['uintMutationChance',['../da/dec/a00080.html#ace20e0c497dfe3274ccb08fd6f108b92',1,'ConfigValues']]],
+  ['uintnumberofbreed',['uintNumberOfBreed',['../da/dec/a00080.html#a4996779f1fd54ab7fca17899e0f188ab',1,'ConfigValues']]],
+  ['uintplayerspergen',['uintPlayersPerGen',['../da/dec/a00080.html#a6f981562cc58d1a77234595c59f989d3',1,'ConfigValues']]],
+  ['uintscreenheight',['uintScreenHeight',['../da/dec/a00080.html#aeae457b6c100d515c6f02d839f2a8c0f',1,'ConfigValues']]],
+  ['uintscreenwidth',['uintScreenWidth',['../da/dec/a00080.html#afad637ab5ab9d1de428e202368743a68',1,'ConfigValues']]],
+  ['uintseed',['uintSeed',['../da/dec/a00080.html#a86279b017946ceb321348af2962a9be7',1,'ConfigValues']]],
+  ['uintstepnum',['uintStepNum',['../d1/dc1/a00092.html#ab7a019d77c8a7fad73351ab584ce0013',1,'clsEntity']]],
+  ['ulngsleeptime',['ulngSleepTime',['../d5/da7/a00144.html#a8633f8f7b4c475eed23c87588afbac43',1,'clsTick']]],
+  ['ulong',['ulong',['../d6/d5b/a00026.html#a718b4eb2652c286f4d42dc18a8e71a1a',1,'ulong():&#160;globals.h'],['../dc/d87/a00032.html#a718b4eb2652c286f4d42dc18a8e71a1a',1,'ulong():&#160;main.h']]],
+  ['update',['update',['../d5/db1/a00140.html#a48e3bd1e5536ca47c10d46fa36924352',1,'clsScreen']]]
 ];

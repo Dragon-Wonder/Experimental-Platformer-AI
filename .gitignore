@@ -1,3 +1,13 @@
 /gh-pages/
 /dev/
+/SDL2Stuff/
+/Debug/
+/Project/
 
+*.ini
+*.out
+*.dll
+*.log
+*.exe
+
+*.depend

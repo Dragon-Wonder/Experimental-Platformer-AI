@@ -1,7 +1,14 @@
 var searchData=
 [
-  ['left',['left',['../d1/d2b/a00018.html#ae4c8203e11909681b67f8fe5b581754f',1,'stcBox']]],
-  ['living',['living',['../d3/d52/a00023.html#ac2ae96d441d54571be44f22021ef7ea5',1,'stcMonster']]],
-  ['location',['location',['../dc/de2/a00024.html#a9f9b486e047a0913ddf6287f3eb5c882',1,'stcPlayer::location()'],['../d4/d51/a00017.html#a5ba888f8b2635c5ff69a33b415186e79',1,'stcBasePlayer::location()'],['../d3/d52/a00023.html#a159d67f01ee2e84400eade99832228bc',1,'stcMonster::location()']]],
-  ['logfile',['logFile',['../df/d86/a00012.html#a9bbcff30307d0ab0b5337dc35ae60913',1,'clsEntity']]]
+  ['kcoinworth',['kCoinWorth',['../db/df8/a00076.html#a1aa751849cb34888a4d061aa7df763ca',1,'defined']]],
+  ['kconfigfilename',['kConfigFileName',['../db/df8/a00076.html#a5752c5e8457e1a128831c1adcd31c534',1,'defined']]],
+  ['kgoalfps',['kGoalFPS',['../db/df8/a00076.html#aa98021ea32132cdfebc1accd6ab87130',1,'defined']]],
+  ['klogfilename',['kLogFileName',['../db/df8/a00076.html#ad2dafd7973cde4443180fba6f976d4cd',1,'defined']]],
+  ['kmapheight',['kMapHeight',['../db/df8/a00076.html#a488ffaa9f5f34d1959c0b7a71ef987e3',1,'defined']]],
+  ['kmapwidth',['kMapWidth',['../db/df8/a00076.html#ae77b8a688f48340a7ff865bee11f4f3f',1,'defined']]],
+  ['kmaxjumpcount',['kMaxJumpCount',['../db/df8/a00076.html#af817ec22d848c3d267ca725c152e973f',1,'defined']]],
+  ['kmonsterkillworth',['kMonsterKillWorth',['../db/df8/a00076.html#ad2ae8bba5e45185ba8292cc662970b9e',1,'defined']]],
+  ['knummaptiles',['kNumMapTiles',['../db/df8/a00076.html#a8092f5d77fc32b3d473cfd4f77af908f',1,'defined']]],
+  ['kpicsize',['kPicSize',['../db/df8/a00076.html#a43e1bfab4eb388f2c8208efcf27cf522',1,'defined']]],
+  ['kticklimit',['kTickLimit',['../db/df8/a00076.html#a0716d95117b2fdad028066d14c662c31',1,'defined']]]
 ];

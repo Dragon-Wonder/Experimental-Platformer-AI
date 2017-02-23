@@ -1,6 +1,5 @@
 var modules =
 [
-    [ "Easily Changeable Defines", "d4/dca/a00048.html", "d4/dca/a00048" ],
-    [ "Returns for the Config", "d2/dee/a00049.html", "d2/dee/a00049" ],
-    [ "Version Information", "d5/de0/a00050.html", "d5/de0/a00050" ]
+    [ "Easily Changeable Defines", "d6/d2c/a00072.html", "d6/d2c/a00072" ],
+    [ "Version Information", "d1/d6e/a00073.html", "d1/d6e/a00073" ]
 ];

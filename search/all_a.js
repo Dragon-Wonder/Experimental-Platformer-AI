@@ -1,16 +1,13 @@
 var searchData=
 [
-  ['main',['main',['../d1/dc6/a00037.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
-  ['main_2ecpp',['main.cpp',['../d1/dc6/a00037.html',1,'']]],
-  ['main_2eh',['main.h',['../d8/d41/a00038.html',1,'']]],
-  ['make',['make',['../da/d45/a00011.html#a52aa46b8ad25ffab50a341e05888dcda',1,'clsConfig']]],
-  ['manual_2emd',['Manual.md',['../d5/d79/a00030.html',1,'']]],
-  ['map',['map',['../d7/dd4/a00013.html#a88583fe161b1863a9f84cf90a2b0467f',1,'clsMap::map()'],['../d3/dea/a00046.html#a785dc5327b7076fb0ad03a39dce2fe4d',1,'Global::Map()']]],
-  ['map_2ecpp',['map.cpp',['../d3/de7/a00039.html',1,'']]],
-  ['map_2eh',['map.h',['../db/d3a/a00040.html',1,'']]],
-  ['maptiles',['maptiles',['../d3/dfe/a00025.html#a0614b66542522a404ac49b4c683dc25d',1,'stcTextures']]],
-  ['manual_20for_20experimental_20platformer_20ai',['Manual for Experimental Platformer AI',['../d4/dee/a00008.html',1,'']]],
-  ['messagefont',['MessageFont',['../d2/de7/a00014.html#a8d747d34b33a45e9d12fe3d6ef5c4849',1,'clsScreen']]],
-  ['mnstr',['MNSTR',['../d8/d41/a00038.html#a5c18510dc8548351d4ea48ebb9a2d451',1,'main.h']]],
-  ['move',['move',['../d7/dd4/a00013.html#a8f8b70dddcc9c0a3d6802b761d565680',1,'clsMap']]]
+  ['left',['left',['../d4/d98/a00120.html#ae4c8203e11909681b67f8fe5b581754f',1,'stcBox']]],
+  ['license_2emd',['LICENSE.md',['../df/d03/a00062.html',1,'']]],
+  ['living',['living',['../d4/d3e/a00116.html#ac2ae96d441d54571be44f22021ef7ea5',1,'stcMonster']]],
+  ['load',['load',['../df/d5d/a00084.html#abc5b56d7d22d1cabc94fdcd97df0b8f6',1,'clsConfig::load()'],['../da/d72/a00124.html#ad3ad2b36b2b679f7bed73e6e92bf4b2a',1,'clsMap::load()']]],
+  ['loaded',['Loaded',['../d5/df9/a00044.html#a993c1eba3122d3bab96ae9018a3bdf93',1,'screen.h']]],
+  ['loadtextures',['loadTextures',['../d5/db1/a00140.html#a0a0a71d75c070386a439593b60e96b3e',1,'clsScreen']]],
+  ['loc',['LOC',['../d6/d5b/a00026.html#af42d8fef3f34732ebc887c09b78c49da',1,'LOC():&#160;globals.h'],['../dc/d87/a00032.html#af42d8fef3f34732ebc887c09b78c49da',1,'LOC():&#160;main.h']]],
+  ['location',['location',['../d1/dd6/a00108.html#a9f9b486e047a0913ddf6287f3eb5c882',1,'stcPlayer::location()'],['../db/d57/a00112.html#a5ba888f8b2635c5ff69a33b415186e79',1,'stcBasePlayer::location()'],['../d4/d3e/a00116.html#a159d67f01ee2e84400eade99832228bc',1,'stcMonster::location()']]],
+  ['logfile',['logFile',['../d1/dc1/a00092.html#a9bbcff30307d0ab0b5337dc35ae60913',1,'clsEntity']]],
+  ['license',['LICENSE',['../dd/db2/a00151.html',1,'']]]
 ];

@@ -1,14 +1,23 @@
 var a00011 =
 [
-    [ "clsConfig", "da/d45/a00011.html#a5089a3fdc4b4b6765788501c5747ba52", null ],
-    [ "Check", "da/d45/a00011.html#aa87c8f85171d27dcc447611196d92edd", null ],
-    [ "exists", "da/d45/a00011.html#a92acd9142e7aa632306bf668e7afabe4", null ],
-    [ "getvalues", "da/d45/a00011.html#ac00eec83dabc93a0888bbe5889823591", null ],
-    [ "getvalues", "da/d45/a00011.html#a4f6609bb3fa643b8ab9bea8535822b15", null ],
-    [ "load", "da/d45/a00011.html#abc5b56d7d22d1cabc94fdcd97df0b8f6", null ],
-    [ "make", "da/d45/a00011.html#a52aa46b8ad25ffab50a341e05888dcda", null ],
-    [ "verisonCheck", "da/d45/a00011.html#a749a942bc506bf69e6b8b228db22bd0e", null ],
-    [ "configFile", "da/d45/a00011.html#ae28e42e735b5f0528c248865882f9f9d", null ],
-    [ "FileName", "da/d45/a00011.html#a1ad5a266287463bded799b68118ae70f", null ],
-    [ "values", "da/d45/a00011.html#a55ed5d1850d77fbab45dd3f56f572a83", null ]
+    [ "ConfigValues", "da/dec/a00080.html", "da/dec/a00080" ],
+    [ "clsConfig", "df/d5d/a00084.html", "df/d5d/a00084" ],
+    [ "Configures", "da/d45/a00011.html#ad8efdb9daf7edeeb668f55e700ad7a23", null ],
+    [ "configValueSpot", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2c", [
+      [ "cnfgLogging", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca3ff1045c31a76199d88c3eb8575664d5", null ],
+      [ "cnfgShowMap", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca1182927f57d6677c4d195aa22f2adf80", null ],
+      [ "cnfgAppendTime", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2caa612770fbc3873ef2d048f9bc3c63887", null ],
+      [ "cnfgHardMode", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca368a49ad0111a0499a36d207dba7857e", null ],
+      [ "cnfgFirstGen", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca66e3d3bf4570ae131281ae76d6c27510", null ],
+      [ "cnfgGenIncrease", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca15e724678e0a8cf98168bf25b908ea02", null ],
+      [ "cnfgGensPastGrowth", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca32bd84a4cb1d872eb1b62110913f34ae", null ],
+      [ "cnfgMutationChance", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2caae5e9afb22a9f1ab42a8d35ddd90df81", null ],
+      [ "cnfgSeed", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca63030b62a59489ef4378425c9dfb69f4", null ],
+      [ "cnfgScreenWidth", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca9012d8509f591fe93a5b105fda0df527", null ],
+      [ "cnfgScreenHeight", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca2b4829cf23c5be84f73ade5881e3881c", null ],
+      [ "cnfgMaxSteps", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca8e9103c6efef3deee2106b880e38c21c", null ],
+      [ "cnfgPlayerGen", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2caccd483bb90e98cf61af7a4301e166e0a", null ],
+      [ "cnfgPlayerBreed", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2ca5b95a1e322a00dfa3eaf0c61764a93d2", null ],
+      [ "cnfgHumanBuild", "da/d45/a00011.html#a2320170156ade5e08dc29f20ef3bcd2caac7eca16a6445e348867ca86a39989d6", null ]
+    ] ]
 ];

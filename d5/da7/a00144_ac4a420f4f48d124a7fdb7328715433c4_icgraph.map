@@ -1,0 +1,11 @@
+<map id="clsTick::startTimer" name="clsTick::startTimer">
+<area shape="rect" id="node2" href="$d5/da7/a00144.html#a6bf44f81be6e357ca70f9367bf4530c1" title="clsTick::wait" alt="" coords="183,156,277,183"/>
+<area shape="rect" id="node3" href="$d5/db1/a00140.html#a48e3bd1e5536ca47c10d46fa36924352" title="clsScreen::update" alt="" coords="325,131,452,157"/>
+<area shape="rect" id="node10" href="$d5/db1/a00140.html#a42e216ff7d4f665365f1b800bd3282c5" title="clsScreen::playerDeath" alt="" coords="500,181,657,208"/>
+<area shape="rect" id="node4" href="$db/ddf/a00088.html#a25f9766702ef505b1c33c7603beda847" title="clsCore::start" alt="" coords="945,131,1045,157"/>
+<area shape="rect" id="node6" href="$db/ddf/a00088.html#a026c448342333950e68cbef31cbf3ae6" title="clsCore::doFirstGeneration" alt="" coords="713,232,890,259"/>
+<area shape="rect" id="node7" href="$db/ddf/a00088.html#a2eb72f10686aef4c76ac80641e8cd907" title="clsCore::doGrowthGeneration" alt="" coords="705,80,897,107"/>
+<area shape="rect" id="node8" href="$db/ddf/a00088.html#a189dd1ff63bef7f01e7210c233121e79" title="clsCore::doSteadyGernation" alt="" coords="709,131,894,157"/>
+<area shape="rect" id="node9" href="$d5/db1/a00140.html#ace3b68c8a6a28a11cb24559a80c3093e" title="clsScreen::clsScreen" alt="" coords="505,80,652,107"/>
+<area shape="rect" id="node5" href="$d5/d16/a00029.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1093,131,1144,157"/>
+</map>
