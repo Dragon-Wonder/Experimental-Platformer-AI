@@ -416,31 +416,31 @@ char clsEntity::doPlayerStep(uint stepnum, char stage) {
 }
 /*****************************************************************************/
 void clsEntity::doNextGeneration(char stage) {
-    /////////////////////////////////////////////////
-    /// @brief Gets ready to run the next generation by:
-    ///        * Getting best PLayers
-    ///        * Incrementing uintGenSteps based on stage
-    /// @param stage = Stage the program is in.
-    /// @return void
-    /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /// @brief Gets ready to run the next generation by:
+  ///        * Getting best PLayers
+  ///        * Incrementing uintGenSteps based on stage
+  /// @param stage = Stage the program is in.
+  /// @return void
+  /////////////////////////////////////////////////
 
-    uchrPlayerNum = 0;
-    getBest();
-    if(global::cnfg.getvalues(cnfgShowMap) == 0) {
-      printf("Best Players are:\n");
-      for (uint k = 0; k < global::cnfg.getvalues(cnfgPlayerBreed); ++k) {
-        printf("%2.3f\n",genBestPlayers[k].fitness);
-      }
-      if (global::blnDebugMode) { getchar(); }
+  uchrPlayerNum = 0;
+  getBest();
+  if(global::cnfg.getvalues(cnfgShowMap) == 0) {
+    printf("Best Players are:\n");
+    for (uint k = 0; k < global::cnfg.getvalues(cnfgPlayerBreed); ++k) {
+      printf("%2.3f\n",genBestPlayers[k].fitness);
     }
+    if (global::blnDebugMode) { getchar(); }
+  }
 
-    uchrGenNum++;
-    //Increment Gen Steps depending on what stage we are in.
-    if (stage == stageFirst) {
-      uintGenSteps += global::cnfg.getvalues(cnfgFirstGen);
-    } else if (stage == stageGrowth) {
-      uintGenSteps += global::cnfg.getvalues(cnfgGenIncrease);
-    } else {uintGenSteps = global::cnfg.getvalues(cnfgMaxSteps);}
+  uchrGenNum++;
+  //Increment Gen Steps depending on what stage we are in.
+  if (stage == stageFirst) {
+    uintGenSteps += global::cnfg.getvalues(cnfgFirstGen);
+  } else if (stage == stageGrowth) {
+    uintGenSteps += global::cnfg.getvalues(cnfgGenIncrease);
+  } else {uintGenSteps = global::cnfg.getvalues(cnfgMaxSteps);}
 }
 /*****************************************************************************/
 BPLYR clsEntity::getPlayerBase() {

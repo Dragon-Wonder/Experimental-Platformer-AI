@@ -3,6 +3,11 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [5.1.1] - 2017-02-22
+### Updated
+* Version numbers leftover from working version
+
+
 ## [5.1.0] - 2017-02-22
 ### Added
 * Human player mode can be set in config.

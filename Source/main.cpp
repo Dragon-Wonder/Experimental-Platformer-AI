@@ -26,7 +26,7 @@ namespace global {
 #endif // DEFINED_BUILD_MODE_PRIVATE
 
 
-	bool blnError = false; /**< If there was an error; then the program will exit when it checks this. */
+  bool blnError = false; /**< If there was an error; then the program will exit when it checks this. */
   bool blnQuit = false; /**< If the program should quit or not. */
 
 	//Call all of the classes as globals so they are the same everywhere.
