@@ -8,7 +8,8 @@ When you first load the program it will create a config file with the default na
 
 ```
 Config File for the program.
-5.0.0-r
+5.1.0-r
+Human Build: 0
 First Generation Steps: 100
 Generation Increase: 100
 Gens Past Growth: 10
@@ -17,13 +18,14 @@ Players per Generation: 40
 Best players per generation: 10
 Percent Mutation Chance: 15
 Log to File: 1
-Hard mode: 1
+Hard mode: 0
 Show map on update: 0
 Random Seed: [12345]
 Append Time: 1
 Only define these if the default screen size doesn't work for you, otherwise leave blank.
 Screen Height: 0
 Screen Width: 0
+
 ```
 
 ### Version number
@@ -40,9 +42,13 @@ That being said if you notice strange results or the program crashes try replaci
 A Patch to the program will never affect the config file unless the patch is to the config file. In this cause the program will just load the old config file. If we end up making changes to the config file 
 in a patch; then that release will say in it to delete old config files.
 
-The software status is the status of this version, if a release/release candidate/beta/alpha cand The software will check this and replace the config if it doesn't match the current software status.
+The software status is the status of this version, if a release/release candidate/beta/alpha. The software will check this and replace the config if it doesn't match the current software status.
 
 The Status Update is an internally number we use to keep track of how far into a Software Status we are. It is meaning less to the program.
+
+### Human Build
+
+This can be a 1 for true or a 0 for false. If true it changes the program from being AI based to be controlled by a human. It makes most of the other configs that are realated to the ai as useless.
 
 ### First Generation Steps
 

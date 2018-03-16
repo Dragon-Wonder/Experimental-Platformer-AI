@@ -149,6 +149,8 @@
 			<Option weight="2" />
 		</Unit>
 		<Unit filename="../Source/config.h" />
+		<Unit filename="../Source/core.cpp" />
+		<Unit filename="../Source/core.h" />
 		<Unit filename="../Source/entity.cpp">
 			<Option weight="4" />
 		</Unit>

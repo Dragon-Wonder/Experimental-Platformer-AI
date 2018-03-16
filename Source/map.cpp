@@ -6,7 +6,6 @@
 #include "entity.h"
 #include "config.h"
 #include "tick.h"
-#include "globals.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @file map.cpp
@@ -72,7 +71,7 @@ char clsMap::move(uchar direction) {
 	static bool playerfalling; //if the player is falling
 	float deltat = 1.0 / defined::kGoalFPS;
 	BPLYR tempEntity; //keeps track of x, y, and velocity.
-	if (!playerfalling) { jumpcount = 0; }
+	if ( !playerfalling ) { jumpcount = 0; }
   bool blnLoop = true;
 
 	//Move monsters first, to see if player dies and we can then skip the rest
@@ -89,16 +88,19 @@ char clsMap::move(uchar direction) {
       tempEntity.vel.y -= tempEntity.vel.y * global::physics::fFriction;
 
 			if (tempMonster.state == stateRight) {
-        tempEntity.vel.x = (tempEntity.vel.x + global::physics::fIncVelocity < global::physics::fMonsMaxVelocity) ?
-                            tempEntity.vel.x + global::physics::fIncVelocity : global::physics::fMonsMaxVelocity;
+        tempEntity.vel.x += global::physics::fIncVelocity;
+        if (abs(tempEntity.vel.x) > global::physics::fMonsMaxVelocity )
+          { tempEntity.vel.x = global::physics::fMonsMaxVelocity; }
       } else if (tempMonster.state == stateLeft) {
-        tempEntity.vel.x = (abs(tempEntity.vel.x - global::physics::fIncVelocity) < global::physics::fMonsMaxVelocity) ?
-                            tempEntity.vel.x - global::physics::fIncVelocity : -1 * global::physics::fMonsMaxVelocity;
+        tempEntity.vel.x -= global::physics::fIncVelocity;
+        if (abs(tempEntity.vel.x) > global::physics::fMonsMaxVelocity )
+          { tempEntity.vel.x = -1 * global::physics::fMonsMaxVelocity; }
       }
 
       //Apply Gravity
-      tempEntity.vel.y = (tempEntity.vel.y + global::physics::fGravityAcceleration < global::physics::fMaxVelocity) ?
-                          tempEntity.vel.y + global::physics::fGravityAcceleration : global::physics::fMaxVelocity;
+      tempEntity.vel.y += global::physics::fGravityAcceleration;
+      if (tempEntity.vel.y > global::physics::fMonsMaxVelocity)
+        { tempEntity.vel.y = global::physics::fMonsMaxVelocity; }
 
       //Update location based on delta t
       tempEntity.location.x += round(tempEntity.vel.x * deltat);
@@ -109,7 +111,9 @@ char clsMap::move(uchar direction) {
         switch ( checkCollision(tempEntity.location, tileMonster) ) {
         case tileCoin:
           //Replace the coin tile with space
-          map[(uint)round(tempMonster.location.y / defined::kPicSize)][(uint)round(tempMonster.location.x / defined::kPicSize)] = tileSpace;
+          map[(uint)round(tempMonster.location.y / defined::kPicSize)]
+             [(uint)round(tempMonster.location.x / defined::kPicSize)] =
+              tileSpace;
         case tilePole:
         case tileSpace:
           tempMonster.location = tempEntity.location;
@@ -139,10 +143,14 @@ char clsMap::move(uchar direction) {
             //recoil off the wall as well
             tempEntity.location.x = tempMonster.location.x;
             tempEntity.vel.x *= global::physics::fRecoil;
-            if (tempMonster.state == stateLeft) {tempMonster.state = stateRight;}
-            else {tempMonster.state = stateLeft;}
+            if (tempMonster.state == stateLeft) {
+             tempMonster.state = stateRight;
+            } else { tempMonster.state = stateLeft; }
             blnLoop = true;
-          } else { tempMonster.living = false; blnLoop = false; }
+          } else {
+            tempMonster.living = false;
+            blnLoop = false;
+          }
         } //end switch check Collision
       } while (blnLoop);
       //do a check if monster is in the kill planes
@@ -152,13 +160,12 @@ char clsMap::move(uchar direction) {
     } // end if living
   }//End of for monsters
 
-
 	//Now the player can move.
 	PLYR tempPlayer;
 	tempPlayer = global::enty.getPlayer();
   //Kill Player if their fitness gets too low in hard mode
   if (tempPlayer.fitness < -2.5 && (global::cnfg.getvalues(cnfgHardMode) == 1) )
-    {return deathDecay;}
+    { return deathDecay; }
 
   tempEntity.location = tempPlayer.location;
   tempEntity.vel = tempPlayer.vel;
@@ -213,7 +220,8 @@ char clsMap::move(uchar direction) {
     switch ( checkCollision(tempEntity.location, tilePlayer) ) {
     case tileCoin:
       //Replace the coin tile with space
-      map[(uint)(tempEntity.location.y / defined::kPicSize)][(uint)(tempEntity.location.x / defined::kPicSize)] = tileSpace;
+      map[(uint)(tempEntity.location.y / defined::kPicSize)]
+         [(uint)(tempEntity.location.x / defined::kPicSize)] = tileSpace;
       tempPlayer.score += defined::kCoinWorth;
     case tilePole:
     case tileSpace:
@@ -227,7 +235,7 @@ char clsMap::move(uchar direction) {
       if (playerfalling) { //kill monster if falling on it
         global::enty.killMonster(tempEntity.location);
         tempPlayer.score += defined::kMonsterKillWorth;
-      } else { return deathMonster;}
+      } else { return deathMonster; }
       blnLoop = false;
       break;
     case tileBricksGray:
@@ -260,20 +268,20 @@ char clsMap::move(uchar direction) {
 	} while (blnLoop);
 
   //do a check if player is in the kill planes
-  if ( inKillPlane(tempPlayer.location)) {
-    return deathFall;
-  }
+  if ( inKillPlane(tempPlayer.location) ) { return deathFall; }
 
   BPLYR temp;
   temp.location = tempPlayer.location;
   temp.vel = tempPlayer.vel;
   //Check for stupid death (going too far left on hard mode)
-  if (tempPlayer.location.x < bplyBasePlayer.location.x - 2 * defined::kPicSize && (global::cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;}
+  if (tempPlayer.location.x <
+      bplyBasePlayer.location.x - 2 * defined::kPicSize
+      && (global::cnfg.getvalues(cnfgHardMode) == 1)) {return deathStupid;}
   global::enty.setPlayer(temp);
 
 	//Reduce the clock time and check if it equals 0 and kill the player if it does.
 	global::tick.decClock();
-	if (global::tick.getClockTime() == 0) {return deathClock;}
+	if ( global::tick.getClockTime() == 0 ) { return deathClock; }
 
 	return statusLiving;
 }
@@ -332,7 +340,8 @@ uchar tempmap[defined::kMapHeight][defined::kMapWidth] = {{1,1,1,1,1,1,1,1,1,1,1
 		for (uint x = 0; x < defined::kMapWidth; ++x) {
 			if (basemap[y][x] == tilePlayer) {
 				if (global::blnDebugMode) { printf("Found Player at (%d,%d).\n",x,y); }
-				bplyBasePlayer.location = {x * defined::kPicSize, y * defined::kPicSize};
+				bplyBasePlayer.location =
+            {x * defined::kPicSize, y * defined::kPicSize};
 				bplyBasePlayer.vel = {0,0};
 				basemap[y][x] = tileSpace; //Once we find the player they are going
                                    //to be moving in a velocity based pattern

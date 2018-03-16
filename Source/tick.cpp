@@ -25,12 +25,12 @@ clsTick::clsTick() {
 	///         and it will only pause for however much longer it needs to meet the FPS goal.
   /////////////////////////////////////////////////
 
-	if (global::blnDebugMode) {printf("Tick Constructor called.\n");}
+	if (global::blnDebugMode) { printf("Tick Constructor called.\n"); }
 	uchrFPS = defined::kGoalFPS;
 
 	ulngSleepTime = (ulong) round(1000.0 / uchrFPS);
 	timerStart = clock();
-	if (global::blnDebugMode) {printf("ulngSleepTime = %lu\n", ulngSleepTime);}
+	if (global::blnDebugMode) { printf("ulngSleepTime = %lu\n", ulngSleepTime); }
 	uClock = defined::kTickLimit;
 }
 /*****************************************************************************/
@@ -50,7 +50,7 @@ void clsTick::wait(void) {
 	now = clock();
 
   if ((uint)abs(now - timerStart) < pause) {
-    while ( (uint)abs(now - timerStart) < pause) {now = clock();}
+    while ( (uint)abs(now - timerStart) < pause) { now = clock(); }
   }
 	startTimer();
 }

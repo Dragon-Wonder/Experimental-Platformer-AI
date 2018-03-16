@@ -4,10 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_thread.h>
 #include <string>
 #include <cstdio>
 /*****************************************************************************/
-#include "main.h"
+#include "globals.h"
 /*****************************************************************************/
 /** @def DEFINED_DEFAULT_IMAGE_PATH
   All images are stored in a folder called "Images" however, because Linux,
@@ -78,39 +79,20 @@ class clsScreen {
     void cleanup(void);
     void playerDeath(void);
 
-    /** If SDL is currently running without issue. */
-    bool bln_SDL_started;
+
+    bool bln_SDL_started; /**< If SDL is currently running without issue. */
 
   private:
-    /** All the textures. */
-    TEX textures;
-
-    /** Pointer to the window in memory. */
-    SDL_Window *win;
-
-    /** Pointer to the renderer in memory. */
-    SDL_Renderer *ren;
-
-    /** Screen width in pixels. */
-    uint width;
-
-    /** Screen height in pixels. */
-    uint height;
-
-    /** Picture size in pixels */
-    uint pic_size;
-
-    /** All the booleans. */
-    Loaded blnloaded;
-
-    /** SDL Rectangles for the location of each of the tiles in tiles.png */
-    SDL_Rect clips[defined::kNumMapTiles];
-
-    /** Colors. */
-    clrs colors;
-
-    /** Message font. */
-    TTF_Font *MessageFont;
+    TEX textures; /**< All the textures. */
+    SDL_Window *win; /**< Pointer to the window in memory. */
+    SDL_Renderer *ren; /**< Pointer to the renderer in memory. */
+    uint width; /**< Screen width in pixels. */
+    uint height; /**< Screen height in pixels. */
+    uint pic_size; /**< Picture size in pixels */
+    Loaded blnloaded; /**< All the booleans. */
+    SDL_Rect clips[defined::kNumMapTiles]; /**< SDL Rectangles for the location of each of the tiles in tiles.png */
+    clrs colors; /**< Colors. */
+    TTF_Font *MessageFont; /**< Message font. */
 
     void loadTextures(void);
     void writemessage(void);

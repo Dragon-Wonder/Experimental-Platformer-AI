@@ -3,7 +3,7 @@
 /*****************************************************************************/
 #include <cstdio>
 /*****************************************************************************/
-#include "main.h"
+#include "globals.h"
 /*****************************************************************************/
 /** @enum stage
 * Enum for what stage the program is in.
@@ -15,7 +15,8 @@ enum stage {
 };
 
 /** @enum status
-* This is the status of the player. It is mostly used to record a player's death.
+* This is the status of the player. It is mostly used to record a player's
+* death.
 */
 enum status {
   statusLiving = 0,   /**< 0: Player is still alive. */
@@ -58,35 +59,16 @@ public:
   void getBest(void);
   void nextplayer(char);
 
-  /** The current step number of the player. */
-  uint uintStepNum;
-
-  /** The array which holds all of the past players. */
-  VectorGeneration genPastPlayers;
-
-  /** The array which holds all of the BEST players from a generation. */
-  VectorGeneration genBestPlayers;
-
-  /** The number of steps the current generation has. */
-  uint uintGenSteps;
-
-  /** The log file name. */
-  static constexpr char* FileName = defined::kLogFileName;
-
-  /** Pointer reference to the log file open in memory. */
-  FILE* logFile;
-
-  /** The current player. */
-  PLYR plyPlayer;
-
-  /** Vector array of monsters */
-  VectorMonsters mstMonsters;
-
-  /** The current generation number. */
-  uchar uchrGenNum;
-
-  /** The current player number for that generation. */
-  uchar uchrPlayerNum;
+  uint uintStepNum; /**< The current step number of the player. */
+  VectorGeneration genPastPlayers; /**< The array which holds all of the past players. */
+  VectorGeneration genBestPlayers; /**< The array which holds all of the BEST players from a generation. */
+  uint uintGenSteps; /**< The number of steps the current generation has. */
+  static constexpr char* FileName = defined::kLogFileName; /**< The log file name. */
+  FILE* logFile; /**< Pointer reference to the log file open in memory. */
+  PLYR plyPlayer; /**< The current player. */
+  VectorMonsters mstMonsters; /**< Vector array of monsters */
+  uchar uchrGenNum; /**< The current generation number. */
+  uchar uchrPlayerNum; /**< The current player number for that generation. */
 
   //Functions
   void killMonster(LOC);

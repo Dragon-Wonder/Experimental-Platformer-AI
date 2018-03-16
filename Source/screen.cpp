@@ -4,7 +4,6 @@
 #include "config.h"
 #include "entity.h"
 #include "tick.h"
-#include "globals.h"
 #include "image_error.xpm"
 /*****************************************************************************/
 /** \todo (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
@@ -27,12 +26,16 @@ clsScreen::clsScreen() {
 
   pic_size = defined::kPicSize;
 
-  if (global::cnfg.getvalues(cnfgShowMap) == 1) { //if not showing the map don't bother trying to load any of the images
-                                                  //useful so if show map is disabled you don't need the images folder.
+  if (global::cnfg.getvalues(cnfgShowMap) == 1) {
+    //if not showing the map don't bother trying to load any of the images
+    //useful so if show map is disabled you don't need the images folder.
     //Figure out screen size
 
-    width = (global::cnfg.getvalues(cnfgScreenWidth) == 0) ? 35 * pic_size : global::cnfg.getvalues(cnfgScreenWidth);
-    height = (global::cnfg.getvalues(cnfgScreenHeight) == 0) ? defined::kMapHeight * pic_size : global::cnfg.getvalues(cnfgScreenHeight);
+    width = (global::cnfg.getvalues(cnfgScreenWidth) == 0) ?
+        35 * pic_size : global::cnfg.getvalues(cnfgScreenWidth);
+    height = (global::cnfg.getvalues(cnfgScreenHeight) == 0) ?
+        defined::kMapHeight * pic_size :
+        global::cnfg.getvalues(cnfgScreenHeight);
 
     //Set all the booleans to false
     blnloaded.blnWindow = blnloaded.blnRenderer = false;
@@ -66,8 +69,12 @@ clsScreen::clsScreen() {
       if (global::blnDebugMode) { printf("IMG init successful\n"); }
     }
 
-    win = SDL_CreateWindow("Experimental Platformer AI",100, 100, width, height, SDL_WINDOW_SHOWN);
-    ren = (win == nullptr) ? nullptr : SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    win = SDL_CreateWindow("Experimental Platformer AI",100, 100,
+                           width, height, SDL_WINDOW_SHOWN);
+    ren = (win == nullptr) ? nullptr :
+        SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED |
+                           SDL_RENDERER_PRESENTVSYNC);
+
     if (ren == nullptr) {
       printf("SDL Failed to create renderer.\n");
       error();
@@ -85,8 +92,8 @@ clsScreen::clsScreen() {
       printf("Font failed to load, messages will not appear.");
       blnloaded.blnMessageFont = false;
     } else {
-     if(global::blnDebugMode) { printf("Message font created\n"); }
-     blnloaded.blnMessageFont = true;
+      if(global::blnDebugMode) { printf("Message font created\n"); }
+      blnloaded.blnMessageFont = true;
     }
 
     colors.Black = {0, 0, 0, 0}; //Make the color black for fonts
@@ -102,13 +109,11 @@ clsScreen::~clsScreen() {
   ///        clsScreen::cleanup to ensure everything is cleared from memory,
   ///        and then quit SDL.
   /////////////////////////////////////////////////
-  if (global::cnfg.getvalues(cnfgShowMap) == 1) { //if nothing was really loaded then don't need to clean anything up
-    cleanup();
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-    if (global::blnDebugMode) { printf("SDL quit\n"); }
-  } //end if show map
+  cleanup();
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
+  if (global::blnDebugMode) { printf("SDL quit\n"); }
 }
 /*****************************************************************************/
 void clsScreen::update(void) {
@@ -138,7 +143,8 @@ void clsScreen::update(void) {
       dst.y = (y * pic_size) - (offset.y);
 
       //Load the map.
-      switch( global::mymap.getMapCell(x,y) ) { //Use this to make sure we aren't try to load a non-existing part
+      switch( global::mymap.getMapCell(x,y) ) {
+      //Use this to make sure we aren't try to load a non-existing part
       case tileSpace:
       case tileCoin:
       case tilePole:
@@ -148,7 +154,8 @@ void clsScreen::update(void) {
       case tileBricksOrange:
       case tileBricksRed:
       case tileBricksSmall:
-        SDL_RenderCopy(ren, textures.maptiles, &clips[global::mymap.getMapCell(x,y)], &dst);
+        SDL_RenderCopy(ren, textures.maptiles,
+                       &clips[global::mymap.getMapCell(x,y)], &dst);
         break;
       default:
         //Don't know what this is so display an error texture.
@@ -253,7 +260,8 @@ void clsScreen::loadTextures() {
 
   //Load the error texture first.
   SDL_Surface* temp = IMG_ReadXPMFromArray(image_error_xpm);
-  textures.errortex = (temp == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren,temp);
+  textures.errortex = (temp == nullptr) ?
+      nullptr : SDL_CreateTextureFromSurface(ren,temp);
 	if (textures.errortex == nullptr) {
     printf("Failed to create texture.\n");
     error();
@@ -264,16 +272,15 @@ void clsScreen::loadTextures() {
 
     //Now load the tiles
   temp = IMG_Load(path.c_str());
-	textures.maptiles = (temp == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren,temp);
+	textures.maptiles = (temp == nullptr) ?
+      nullptr : SDL_CreateTextureFromSurface(ren,temp);
 	SDL_FreeSurface(temp);
 	if (textures.maptiles == nullptr) {
     //Cannot make texture; replace the clips to be all 0,0
     //and set it to use the error texture instead.
     printf("Tiles could not be converted to texture.\n");
     textures.maptiles = textures.errortex;
-    for (uchar i = 0; i < defined::kNumMapTiles; ++i) {
-      clips[i] = {0,0};
-    }
+    for (uchar i = 0; i < defined::kNumMapTiles; ++i) { clips[i] = {0,0}; }
     blnloaded.blnMapTiles = true;
     return;
 	} else {
@@ -295,7 +302,7 @@ void clsScreen::playerDeath(void) {
   /** \todo (GamerMan7799#1#): Add tileDeadPlayer with its own image to better tell when the death animation is happening */
 	BPLYR tempPlayer;
 	tempPlayer = global::enty.getPlayerBase();
-	//show();
+
 	for (uchar i = 0; i < defined::kGoalFPS; ++i) { global::tick.wait(); } //wait for a second.
 	for (uchar i = 0; i < 60; ++i) {
 		if (i < 30) { tempPlayer.vel.y = -1.5 * global::physics::fMaxVelocity; }
@@ -328,14 +335,18 @@ void clsScreen::writemessage(void) {
     std::string message;
     sprintf(strClock, "%8u", global::tick.getClockTime());
 
-    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont, strClock, colors.Black);
-    textures.texmessage = (surmessage == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
+    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont,
+                                                   strClock, colors.Black);
+    textures.texmessage = (surmessage == nullptr) ?
+        nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
     if (textures.texmessage == nullptr) {
       printf("Failed to convert message surface to texture.\n");
       error();
       return;
     } else {
-      if (global::blnDebugMode) { printf("Surface texture successfully created\n"); }
+      if (global::blnDebugMode) {
+          printf("Surface texture successfully created\n");
+      }
       blnloaded.blnMessage = true;
     }
 
@@ -371,17 +382,21 @@ void clsScreen::writemessage(void) {
       strFitness[6] = '\0'; //Make sure that the char is null terminated or the program crashes.
       message += std::string(strFitness);
     }
-    if (global::blnDebugMode) {printf("Status message made.\n");}
+    if (global::blnDebugMode) { printf("Status message made.\n"); }
 
-    surmessage = TTF_RenderText_Solid(MessageFont, message.c_str(),colors.Black);
-    textures.texmessage = (surmessage == nullptr) ? nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
+    surmessage = TTF_RenderText_Solid(MessageFont, message.c_str(),
+                                      colors.Black);
+    textures.texmessage = (surmessage == nullptr) ?
+        nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
     if (textures.texmessage == nullptr) {
       printf("Failed to convert message surface to texture.\n");
       blnloaded.blnMessage = false;
       error();
       return;
     } else {
-      if (global::blnDebugMode) {printf("Surface texture successfully created\n");}
+      if (global::blnDebugMode) {
+          printf("Surface texture successfully created\n");
+      }
       blnloaded.blnMessage = true;
     }
 

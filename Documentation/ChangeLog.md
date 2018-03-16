@@ -3,9 +3,30 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [5.0.1] - 2017-02-21
+## [5.1.1] - 2017-02-22
 ### Updated
-* Changed default away from human build
+* Version numbers leftover from working version
+
+
+## [5.1.0] - 2017-02-22
+### Added
+* Human player mode can be set in config.
+* Program can now properly be stopped before its done running (the x on the screen).
+
+### Updated
+* General code clean up.
+* Gravity constant to be based on pic size
+* Moved most of the code in main function to a class called core.
+
+### Fixed
+* Changed location from being unsigned to signed (which may have resulted in bugs I didn't notice).
+* Some of the vectors' memory not being cleared, causing run away memeory usage.
+
+
+## [5.0.1] - 2017-02-21
+### Fixed
+* Previous version having player build mode as true
+
 
 ## [5.0.0] - 2017-02-21
 ### Added
@@ -23,6 +44,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 ### Fixed
 * Bug with play sometimes not collecting a coin
 * Bug with gravity not being applied correctly
+
 
 ## UNRELEASED [4.2.0] - 2015-09-22
 ### Added

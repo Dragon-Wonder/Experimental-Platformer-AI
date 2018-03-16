@@ -3,9 +3,8 @@
 /*****************************************************************************/
 #include <cstdio>
 #include <math.h>
-//#include <new>
 /*****************************************************************************/
-#include "main.h"
+#include "globals.h"
 /*****************************************************************************/
 /** @image html tiles.png "Tile picture that is used" */
 /*****************************************************************************/
@@ -46,34 +45,27 @@ typedef struct stcBox BOX;
 
 class clsMap {
   public:
-  clsMap();
-  ~clsMap();
+    clsMap();
+    ~clsMap();
 
-  /** The number of monsters. */
-  uchar numMonsters;
+    uchar numMonsters; /**< The number of monsters. */
+    uchar basemap[defined::kMapHeight][defined::kMapWidth]; /**< This is the base map, the map is returned to this whenever clsMap::restart is called */
+    uchar map[defined::kMapHeight][defined::kMapWidth]; /**< The CURRENT map. */
+    BPLYR bplyBasePlayer; /**< The base player, which just holds the x and y values where they start. */
+    VectorMonsters mstBaseMonsters; /**< The monsters on the map while restarting (see clsMap::load if this is confusing). */
 
-  /** This is the base map, the map is returned to this whenever clsMap::restart is called */
-  uchar basemap[defined::kMapHeight][defined::kMapWidth];
+    //Functions
+    char move(uchar);
+    void load(void);
+    void restart(void);
+    uchar getMapCell(uint,uint);
+    void setMapCell(uint,uint,uchar);
+    BPLYR getbasePlayer(void);
+    bool checkOverlap(BOX,BOX);
 
-  /** The CURRENT map. */
-  uchar map[defined::kMapHeight][defined::kMapWidth];
-
-  /** The base player, which just holds the x and y values where they start. */
-  BPLYR bplyBasePlayer;
-
-  /** The monsters on the map while restarting (see clsMap::load if this is confusing). */
-  VectorMonsters mstBaseMonsters;
-
-  //Functions
-  char move(uchar);
-  void load(void);
-  void restart(void);
-  uchar getMapCell(uint,uint);
-  void setMapCell(uint,uint,uchar);
-  BPLYR getbasePlayer(void);
-  char checkCollision(LOC, uchar);
-  bool checkOverlap(BOX,BOX);
-  bool inKillPlane(LOC);
+  private:
+    char checkCollision(LOC, uchar);
+    bool inKillPlane(LOC);
 };
 /*****************************************************************************/
 #endif

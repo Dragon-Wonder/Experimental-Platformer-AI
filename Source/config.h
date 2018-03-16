@@ -3,7 +3,7 @@
 /*****************************************************************************/
 #include <cstdio>
 /*****************************************************************************/
-#include "main.h"
+#include "globals.h"
 /*****************************************************************************/
 /** @struct ConfigValues
     This Structure holds all of the different config values together. */
@@ -14,11 +14,13 @@ struct ConfigValues {
 	bool blnAppendTime;         /**< If time is added to the seed. */
 	bool blnHardMode;           /**< If hard mode is on. Hard mode basically
                                      makes the players die a lot more. */
+  bool blnHumanBuild;         /**< If a human player is using the game instead of
+                                    an ai. */
 	uint uintFirstGen;          /**< How many inputs the first generation has. */
 	uint uintGenIncrease;       /**< How many inputs that each generation increases by
-                                     until the limit of DEFINED_MAX_PLAYER_STEPS. */
+                                     until the limit of defined::kMaxPlayerSteps. */
 	uint uintGensPastGrowth;    /**< How many generations take place with
-                                     DEFINED_MAX_PLAYER_STEPS. */
+                                     defined::kMaxPlayerSteps. */
 	uint uintMutationChance;    /**< Percent chance that when using directions from
                                      a previous player, the direction will be replace
                                      with a random one. */
@@ -48,7 +50,8 @@ enum configValueSpot {
 	cnfgScreenHeight,   /**< 10: Spot for screen height value. */
 	cnfgMaxSteps,       /**< 11: Spot for max steps. */
 	cnfgPlayerGen,      /**< 12: Spot for players per generation. */
-	cnfgPlayerBreed     /**< 13: Spot for players to breed. */
+	cnfgPlayerBreed,    /**< 13: Spot for players to breed. */
+	cnfgHumanBuild      /**< 14: Spot for if human build instead of ai. */
 };
 
 typedef struct ConfigValues Configures;
@@ -63,23 +66,19 @@ class clsConfig {
 	public:
     clsConfig();
 
-    /** The config file name. */
-		static constexpr char* FileName = defined::kConfigFileName;
+		static constexpr char* FileName = defined::kConfigFileName; /**< The config file name. */
+		FILE* configFile; /**< Pointer to the config file open in memory. */
+		Configures values; /**< All the config values together. */
 
-		/** Pointer to the config file open in memory. */
-		FILE* configFile;
+    Configures getvalues(void); //Get all values
+		uint getvalues(uchar); //Get just one value (use enum above to define which one).
+		void Check(void);
 
-		/** All the config values together. */
-		Configures values;
-
-		//Functions
+  private:
 		char verisonCheck(const char *ConfigVerison);
 		bool exists(void);
 		void make(void);
 		void load(void);
-		void Check(void);
-		Configures getvalues(void); //Get all values
-		uint getvalues(uchar); //Get just one value (use enum above to define which one).
 };
 /*****************************************************************************/
 #endif
