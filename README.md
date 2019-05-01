@@ -1,6 +1,6 @@
 # Experimental Platformer AI
 
-(Check out the gh-pages of this project by going (here)[http://dragon-wonder.github.io/Experimental-Platformer-AI/] )
+(Check out the gh-pages of this project by going [here](http://dragon-wonder.github.io/Experimental-Platformer-AI/) )
 
 ## Introduction
 
