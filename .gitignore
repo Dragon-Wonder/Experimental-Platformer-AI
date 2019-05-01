@@ -72,3 +72,15 @@
 /OtherLibraries/*
 
 /gh-pages/
+
+# VS crap
+.vs/
+.vs/*
+*.user
+*.creator
+/project/Debug/
+/project/Debug/*
+/project/Release/
+/project/Release/*
+*.sln
+

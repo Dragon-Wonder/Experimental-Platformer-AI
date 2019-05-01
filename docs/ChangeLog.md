@@ -3,6 +3,17 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [6.0.0-alpha.1] - 2019-05-01
+### Added
+* Menu System, merged from [Attacker-the-game](https://github.com/Dragon-Wonder/Attacker-The-Game).
+* Map Editor. This code is being merged from the previously separate project called [Platformer-Map-Editor](https://github.com/Dragon-Wonder/Platformer-Map-Editor)
+### Updated
+* Renamed folders and added more structure to src folder
+* Moving from CodeBlocks to Visual studio
+### Notes
+* Since the editor that was designed for this program is now being merged into it, there are going to be a lot of tweaks before it can compile again. 
+
+
 ## [5.1.1] - 2017-02-22
 ### Updated
 * Version numbers leftover from working version
@@ -20,7 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Fixed
 * Changed location from being unsigned to signed (which may have resulted in bugs I didn't notice).
-* Some of the vectors' memory not being cleared, causing run away memeory usage.
+* Some of the vectors' memory not being cleared, causing run away memory usage.
 
 
 ## [5.0.1] - 2017-02-21
@@ -30,14 +41,14 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ## [5.0.0] - 2017-02-21
 ### Added
-* Expanded config file. You can now modifiy max number of steps, number of players each generation and number of best players taken each generation.
+* Expanded config file. You can now modify max number of steps, number of players each generation and number of best players taken each generation.
 
 ### Changed
 * Base monsters array is now a vector.
-* Various changes to improve code readiability and performance.
+* Various changes to improve code readability and performance.
 * Defines changed to constexpr.
 * Lots of code clean up.
-* Removed some unneeded debug messsages.
+* Removed some unneeded debug messages.
 * Generations are now vector based.
 * Steps are now vector based.
 
@@ -60,7 +71,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Map tiles now referenced in hexadecimal
 
 ### Notes
-* This version was never fully released on its own because I stopped working on it before it was ready for release. 
+* This version was never fully released on its own because I stopped working on it before it was ready for release.
   When I came back to it, there were too many things I wanted to changed for me to consider it under the same version number, so I just named those updates as v5.0.0
 
 
@@ -71,19 +82,19 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Changed
 * Clock now runs off of seconds instead of ticks
-* Screen Loaded Boolens now grouped together
+* Screen Loaded Booleans now grouped together
 * Colors now grouped together
 * Textures now grouped together
 * All map tile are now a single image with clipping
 
 ### Fixed
-* Issue with -s, -Os, or -O3 enabled during complie
+* Issue with -s, -Os, or -O3 enabled during compile
 
 
 ## [4.1.2] - 2015-09-04
 ### Fixed
 * VSnyc bug
-* Screen being jumpy as the player moves (screen is locked on the first 35 spaces until 
+* Screen being jumpy as the player moves (screen is locked on the first 35 spaces until
 	player goes to the 36th spot then it will be locked on the next 35 spaces, and so on.)
 * Font loading issue on Cygwin
 
@@ -101,7 +112,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * A bug with screen height being linked to player height causing screen to be a bit strange.
 
 ### Note
-* In this release I accidently left DEFINED_VER_STATUS as "Alpha" which means that the config file will always be replaced. 
+* In this release I accidentally left DEFINED_VER_STATUS as "Alpha" which means that the config file will always be replaced.
 
 
 ## [4.1.0] - 2015-09-03
@@ -120,7 +131,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Default Show Map from false to true
 * Makefile with changes.
 * Config Version check now also checks software status.
-* Player Death anaimation will now show when player runs out of inputs
+* Player Death animation will now show when player runs out of inputs
 * Player death is now logged.
 * Player can now die from too low fitness in hard mode.
 * Tick wait is decreased the longer the rest of the program runs for
@@ -315,4 +326,3 @@ restarting the map before I recorded the fitness -_-
 
 ### Notes
 * Original
-

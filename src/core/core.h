@@ -1,13 +1,15 @@
 #ifndef __CORE_HEADER__
 #define __CORE_HEADER__
 /*****************************************************************************/
-#include "version.h"
+#include "../version.h"
 #include "config.h"
 #include "tick.h"
-#include "map.h"
-#include "entity.h"
-#include "globals.h"
-#include "screen.h"
+#include "../game/map.h"
+#include "../game/entity.h"
+#include "../globals.h"
+#include "../ui/screen.h"
+#include "../ui/menu.h"
+#include "../editor/editor.h"
 /*****************************************************************************/
 class clsCore {
   public:
@@ -18,16 +20,20 @@ class clsCore {
 
   private:
     SDL_Thread *exit_thread; /**< Pointer to the thread in memory. */
-    clsScreen Screen;
+    clsScreen m_screen;
+    clsMenu m_menu;
+    clsEditor m_editor;
 
     static int exit_check(void *);
+
+    void doGame(void);
     void doFirstGeneration(void);
     void doGrowthGeneration(void);
     void doSteadyGernation(void);
 };
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class Core core.h "src/core.h"
+/// @class Core core.h "src/core/core.h"
 /// @brief This class holds the core of the program. Almost all of the code
 ///        is run through this class instead of run in main.cpp.
 /////////////////////////////////////////////////

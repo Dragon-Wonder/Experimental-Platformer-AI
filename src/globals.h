@@ -1,18 +1,50 @@
-#ifndef __MAIN__HEADER__
-#define __MAIN__HEADER__
+#ifndef __GLOBAL__HEADER__
+#define __GLOBAL__HEADER__
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @file Main.h
-/// @brief This is the main header, and defines many values, and structures that
-///        are used a lot of other places in the code. This header keeps them all
-///        centrally referenced.
+/// @file globals.h
+/// @brief This file holds all of the references to variables declared in the
+///        Global namespace. See Main.cpp for more details
 /////////////////////////////////////////////////
 /*****************************************************************************/
 #include <vector>
 /*****************************************************************************/
+//Make some prototype classes
+class clsConfig;
+class clsEntity;
+class clsMap;
+class clsTick;
+/*****************************************************************************/
+//Globals
+namespace global {
+	extern const bool blnDebugMode; // Holds if in debug mode or not.
+                                  // Causes more messages to appear.
+	extern bool blnError; // if there was an error
+	extern bool blnQuit;  // if a quit has been called
+
+	// Call all of the classes as globals so they are the same everywhere.
+	// Likely really bad way to handle this, but I'll fix it later
+	extern clsConfig cnfg;
+	extern clsEntity enty;
+	extern clsMap mymap;
+	extern clsTick tick;
+	namespace physics { // Constants that are gonna be used for
+                      // physics in later versions
+    extern const float fGravityAcceleration;
+    extern const float fFriction;
+    extern const float fMaxVelocity;
+    extern const float fMonsMaxVelocity;
+    extern const float fIncVelocity; // How much velocity increments
+                                     // by for an input
+    extern const float fRecoil; //Recoil for when hitting an object
+	};
+};
+
+/*****************************************************************************/
 /////////////////////////////////////////////////
 /// @defgroup ChangeableDefines Easily Changeable Defines
-/// @brief These are defines that can be changed easily and without much issues.
+/// @brief These are defines that can change key aspects of the program, but
+///        shouldn't need to be changed often.
 /// @{
 /////////////////////////////////////////////////
 
@@ -43,9 +75,6 @@ namespace defined {
       /**< This defines the Map width, unless a map you are trying to load is more than
         this it should be kept at 217 */
 }
-/** Setting this to 1 will switch the program from being AI based to being Human based.
-    It is useful to debugging. */
-#define DEFINED_BUILD_HUMAN 0
 /// @}
 /*****************************************************************************/
 typedef std::vector<char> VectorSteps;
@@ -55,8 +84,8 @@ typedef std::vector<char> VectorSteps;
     Holds the location of the Monster / Player in terms of pixels.
     It is its own structure so that I can pass these values together through functions */
 struct stcLoc {
-	unsigned int x; /**< X direction value. */
-	unsigned int y; /**< Y direction value. */
+	int x; /**< X direction value. */
+	int y; /**< Y direction value. */
 }; //prefix = loc
 
 /** @struct stcVel
@@ -92,7 +121,7 @@ struct stcPlayer {
     when passing these values through functions so that it is easier */
 struct stcBasePlayer {
 	struct stcLoc location; /**< Location. */
-	struct stcVel vel; /** Velocity. */
+	struct stcVel vel; /**< Velocity. */
 }; //prefix = bply
 
 /** @struct stcMonster
@@ -116,6 +145,17 @@ enum dir {
 	dirRight, /**< Moving to the right. */
 	dirDown /**< Crouching / dropping to the ground if in air. */
 };
+
+/** Holds the different menu selections. */
+enum enumMenu {
+  menuQuit = 0,
+  menuNew,
+  menuEditor,
+  menuAbout,
+  menuOptions,
+  menuError
+};
+
 
 typedef struct stcGeneration GEN; /**< Change structure typedef for easier reference. */
 typedef struct stcPlayer PLYR; /**< Change structure typedef for easier reference. */

@@ -1,6 +1,6 @@
 /*****************************************************************************/
 #include "config.h"
-#include "version.h"
+#include "../version.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @file config.cpp
@@ -126,18 +126,18 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 
 
   if ( P_SoftwareStatus[0] != C_SoftwareStatus[0]) {
-    if (global::blnDebugMode) {printf("Software Status outdated.\n");}
+    if (global::blnDebugMode) { printf("Software Status outdated.\n"); }
     return 'N';
   }
 
   if (DEFINED_VER_MAJOR != C_MajorNum) {
-    if (global::blnDebugMode) {printf("Major number outdated.\n");}
+    if (global::blnDebugMode) { printf("Major number outdated.\n"); }
     return 'N';
   } else if (DEFINED_VER_MINOR != C_MinorNum) {
-    if (global::blnDebugMode) {printf("Minor number outdated.\n");}
+    if (global::blnDebugMode) { printf("Minor number outdated.\n"); }
     return 'P';
   } else {
-    if (global::blnDebugMode) {printf("Nothing outdated.\n");}
+    if (global::blnDebugMode) { printf("Nothing outdated.\n"); }
     return 'U';
   }
   return 'U';
@@ -327,6 +327,7 @@ void clsConfig::Check(void) {
 			make();
 		}
 		else if (chrConfigVerison == 'P') {
+      /// @todo(GamerMan7799#1#) Convert these promts to use the new menu system
 			printf("\nThe config file you are using has a different Minor Version than the program.\n");
 			printf("The config file should in theory still work with this version but I can't say for sure.\n");
 			printf("Would you like to replace the config file with a new one?\n");

@@ -4,8 +4,8 @@
 /*****************************************************************************/
 #include "map.h"
 #include "entity.h"
-#include "config.h"
-#include "tick.h"
+#include "../core/config.h"
+#include "../core/tick.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @file map.cpp
@@ -47,7 +47,7 @@ void clsMap::restart(void) {
 	if (global::blnDebugMode) { printf("Base map put into map.\n"); }
 
 	global::tick.resetClock();
-	if (global::blnDebugMode) {printf("Clock reset.\n");}
+	if (global::blnDebugMode) { printf("Clock reset.\n"); }
 
   for (uchar i = 0; i < numMonsters; ++i) {
     global::enty.setMonster(i,mstBaseMonsters[i]);

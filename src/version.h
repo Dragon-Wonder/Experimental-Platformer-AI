@@ -16,35 +16,35 @@
 /*****************************************************************************/
 //Date Version Types
 /** The day of the last build of the program, currently not used. */
-#define DEFINED_VER_DATE "22"
+#define DEFINED_VER_DATE "01"
 
 /** The month of the last build of the program, currently not used. */
-#define DEFINED_VER_MONTH "02"
+#define DEFINED_VER_MONTH "05"
 
 /** The year of the last build of the program, currently not used. */
-#define DEFINED_VER_YEAR "2017"
+#define DEFINED_VER_YEAR "2019"
 
 /** The Ubuntu style of the date of the last build. It is in YY.MM format. */
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "17.02"
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "19.05"
 /*****************************************************************************/
 /** The Major number of the version number */
-#define DEFINED_VER_MAJOR  5
+#define DEFINED_VER_MAJOR  6
 
 /** The Minor number of the version number */
-#define DEFINED_VER_MINOR  1
+#define DEFINED_VER_MINOR  0
 
 /** The Patch number of the version number */
-#define DEFINED_VER_PATCH  1
+#define DEFINED_VER_PATCH  0
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 5,1,1,0
+#define DEFINED_VER_RC_FILEVERSION 6,0,0,0
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "5, 1, 1, 0\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "6, 0, 0, 0\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "5.1.1-r\0"
+#define DEFINED_VER_FULLVERSION_STRING  "6.0.0-alpha.1\0"
 
 //Software Status
 /**
@@ -56,10 +56,10 @@ Software Status can be the following:
 | Beta | b | This version will compile and / or run but does not work as expected (or crashes often). |
 | Alpha | a | This version does not work at all; it usually won't compile at all or crashes more times than it works; best not to use versions in this state. |
 */
-#define DEFINED_VER_STATUS 	"Release"
+#define DEFINED_VER_STATUS 	"Alpha"
 
 /** See the table for DEFINED_VER_STATUS */
-#define DEFINED_VER_STATUS_SHORT  "r"
+#define DEFINED_VER_STATUS_SHORT  "a"
 /// @}
 /*****************************************************************************/
 #endif //__VERSION_HEADER__

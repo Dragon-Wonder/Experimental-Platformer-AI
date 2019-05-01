@@ -4,10 +4,10 @@
 #include <time.h>
 #include <math.h>
 /*****************************************************************************/
-#include "globals.h"
+#include "../globals.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class clsTick tick.h "source/tick.h"
+/// @class clsTick tick.h "src/core/tick.h"
 /// @brief This class will hold all of the values and functions related to
 ///        time.
 /////////////////////////////////////////////////

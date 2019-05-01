@@ -19,7 +19,7 @@ int clsCore::start() {
   Configures CnfgValues;
   CnfgValues = global::cnfg.getvalues();
 
-  if (!CnfgValues.blnShowMap) { Screen.~clsScreen(); }
+  if (!CnfgValues.blnShowMap) { m_screen.~clsm_screen(); }
   else {
     exit_thread = SDL_CreateThread(exit_check, "exit_checker", (void *)NULL);
     if (exit_thread == NULL) {
@@ -30,75 +30,49 @@ int clsCore::start() {
     }
   }
 
-  if (global::blnError) {printf("\nThere was an error!\n"); return 1;}
-
-  srand(CnfgValues.uintSeed + ( CnfgValues.blnAppendTime ? time(NULL) : 0 ) );
-  global::mymap.load();
-  if (global::blnDebugMode) { printf("Map loaded\n"); }
   if (global::blnError) { printf("\nThere was an error!\n"); return 1; }
-  global::mymap.restart();
-  if (global::blnDebugMode) { printf("Map Restarted\n"); }
-  if (global::blnError) { printf("\nThere was an error!\n"); return 1; }
+  char menuselection
+  while (!global::blnQuit) {
+    menuselection = m_menu.MainMenu();
+    switch(menuselection) {
+      case menuAbout:
+        m_menu.AboutMenu();
+        if (global::blnDebugMode) { printf("About shown.\n"); }
+        break;
+      case menuNew:
+        if (global::blnDebugMode) { printf("New game.\n"); }
 
-  if (!CnfgValues.blnHumanBuild) {
-
-    if (!global::blnQuit) {
-      doFirstGeneration();
-      doGrowthGeneration();
-      doSteadyGernation();
-    } // end if quit
-
-    if (global::blnDebugMode) { printf("Generations finished.\n"); }
-  } else {
-    //This is the human side of the game,
-    SDL_Event event;
-    char direction;
-    char playerStatus;
-
-    do {
-      Screen.update();
-      global::enty.getFitness();
-      if (SDL_PollEvent( &event )) {
-        if (event.type == SDL_QUIT) {global::blnQuit = true;}
-        else if (event.type == SDL_KEYDOWN) {
-          //Key has been pressed figure out what to do
-          switch (event.key.keysym.sym) {
-          case SDLK_UP:
-          case SDLK_w:
-            direction = dirUp;
-            break;
-          case SDLK_DOWN:
-          case SDLK_s:
-            direction = dirDown;
-            break;
-          case SDLK_RIGHT:
-          case SDLK_d:
-            direction = dirRight;
-            break;
-          case SDLK_LEFT:
-          case SDLK_a:
-            direction = dirLeft;
-            break;
-          case SDLK_q:
-          case SDLK_ESCAPE:
-            global::blnQuit = true;
-            break;
-          case SDLK_r:
-            global::mymap.restart();
-            break;
-          } //end switch
-        } else if (event.type == SDL_KEYUP) {
-          direction = dirNone;
-        } //end if event
-      } //end if event
-      playerStatus = global::mymap.move(direction);
-      if (playerStatus != statusLiving) {
-        Screen.playerDeath();
+        srand(CnfgValues.uintSeed + ( CnfgValues.blnAppendTime ? time(NULL) : 0 ) );
+        global::mymap.load();
+        if (global::blnDebugMode) { printf("Map loaded\n"); }
+        if (global::blnError) { printf("\nThere was an error!\n"); return 1; }
         global::mymap.restart();
-      }
-    } while (!global::blnQuit);
-  } // end if human build
-  Screen.~clsScreen();
+        if (global::blnDebugMode) { printf("Map Restarted\n"); }
+        if (global::blnError) { printf("\nThere was an error!\n"); return 1; }
+
+        doGame();
+
+        break;
+      case menuOptions:
+        m_menu.OptionsMenu();
+        if (global::blnDebugMode) { printf("Options shown.\n"); }
+        break;
+      case menuEditor:
+        m_editor.start(&m_screen);
+        if (global::blnDebugMode) { printf("Editor run.\n"); }
+        break;
+      case menuError:
+        if (global::blnDebugMode) { printf("Menu Error returned.\n"); }
+      default:
+        printf("ERROR!!! Now closing everything!\n");
+        m_screen.showErrors();
+      case menuQuit:
+        global::blnQuit = true;
+        break;
+    } // end switch
+  }; // end loop
+
+  m_screen.~clsm_screen();
 	printf("\nDone\n");
 }
 /*****************************************************************************/
@@ -151,12 +125,12 @@ void clsCore::doFirstGeneration() {
       chrPlayerStatus = global::enty.doPlayerStep(step, stageFirst);
       if (global::blnQuit) { return; }
       if (chrPlayerStatus != statusLiving) {
-        if (CnfgValues.blnShowMap) { Screen.playerDeath(); }
+        if (CnfgValues.blnShowMap) { m_screen.playerDeath(); }
         step = CnfgValues.uintMaxPlayerSteps; //Forces for loop to stop
         global::mymap.restart();
-      } else { if (CnfgValues.blnShowMap) { Screen.update(); } }
+      } else { if (CnfgValues.blnShowMap) { m_screen.update(); } }
     } //End for steps
-    if (CnfgValues.blnShowMap) { Screen.update(); }
+    if (CnfgValues.blnShowMap) { m_screen.update(); }
   }//end for first gen
   global::enty.doNextGeneration(stageFirst);
 }
@@ -177,12 +151,12 @@ void clsCore::doGrowthGeneration() {
         chrPlayerStatus = global::enty.doPlayerStep(step, stageGrowth);
         if (global::blnQuit) { return; }
         if (chrPlayerStatus != statusLiving) {
-          if (CnfgValues.blnShowMap) { Screen.playerDeath(); }
+          if (CnfgValues.blnShowMap) { m_screen.playerDeath(); }
           step = CnfgValues.uintMaxPlayerSteps; //Forces for loop to stop
           global::mymap.restart();
-        } else { if (CnfgValues.blnShowMap) { Screen.update(); } }
+        } else { if (CnfgValues.blnShowMap) { m_screen.update(); } }
       }//end for steps
-      if (CnfgValues.blnShowMap) { Screen.update(); }
+      if (CnfgValues.blnShowMap) { m_screen.update(); }
     } //end for players
     global::enty.doNextGeneration(stageGrowth);
   }//end while loop
@@ -202,14 +176,78 @@ void clsCore::doSteadyGernation() {
         chrPlayerStatus = global::enty.doPlayerStep(step, stageSteady);
         if (global::blnQuit) { return; }
         if (chrPlayerStatus != statusLiving) {
-          if (CnfgValues.blnShowMap) { Screen.playerDeath(); }
+          if (CnfgValues.blnShowMap) { m_screen.playerDeath(); }
           step = CnfgValues.uintMaxPlayerSteps; //Forces for loop to stop
           global::mymap.restart();
-        } else { if (CnfgValues.blnShowMap) { Screen.update(); } }
+        } else { if (CnfgValues.blnShowMap) { m_screen.update(); } }
       }//end for steps
-      if (CnfgValues.blnShowMap) { Screen.update(); }
+      if (CnfgValues.blnShowMap) { m_screen.update(); }
     } //end for players
     global::enty.doNextGeneration(stageSteady);
   }//end for gens loop
+}
+/*****************************************************************************/
+void clsCore::doGame() {
+  //Put all of the config values into CnfgValues for easier reference
+  Configures CnfgValues;
+  CnfgValues = global::cnfg.getvalues();
+  if (!CnfgValues.blnHumanBuild) {
+
+    if (!global::blnQuit) {
+      doFirstGeneration();
+      doGrowthGeneration();
+      doSteadyGernation();
+    } // end if quit
+
+    if (global::blnDebugMode) { printf("Generations finished.\n"); }
+  } else {
+    //This is the human side of the game,
+    SDL_Event event;
+    char direction;
+    char playerStatus;
+
+    do {
+      m_screen.update();
+      global::enty.getFitness();
+      if (SDL_PollEvent( &event )) {
+        if (event.type == SDL_QUIT) {global::blnQuit = true;}
+        else if (event.type == SDL_KEYDOWN) {
+          //Key has been pressed figure out what to do
+          switch (event.key.keysym.sym) {
+          case SDLK_UP:
+          case SDLK_w:
+            direction = dirUp;
+            break;
+          case SDLK_DOWN:
+          case SDLK_s:
+            direction = dirDown;
+            break;
+          case SDLK_RIGHT:
+          case SDLK_d:
+            direction = dirRight;
+            break;
+          case SDLK_LEFT:
+          case SDLK_a:
+            direction = dirLeft;
+            break;
+          case SDLK_q:
+          case SDLK_ESCAPE:
+            global::blnQuit = true;
+            break;
+          case SDLK_r:
+            global::mymap.restart();
+            break;
+          } //end switch
+        } else if (event.type == SDL_KEYUP) {
+          direction = dirNone;
+        } //end if event
+      } //end if event
+      playerStatus = global::mymap.move(direction);
+      if (playerStatus != statusLiving) {
+        m_screen.playerDeath();
+        global::mymap.restart();
+      }
+    } while (!global::blnQuit);
+  } // end if human build
 }
 /*****************************************************************************/

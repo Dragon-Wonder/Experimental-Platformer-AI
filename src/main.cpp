@@ -4,12 +4,12 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    5.1.0-beta.1
-/// @date       2017
+/// @version    6.0.0-alpha.1
+/// @date       2015-2019
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
 /*****************************************************************************/
-#include "core.h"
+#include "core/core.h"
 #include "globals.h"
 /*****************************************************************************/
 /** This is the namespace that is meant to hold things that need to be
@@ -82,4 +82,3 @@ int main(int argc, char *argv[]) {
 	return core.start();
 } //end main
 /*****************************************************************************/
-

@@ -1,9 +1,9 @@
 /*****************************************************************************/
 #include "screen.h"
-#include "map.h"
-#include "config.h"
-#include "entity.h"
-#include "tick.h"
+#include "../game/map.h"
+#include "../core/config.h"
+#include "../game/entity.h"
+#include "../core/tick.h"
 #include "image_error.xpm"
 /*****************************************************************************/
 /** \todo (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
