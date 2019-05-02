@@ -19,7 +19,8 @@ int clsCore::start() {
   Configures CnfgValues;
   CnfgValues = global::cnfg.getvalues();
 
-  if (!CnfgValues.blnShowMap) { m_screen.~clsm_screen(); }
+  m_screen.start();
+  if (!CnfgValues.blnShowMap) { m_screen.~clsScreen(); }
   else {
     exit_thread = SDL_CreateThread(exit_check, "exit_checker", (void *)NULL);
     if (exit_thread == NULL) {
@@ -58,7 +59,8 @@ int clsCore::start() {
         if (global::blnDebugMode) { printf("Options shown.\n"); }
         break;
       case menuEditor:
-        m_editor.start(&m_screen);
+        global::mymap.load();
+        m_editor.start();
         if (global::blnDebugMode) { printf("Editor run.\n"); }
         break;
       case menuError:

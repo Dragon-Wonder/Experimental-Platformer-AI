@@ -50,34 +50,39 @@ namespace global {
 
 namespace defined {
   constexpr unsigned char kGoalFPS = 30;
-      /**< What the target FPS is for the program, only effects things when show map is true
-      See tick.cpp for what it does */
+    /**< What the target FPS is for the program, only effects things when show map is true
+    See tick.cpp for what it does */
   constexpr unsigned char kMaxJumpCount = 2;
-      /**< The max number of times a player can jump before hitting the ground again. */
+    /**< The max number of times a player can jump before hitting the ground again. */
   constexpr unsigned int kCoinWorth = 100;
-      /**< The points the player gets for collecting a coin. */
+    /**< The points the player gets for collecting a coin. */
   constexpr unsigned int kMonsterKillWorth = 500;
-      /**< The points the player gets for killing a monster. */
+    /**< The points the player gets for killing a monster. */
   constexpr unsigned int kTickLimit = 300;
-      /**< How many seconds to complete the level, before player is killed */
+    /**< How many seconds to complete the level, before player is killed */
   constexpr unsigned char kNumMapTiles = 11;
-      /**< How many different map tiles there are (used to make the array for clipping). */
+    /**< How many different map tiles there are (used to make the array for clipping). */
   constexpr unsigned char kPicSize = 24;
-      /**< Size of each tile in pixels. */
+    /**< Size of each tile in pixels. */
   constexpr char* kConfigFileName = "Config.ini";
-      /**< The name of the config file that will be made / read from. */
-  constexpr char* kLogFileName = "Player.log";
-      /**< The name of the log file that will have player actions written to. */
+    /**< The name of the config file that will be made / read from. */
+  constexpr char* kLogFileName = "player.log";
+    /**< The name of the log file that will have player actions written to. */
   constexpr unsigned char kMapHeight = 14;
-      /**< This defines the Map height, unless a map you are trying to load is more than
-            this it should be kept at 14 */
+    /**< This defines the Map height, unless a map you are trying to load is more than
+          this it should be kept at 14 */
   constexpr unsigned char kMapWidth = 217;
-      /**< This defines the Map width, unless a map you are trying to load is more than
-        this it should be kept at 217 */
+    /**< This defines the Map width, unless a map you are trying to load is more than
+      this it should be kept at 217 */
+  constexpr unsigned char kNumTools = 4;
+    /**< Number of tools in image_toos.xpm */
 }
 /// @}
 /*****************************************************************************/
+/// @addtogroup TypeDefs
+/// @{
 typedef std::vector<char> VectorSteps;
+/// @}
 /*****************************************************************************/
 //Structures for varies uses
 /** @struct stcLoc
@@ -156,7 +161,15 @@ enum enumMenu {
   menuError
 };
 
-
+/** Holds the different tools */
+enum enumTools {
+  toolQuit = 0,
+  toolSave,
+  toolLeft,
+  toolRght
+};
+/// @addtogroup TypeDefs
+/// @{
 typedef struct stcGeneration GEN; /**< Change structure typedef for easier reference. */
 typedef struct stcPlayer PLYR; /**< Change structure typedef for easier reference. */
 typedef struct stcMonster MNSTR; /**< Change structure typedef for easier reference. */
@@ -170,5 +183,6 @@ typedef std::vector<GEN> VectorGeneration; /**< Define a vector for the generati
 typedef unsigned char uchar; /**< Change unsigned char to uchar because I'm lazy. */
 typedef unsigned int uint; /**< Change unsigned int to uint because I'm lazy. */
 typedef unsigned long ulong; /**< Change unsigned long to ulong because I'm lazy. */
+/// @}
 /*****************************************************************************/
 #endif

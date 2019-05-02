@@ -43,6 +43,8 @@ struct stcLoaded {
   bool blnErrortex;   /**< A boolean for the error texture. */
   bool blnMessage;    /**< A boolean for the message texture. */
   bool blnMessageFont;/**< A boolean for the Message font. */
+  bool blnTools;      /**< A boolean for the tools. */
+  bool blnToolFrame;  /**< A boolean for the toolframe. */
 };
 
 /** @struct stcColors
@@ -57,15 +59,33 @@ struct stcColors {
 struct stcTextures {
   SDL_Texture *maptiles; /**< Pointer to "tiles.png" in memory. */
   SDL_Texture *errortex; /**< Pointer to the error texture (its embedded) in memory. */
+  SDL_Texture *tooltex; /**< Pointer to the tools texture in memory */
+  SDL_Texture *toolframetex; /** Pointer to the tool frame texture */
   SDL_Texture *texmessage; /**< Pointer to the texture for the messages in memory. */
 };
 
+/// @addtogroup TypeDefs
+/// @{
 typedef struct stcLoaded Loaded;
 typedef struct stcColors clrs;
 typedef struct stcTextures TEX;
+/// @}
+
+/** @struct stcWinAtt
+    Holds memory references to various window attritues so it can be passed
+    between functions. */
+struct stcWinAtt {
+  SDL_Window *win;    /**< Pointer to the window in memory. */
+  SDL_Renderer *ren;  /**< Pointer to the renderer in memory. */
+  uint width;         /**< Screen width in pixels. */
+  uint height;        /**< Screen height in pixels. */
+  TTF_Font *font;     /**< Screen height in pixels. */
+  uint pic_size;      /**< Picture size in pixels */
+  clrs colors;        /**< Colors. */
+};
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class clsScreen screen.h "source/screen.h"
+/// @class clsScreen screen.h "src/ui/screen.h"
 /// @brief This class will hold all of the values and functions related to the
 ///        the SDL screen..
 /////////////////////////////////////////////////
@@ -75,24 +95,23 @@ class clsScreen {
     clsScreen();
     ~clsScreen();
 
+    void start(void);
     void update(void);
     void cleanup(void);
     void playerDeath(void);
+    TEX get_Textures(void);
+    stcWinAtt* getWinAtt(void);
+    SDL_Rect getMapClips(uchar);
+    SDL_Rect getToolClips(uchar);
 
-
-    bool bln_SDL_started; /**< If SDL is currently running without issue. */
+    static bool bln_SDL_started; /**< If SDL is currently running without issue. */
 
   private:
-    TEX textures; /**< All the textures. */
-    SDL_Window *win; /**< Pointer to the window in memory. */
-    SDL_Renderer *ren; /**< Pointer to the renderer in memory. */
-    uint width; /**< Screen width in pixels. */
-    uint height; /**< Screen height in pixels. */
-    uint pic_size; /**< Picture size in pixels */
-    Loaded blnloaded; /**< All the booleans. */
-    SDL_Rect clips[defined::kNumMapTiles]; /**< SDL Rectangles for the location of each of the tiles in tiles.png */
-    clrs colors; /**< Colors. */
-    TTF_Font *MessageFont; /**< Message font. */
+    static stcWinAtt window;
+    static TEX textures; /**< All the textures. */
+    static Loaded blnloaded; /**< All the booleans. */
+    static SDL_Rect map_clips[defined::kNumMapTiles]; /**< SDL Rectangles for the location of each of the tiles in tiles.png */
+    static SDL_Rect tool_clips[defined::kNumTools]; /**< SDL Rectangles for the location of each of the tiles in image_tools.xpm */
 
     void loadTextures(void);
     void writemessage(void);

@@ -3,6 +3,11 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [6.0.0-alpha.2] - 2019-05-02
+### Updated
+* Continued merging editor and menu systems.
+
+
 ## [6.0.0-alpha.1] - 2019-05-01
 ### Added
 * Menu System, merged from [Attacker-the-game](https://github.com/Dragon-Wonder/Attacker-The-Game).
@@ -11,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Renamed folders and added more structure to src folder
 * Moving from CodeBlocks to Visual studio
 ### Notes
-* Since the editor that was designed for this program is now being merged into it, there are going to be a lot of tweaks before it can compile again. 
+* Since the editor that was designed for this program is now being merged into it, there are going to be a lot of tweaks before it can compile again.
 
 
 ## [5.1.1] - 2017-02-22

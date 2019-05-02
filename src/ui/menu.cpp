@@ -5,9 +5,7 @@
 clsMenu::clsMenu() {
   //ctor
   clsScreen screen;
-  clsSound audio;
   m_window = screen.getWinAtt();
-  m_audio = audio;
 }
 /*****************************************************************************/
 clsMenu::~clsMenu() {
@@ -24,11 +22,11 @@ char clsMenu::MainMenu() {
   ///
   /////////////////////////////////////////////////
   SDL_SetRenderDrawColor( m_window->ren, 0xFF, 0xFF, 0xFF, 0xFF );
-  std::string text = "Attacker - the Game";
+  std::string text = "Experimental Platformer AI";
   SDL_Rect dst;
   SDL_Surface* surmessage = nullptr;
   SDL_Texture* texmessage = nullptr;
-  SDL_Color clrblack = {0xFF,0xFF,0xFF,0xFF};
+  SDL_Color clrblack = m_window->colors.Black;
 
   surmessage = TTF_RenderText_Solid(m_window->font, text.c_str(),clrblack);
   texmessage = (surmessage == nullptr) ? nullptr : SDL_CreateTextureFromSurface(m_window->ren, surmessage);
@@ -51,7 +49,7 @@ char clsMenu::MainMenu() {
   MainButtons[0] = {menuQuit,"Quit",{0,0,0,0}};
   MainButtons[1] = {menuOptions,"Options (WIP)",{0,0,0,0}};
   MainButtons[2] = {menuAbout, "About (WIP)",{0,0,0,0}};
-  MainButtons[3] = {menuLoad,"Load Game",{0,0,0,0}};
+  MainButtons[3] = {menuLoad,"Editor",{0,0,0,0}};
   MainButtons[4] = {menuNew,"New Game",{0,0,0,0}};
 
   for (int i = 0; i < 5; i++) { //for each button

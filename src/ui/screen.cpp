@@ -5,6 +5,8 @@
 #include "../game/entity.h"
 #include "../core/tick.h"
 #include "image_error.xpm"
+#inlcude "../editor/image_tools.xpm"
+#include "../editor/image_toolbox_frame.xpm"
 /*****************************************************************************/
 /** \todo (GamerMan7799#5#): Get better images for the game. (Currently just using placeholders)
                            Consider hiring someone? */
@@ -14,27 +16,52 @@
 /// @brief Holds all of the functions for the Screen Class
 /////////////////////////////////////////////////
 /*****************************************************************************/
+stcWinAtt clsScreen::window;
+bool clsScreen::bln_SDL_started = false;
+SDL_Rect clsScreen::map_clips[defined::kNumMapTiles];
+SDL_Rect clsScreen::tool_clips[defined::kNumTools];
+TEX clsScreen::textures;
+Loaded clsScreen::blnloaded;
+/*****************************************************************************/
 clsScreen::clsScreen() {
+
+}
+/*****************************************************************************/
+clsScreen::~clsScreen() {
+  /////////////////////////////////////////////////
+  /// @brief This is the default deconstructor, it will just call
+  ///        clsScreen::cleanup to ensure everything is cleared from memory,
+  ///        and then quit SDL.
+  /////////////////////////////////////////////////
+  if (global::blnDebugMode) { printf("Screen deconstructor called.\n"); }
+  cleanup();
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
+  if (global::blnDebugMode) { printf("SDL quit\n"); }
+}
+/*****************************************************************************/
+void clsScreen::start() {
   /////////////////////////////////////////////////
   /// @brief The default constructor for the SDL screen
-  ///        it will try start SDL, and create and window and a renderer,
+  ///        it will try start SDL, and create and window.window and a window.renderer,
   ///        then try to load the textures it will need, if any of these fail
   ///        it will set bln_SDL_Started to false and return void, when main in main.cpp
   ///        checks bln_SDL_Started and ends the entire program will it is false.
   ///        If, however, bln_SDL_Started is true it will continue on with the rest of the program.
   /////////////////////////////////////////////////
 
-  pic_size = defined::kPicSize;
+  window.pic_size = defined::kPicSize;
 
   if (global::cnfg.getvalues(cnfgShowMap) == 1) {
-    //if not showing the map don't bother trying to load any of the images
+    //if not showindow.wing the map don't bother trying to load any of the images
     //useful so if show map is disabled you don't need the images folder.
     //Figure out screen size
 
-    width = (global::cnfg.getvalues(cnfgScreenWidth) == 0) ?
-        35 * pic_size : global::cnfg.getvalues(cnfgScreenWidth);
-    height = (global::cnfg.getvalues(cnfgScreenHeight) == 0) ?
-        defined::kMapHeight * pic_size :
+    window.width = (global::cnfg.getvalues(cnfgScreenWidth) == 0) ?
+        35 * window.pic_size : global::cnfg.getvalues(cnfgScreenWidth);
+    window.height = (global::cnfg.getvalues(cnfgScreenHeight) == 0) ?
+        defined::kMapHeight * window.pic_size :
         global::cnfg.getvalues(cnfgScreenHeight);
 
     //Set all the booleans to false
@@ -42,7 +69,7 @@ clsScreen::clsScreen() {
     blnloaded.blnMapTiles = blnloaded.blnErrortex = false;
     bln_SDL_started = false;
 
-    set_clips();
+    set_map_clips();
 
     //Start SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -69,14 +96,14 @@ clsScreen::clsScreen() {
       if (global::blnDebugMode) { printf("IMG init successful\n"); }
     }
 
-    win = SDL_CreateWindow("Experimental Platformer AI",100, 100,
-                           width, height, SDL_WINDOW_SHOWN);
-    ren = (win == nullptr) ? nullptr :
-        SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED |
+    window.win = SDL_CreateWindow("Experimental Platformer AI",100, 100,
+                           window.width, window.height, SDL_WINDOW_SHOWN);
+    window.window.ren = (window.win == nullptr) ? nullptr :
+        SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED |
                            SDL_RENDERER_PRESENTVSYNC);
 
-    if (ren == nullptr) {
-      printf("SDL Failed to create renderer.\n");
+    if (window.window.ren == nullptr) {
+      printf("SDL Failed to create window.renderer.\n");
       error();
       return;
     } else {
@@ -87,33 +114,20 @@ clsScreen::clsScreen() {
     loadTextures();
     if ( !bln_SDL_started ) { return; }
 
-    MessageFont = TTF_OpenFont(DEFINED_MESSAGE_FONT,16); //Opens font and sets size
-    if (MessageFont == nullptr) {
+    window.font = TTF_OpenFont(DEFINED_MESSAGE_FONT,16); //Opens font and sets size
+    if (window.font == nullptr) {
       printf("Font failed to load, messages will not appear.");
-      blnloaded.blnMessageFont = false;
+      blnloaded.blnwindow.font = false;
     } else {
       if(global::blnDebugMode) { printf("Message font created\n"); }
-      blnloaded.blnMessageFont = true;
+      blnloaded.blnwindow.font = true;
     }
 
-    colors.Black = {0, 0, 0, 0}; //Make the color black for fonts
-    colors.White = {255, 255, 255, 0}; //Make the color white for fonts
+    window.colors.Black = {0, 0, 0, 0}; //Make the color black for fonts
+    window.colors.White = {255, 255, 255, 0}; //Make the color white for fonts
 
     update();
   } //end if blnShowMap
-}
-/*****************************************************************************/
-clsScreen::~clsScreen() {
-  /////////////////////////////////////////////////
-  /// @brief This is the default deconstructor, it will just call
-  ///        clsScreen::cleanup to ensure everything is cleared from memory,
-  ///        and then quit SDL.
-  /////////////////////////////////////////////////
-  cleanup();
-  TTF_Quit();
-  IMG_Quit();
-  SDL_Quit();
-  if (global::blnDebugMode) { printf("SDL quit\n"); }
 }
 /*****************************************************************************/
 void clsScreen::update(void) {
@@ -121,30 +135,30 @@ void clsScreen::update(void) {
   /// @brief Will update the SDL screen based on the map and player / monster locations.
   /// @return void
   /////////////////////////////////////////////////
-  //clear renderer
-  SDL_RenderClear(ren);
+  //clear window.renderer
+  SDL_RenderClear(window.ren);
   //copy sky to cover entire screen.
-  SDL_RenderCopy(ren,textures.maptiles,&clips[tileSpace],NULL);
+  SDL_RenderCopy(window.ren,textures.maptiles,&map_clips[tileSpace],NULL);
   SDL_Rect dst;
   //Set the pic size
-  dst.w = dst.h = pic_size;
+  dst.w = dst.h = window.pic_size;
 
   BPLYR tempPlayer = global::enty.getPlayerBase();
   stcLoc offset; //how much the screen is offset by
 
-  offset.x = (uint) (round( tempPlayer.location.x / width ) * width);
-  offset.y = (uint) (round( tempPlayer.location.y / height) * height);
+  offset.x = (uint) (round( tempPlayer.location.x / window.width ) * window.width);
+  offset.y = (uint) (round( tempPlayer.location.y / window.height) * window.height);
 
   //Place the map parts where they belong.
   for (uint y = 0; (y < defined::kMapHeight); ++y) {
     for (uint x = 0; (x < defined::kMapWidth); ++x) {
       //update where we're trying to put the texture.
-      dst.x = (x * pic_size) - (offset.x);
-      dst.y = (y * pic_size) - (offset.y);
+      dst.x = (x * window.pic_size) - (offset.x);
+      dst.y = (y * window.pic_size) - (offset.y);
 
       //Load the map.
       switch( global::mymap.getMapCell(x,y) ) {
-      //Use this to make sure we aren't try to load a non-existing part
+      //Use this to make sure we awindow.ren't try to load a non-existing part
       case tileSpace:
       case tileCoin:
       case tilePole:
@@ -154,12 +168,12 @@ void clsScreen::update(void) {
       case tileBricksOrange:
       case tileBricksRed:
       case tileBricksSmall:
-        SDL_RenderCopy(ren, textures.maptiles,
-                       &clips[global::mymap.getMapCell(x,y)], &dst);
+        SDL_RenderCopy(window.ren, textures.maptiles,
+                       &map_clips[global::mymap.getMapCell(x,y)], &dst);
         break;
       default:
         //Don't know what this is so display an error texture.
-        SDL_RenderCopy(ren, textures.errortex, NULL, &dst);
+        SDL_RenderCopy(window.ren, textures.errortex, NULL, &dst);
         break;
       } //end switch
     } //end for x
@@ -172,17 +186,17 @@ void clsScreen::update(void) {
     if (tempMonster.living) {
       dst.x = (tempMonster.location.x - offset.x);
       dst.y = (tempMonster.location.y - offset.y);
-      SDL_RenderCopy(ren, textures.maptiles, &clips[tileMonster], &dst);
+      SDL_RenderCopy(window.ren, textures.maptiles, &map_clips[tileMonster], &dst);
     } //end if living
   } // end for monsters
   dst.x = tempPlayer.location.x - offset.x; //Fix this later, doesn't account for screen shifts but I want to work on getting velocity working
   dst.y = tempPlayer.location.y - offset.y;
-  SDL_RenderCopy(ren, textures.maptiles, &clips[tilePlayer], &dst);
+  SDL_RenderCopy(window.ren, textures.maptiles, &map_clips[tilePlayer], &dst);
 
   //Write messages only if Message font is loaded.
-  if (blnloaded.blnMessageFont) { writemessage(); }
-  //show renderer
-  SDL_RenderPresent(ren);
+  if (blnloaded.blnwindow.font) { writemessage(); }
+  //show window.renderer
+  SDL_RenderPresent(window.ren);
   global::tick.wait();
 }
 /*****************************************************************************/
@@ -191,7 +205,9 @@ void clsScreen::cleanup(void) {
   /// @brief This will attempt to delete Textures, and the Window / Renderer
   ///        from memory if their representative loaded boolean is true. Will delete
   ///        * Map tile textures
-  ///        * Error textures
+  ///        * Tool Textures
+  ///        * Tool frame texture
+  ///        * Error texture
   ///        * Message Font
   ///        * Message texture
   ///        * Renderer
@@ -205,15 +221,27 @@ void clsScreen::cleanup(void) {
     if (global::blnDebugMode) { printf("Tiles texture destroyed\n"); }
   }
 
+  if (blnloaded.blnTools) {
+    SDL_DestroyTexture(textures.tooltex);
+    blnloaded.blnTools = false;
+    if (global::blnDebugMode) { printf("Tools texture destroyed\n"); }
+  }
+
+  if (blnloaded.blnToolFrame) {
+    SDL_DestroyTexture(textures.toolframetex);
+    blnloaded.blnToolFrame = false;
+    if (global::blnDebugMode) { printf("Toolframe texture destroyed\n"); }
+  }
+
   if (blnloaded.blnErrortex) {
     SDL_DestroyTexture(textures.errortex);
     blnloaded.blnErrortex = false;
     if (global::blnDebugMode) { printf("Error texture destroyed\n"); }
   }
 
-  if (blnloaded.blnMessageFont) {
-    TTF_CloseFont(MessageFont);
-    blnloaded.blnMessageFont = false;
+  if (blnloaded.blnwindow.font) {
+    TTF_CloseFont(window.font);
+    blnloaded.blnwindow.font = false;
     if (global::blnDebugMode) { printf("Message font destroyed\n"); }
   }
 
@@ -224,12 +252,12 @@ void clsScreen::cleanup(void) {
   }
 
 	if (blnloaded.blnRenderer) {
-    SDL_DestroyRenderer(ren);
+    SDL_DestroyRenderer(window.ren);
     blnloaded.blnRenderer = false;
     if (global::blnDebugMode) { printf("Renderer destroyed\n"); }
   }
 	if (blnloaded.blnWindow) {
-    SDL_DestroyWindow(win);
+    SDL_DestroyWindow(window.win);
     blnloaded.blnWindow = false;
     if (global::blnDebugMode) { printf("Window destroyed\n"); }
   }
@@ -261,32 +289,63 @@ void clsScreen::loadTextures() {
   //Load the error texture first.
   SDL_Surface* temp = IMG_ReadXPMFromArray(image_error_xpm);
   textures.errortex = (temp == nullptr) ?
-      nullptr : SDL_CreateTextureFromSurface(ren,temp);
+      nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
 	if (textures.errortex == nullptr) {
-    printf("Failed to create texture.\n");
+    printf("ERROR: Failed to create error texture.\n");
     error();
 	} else {
-    if (global::blnDebugMode) { printf("Surface to texture successful\n"); }
+    if (global::blnDebugMode) { printf("Error surface to texture successful\n"); }
     blnloaded.blnErrortex = true;
   }
 
     //Now load the tiles
   temp = IMG_Load(path.c_str());
 	textures.maptiles = (temp == nullptr) ?
-      nullptr : SDL_CreateTextureFromSurface(ren,temp);
+      nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
 	SDL_FreeSurface(temp);
 	if (textures.maptiles == nullptr) {
-    //Cannot make texture; replace the clips to be all 0,0
+    //Cannot make texture; replace the map_clips to be all 0,0
     //and set it to use the error texture instead.
-    printf("Tiles could not be converted to texture.\n");
+    printf("ERROR: Tiles could not be converted to texture.\n");
     textures.maptiles = textures.errortex;
-    for (uchar i = 0; i < defined::kNumMapTiles; ++i) { clips[i] = {0,0}; }
+    for (uchar i = 0; i < defined::kNumMapTiles; ++i) { map_clips[i] = {0,0}; }
     blnloaded.blnMapTiles = true;
     return;
 	} else {
-    if (global::blnDebugMode) {printf("Tiles converted to texture successful\n");}
+    if (global::blnDebugMode) { printf("Tiles converted to texture successful\n"); }
     blnloaded.blnMapTiles = true;
   }
+
+  // Now load tool frame
+  temp = IMG_ReadXPMFromArray(image_toolbox_frame);
+  textures.toolframetex = (temp == nullptr) ?
+      nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
+  if (textures.toolframetex == nullptr) {
+    printf("ERROR: Failed to create toolframe texture.\n");
+    error();
+	} else {
+    if (global::blnDebugMode) { printf("Surface to texture successful\n"); }
+    blnloaded.blnToolFrame = true;
+  }
+
+  /// @todo(GamerMan7799#7#) Change tools to png instead of being embedded?
+  // Now load tools
+  temp = IMG_ReadXPMFromArray(image_tools);
+  textures.tooltex = (temp == nullptr) ?
+      nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
+  if (textures.tooltex == nullptr) {
+    // Cannot make texture; replace the tool_clips to be all 0,0
+    // and set it to use the error texture instead.
+    printf("ERROR: Tools could not be converted to texture.\n");
+    textures.tooltex = textures.errortex;
+    for (uchar i = 0; i < defined::kNumTools; ++i) { tool_clips[i] = {0,0}; }
+    blnloaded.blnTools = true;
+    error();
+  } else {
+    if (global::blnDebugMode) { printf("Surface to texture successful\n"); }
+    blnloaded.blnTools = true;
+  }
+
 }
 /*****************************************************************************/
 void clsScreen::playerDeath(void) {
@@ -318,7 +377,7 @@ void clsScreen::playerDeath(void) {
 /*****************************************************************************/
 void clsScreen::writemessage(void) {
     /////////////////////////////////////////////////
-    /// @brief Now work on Making the messages that will appear on the screen
+    /// @brief Now work on making the messages that will appear on the screen
     ///
     ///        I imagine that I am doing terrible programing things
     ///        With how I'm switch between char's and strings but whatever
@@ -335,10 +394,10 @@ void clsScreen::writemessage(void) {
     std::string message;
     sprintf(strClock, "%8u", global::tick.getClockTime());
 
-    SDL_Surface* surmessage = TTF_RenderText_Solid(MessageFont,
-                                                   strClock, colors.Black);
+    SDL_Surface* surmessage = TTF_RenderText_Solid(window.font,
+                                                   strClock, window.colors.Black);
     textures.texmessage = (surmessage == nullptr) ?
-        nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
+        nullptr : SDL_CreateTextureFromSurface(window.ren, surmessage);
     if (textures.texmessage == nullptr) {
       printf("Failed to convert message surface to texture.\n");
       error();
@@ -353,8 +412,8 @@ void clsScreen::writemessage(void) {
     SDL_Rect dst;
     SDL_QueryTexture(textures.texmessage,NULL,NULL, &dst.w, &dst.h);
     dst.y = 0;
-    dst.x = width - dst.w;
-    SDL_RenderCopy(ren, textures.texmessage, NULL, &dst);
+    dst.x = window.width - dst.w;
+    SDL_RenderCopy(window.ren, textures.texmessage, NULL, &dst);
     if (global::blnDebugMode) { printf("Clock placed.\n"); }
 
     PLYR tempPlayer = global::enty.getPlayer();
@@ -384,10 +443,10 @@ void clsScreen::writemessage(void) {
     }
     if (global::blnDebugMode) { printf("Status message made.\n"); }
 
-    surmessage = TTF_RenderText_Solid(MessageFont, message.c_str(),
-                                      colors.Black);
+    surmessage = TTF_RenderText_Solid(window.font, message.c_str(),
+                                      window.colors.Black);
     textures.texmessage = (surmessage == nullptr) ?
-        nullptr : SDL_CreateTextureFromSurface(ren, surmessage);
+        nullptr : SDL_CreateTextureFromSurface(window.ren, surmessage);
     if (textures.texmessage == nullptr) {
       printf("Failed to convert message surface to texture.\n");
       blnloaded.blnMessage = false;
@@ -395,16 +454,16 @@ void clsScreen::writemessage(void) {
       return;
     } else {
       if (global::blnDebugMode) {
-          printf("Surface texture successfully created\n");
+        printf("Surface texture successfully created\n");
       }
       blnloaded.blnMessage = true;
     }
 
     SDL_QueryTexture(textures.texmessage,NULL,NULL, &dst.w, &dst.h);
-    dst.x = (int)(width - dst.w);
-    dst.y = height - 30;
+    dst.x = (int)(window.width - dst.w);
+    dst.y = window.height - 30;
 
-    SDL_RenderCopy(ren, textures.texmessage, NULL, &dst);
+    SDL_RenderCopy(window.ren, textures.texmessage, NULL, &dst);
     SDL_FreeSurface(surmessage);
 }
 /*****************************************************************************/
@@ -429,22 +488,52 @@ void clsScreen::set_clips() {
    */
 
    //First Row (Space, Wall, Player)
-   clips[tileSpace] = {0 * pic_size, 0 * pic_size, pic_size, pic_size};
-   clips[tileBricksLarge] = {1 * pic_size, 0 * pic_size, pic_size, pic_size};
-   clips[tilePlayer] = {2 * pic_size, 0 * pic_size, pic_size, pic_size};
+   map_clips[tileSpace] = {0 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileBricksLarge] = {1 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tilePlayer] = {2 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
 
    //Second Row (Pole, Monster, Coin)
-   clips[tilePole] = {0 * pic_size, 1 * pic_size, pic_size, pic_size};
-   clips[tileMonster] = {1 * pic_size, 1 * pic_size, pic_size, pic_size};
-   clips[tileCoin] = {2 * pic_size, 1 * pic_size, pic_size, pic_size};
+   map_clips[tilePole] = {0 * window.pic_size, 1 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileMonster] = {1 * window.pic_size, 1 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileCoin] = {2 * window.pic_size, 1 * window.pic_size, window.pic_size, window.pic_size};
 
    //Third Row (Bricks Small, bricks Gray, bricks Green)
-   clips[tileBricksSmall] = {0 * pic_size,  2 * pic_size, pic_size, pic_size};
-   clips[tileBricksGray] = {1 * pic_size, 2 * pic_size, pic_size, pic_size};
-   clips[tileBricksGreen] = {2 * pic_size, 2 * pic_size, pic_size, pic_size};
+   map_clips[tileBricksSmall] = {0 * window.pic_size,  2 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileBricksGray] = {1 * window.pic_size, 2 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileBricksGreen] = {2 * window.pic_size, 2 * window.pic_size, window.pic_size, window.pic_size};
 
    //Second Row (Bricks Orange, Bricks Red
-   clips[tileBricksOrange] = {0 * pic_size, 3 * pic_size, pic_size, pic_size};
-   clips[tileBricksRed] = {1 * pic_size, 3 * pic_size, pic_size, pic_size};
+   map_clips[tileBricksOrange] = {0 * window.pic_size, 3 * window.pic_size, window.pic_size, window.pic_size};
+   map_clips[tileBricksRed] = {1 * window.pic_size, 3 * window.pic_size, window.pic_size, window.pic_size};
+
+   // Tools
+   /*     The Picture Coordinates (x,y)
+    *     we multiply this by the pic size to get the clip
+    *     +-----+-----+-----+-----+
+    *     |(0,0)|(1,0)|(2,0)|(3,0)|
+    *     +-----+-----+-----+-----+
+    */
+
+    //First Row (Save, Quit, Left, Right)
+    tool_clips[toolSave] = {0 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+    tool_clips[toolQuit] = {1 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+    tool_clips[toolLeft] = {2 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+    tool_clips[toolRght] = {3 * window.pic_size, 0 * window.pic_size, window.pic_size, window.pic_size};
+}
+/*****************************************************************************/
+TEX clsScreen::get_Textures() {
+  return textures;
+}
+/*****************************************************************************/
+stcWinAtt* clsScreen::getWinAtt() {
+  return window;
+}
+/*****************************************************************************/
+SDL_Rect clsScreen::getMapClips(uchar i) {
+  return map_clips[i];
+}
+/*****************************************************************************/
+SDL_Rect clsScreen::getToolClips(uchar i) {
+  return tool_clips[i];
 }
 /*****************************************************************************/

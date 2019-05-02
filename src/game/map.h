@@ -33,8 +33,10 @@ struct stcBox {
   uint top;   /**< Top most edge of the collision box. In pixels from the top edge of the screen */
   uint bottom;/**< Bottom most edge of the collision box. In pixels from the top edge of the screen */
 };
-
+/// @addtogroup TypeDefs
+/// @{
 typedef struct stcBox BOX;
+/// @}
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @class clsMap map.h "source/map.h"

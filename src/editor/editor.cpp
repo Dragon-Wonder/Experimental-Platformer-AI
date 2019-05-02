@@ -1,34 +1,32 @@
 /*****************************************************************************/
 #include "editor.h"
 /*****************************************************************************/
-#include "../ui/image_error.xpm"
-#include "image_toolbox_frame.xpm"
-#inlcude "image_tools.xpm"
-/*****************************************************************************/
 clsEditor::clsEditor() {
+  //ctor
+  clsScreen screen;
+  m_window = screen.getWinAtt();
+  m_textures = screen.get_Textures();
 
+  for (uchar i = 0; i < defined::kNumMapTiles; ++i ) { map_clips[i] = screen.getMapClips(i); }
+  for (uchar i = 0; i < defined::kNumTools; ++i ) { tool_clips[i] = screen.getToolClips(i); }
 }
 /*****************************************************************************/
 clsEditor::~clsEditor() {
 
 }
 /*****************************************************************************/
-void clsEditor::start(clsScreen *screen) {
+void clsEditor::start() {
   bool quit = false;
   make_buttons();
 
-  m_screen = screen;
-
   while ( !quit ) {
-    screen.show();
     if (SDL_PollEvent( &event ) != 0 ) {
       check_events( &event );
+      update();
       if (event.type == SDL_QUIT) { quit = true; }
     } //end if event
   } //end while not quit
 
-  //Clean up the screen
-  screen.cleanup();
 	return;
 }
 /*****************************************************************************/
@@ -38,62 +36,62 @@ void clsEditor::make_buttons() {
     /////////////////////////////////////////////////
 
     uint centerx; //center of the toolbox
-    centerx = (uint)(Screen::window.width / 2);
+    centerx = (uint)(m_window->width / 2);
     //Calculate all the places, the tool box frame has a 2 px wide border all the way around.
     //Make tile buttons
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_TILES; i++) {
-        Toolbar::button_xplaces[i] = centerx - ( ( (DEFINED_NUM_BUTN_TILES / 2)- i ) * 4 )
-                                    - ( ( (DEFINED_NUM_BUTN_TILES / 2) - i ) * global::pic_size );
+    for (uchar i = 0; i < defined::kNumMapTiles; i++) {
+        button_xplaces[i] = centerx - ( ( (defined::kNumMapTiles / 2)- i ) * 4 )
+                                    - ( ( (defined::kNumMapTile / 2) - i ) * m_window->pic_size );
     }
 
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_TILES; i++) {
-        Toolbar::tilebuttons[i].buttontype = i;
-        Toolbar::tilebuttons[i].clip = &Textures::clips[i];
-        Toolbar::tilebuttons[i].box.w = Toolbar::tilebuttons[i].box.h = global::pic_size;
-        Toolbar::tilebuttons[i].box.y = 2;
-        Toolbar::tilebuttons[i].box.x = Toolbar::button_xplaces[i];
+    for (uchar i = 0; i < defined::kNumMapTiles; i++) {
+      tilebuttons[i].buttontype = i;
+      tilebuttons[i].clip = &m_textures->clips[i];
+      tilebuttons[i].box.w = tilebuttons[i].box.h = m_window->pic_size;
+      tilebuttons[i].box.y = 2;
+      tilebuttons[i].box.x = button_xplaces[i];
     }
 
     //Make menu buttons
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_MENU; i++) {
-        Toolbar::menubuttons[i].buttontype = menuClose + i;
-        Toolbar::menubuttons[i].clip = &Textures::clips[menuClose + i];
-        Toolbar::menubuttons[i].box.w = Toolbar::menubuttons[i].box.h = global::pic_size;
-        Toolbar::menubuttons[i].box.y = 2;
-        Toolbar::menubuttons[i].box.x = (Screen::window.width - 2) - ( (i+1) * global::pic_size);
+    for (uchar i = 0; i < defined::kNumTools; i++) {
+        menubuttons[i].buttontype = toolClose + i;
+        menubuttons[i].clip = &m_textures->clips[toolClose + i];
+        menubuttons[i].box.w = menubuttons[i].box.h = m_window->pic_size;
+        menubuttons[i].box.y = 2;
+        menubuttons[i].box.x = (m_window->width - 2) - ( (i+1) * m_window->pic_size);
     }
 }
 /*****************************************************************************/
-void clsEditor::draw() {
-    /////////////////////////////////////////////////
-    /// @brief Draws the toolbar.
-    /////////////////////////////////////////////////
+void clsEditor::toolbar_draw() {
+  /////////////////////////////////////////////////
+  /// @brief Draws the toolbar.
+  /////////////////////////////////////////////////
 
 
-    //draw toolbox frame
-    SDL_Rect dst;
-    dst.w = dst.h = global::pic_size + 4;
-    dst.y = 0;
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_TILES; i++) {
-        dst.x = Toolbar::button_xplaces[i] - 2;
-        SDL_RenderCopy(Screen::window.ren, Textures::toolboxframe, NULL, &dst);
+  //draw toolbox frame
+  SDL_Rect dst;
+  dst.w = dst.h = m_window->pic_size + 4;
+  dst.y = 0;
+  for (uchar i = 0; i < defined::kNumMapTiles; i++) {
+    dst.x = button_xplaces[i] - 2;
+    SDL_RenderCopy(m_window->ren, m_textures->toolboxframe, NULL, &dst);
+  }
+
+  //Show all the tile buttons
+  for (uchar i = 0; i < defined::kNumMapTiles; i++) {
+    SDL_RenderCopy(m_window->ren, m_textures->tilemap,
+                   tilebuttons[i].clip, &tilebuttons[i].box);
+    if (tilebuttons[i].buttontype == paintbrush.CurrentTile) {
+        SDL_RenderCopy(m_window->ren, m_textures->tilemap,
+                       &m_textures->clips[menuFrame] , &tilebuttons[i].box);
     }
+  }
 
-    //Show all the tile buttons
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_TILES; i++) {
-        SDL_RenderCopy(Screen::window.ren, Textures::tilemap,
-                       Toolbar::tilebuttons[i].clip, &Toolbar::tilebuttons[i].box);
-        if (Toolbar::tilebuttons[i].buttontype == paintbrush.CurrentTile) {
-            SDL_RenderCopy(Screen::window.ren, Textures::tilemap,
-                           &Textures::clips[menuFrame] , &Toolbar::tilebuttons[i].box);
-        }
-    }
-
-    //show all the menu buttons
-    for (uchar i = 0; i < DEFINED_NUM_BUTN_MENU; i++) {
-        SDL_RenderCopy(Screen::window.ren, Textures::tilemap,
-                       Toolbar::menubuttons[i].clip, &Toolbar::menubuttons[i].box);
-    }
+  //show all the menu buttons
+  for (uchar i = 0; i < defined::kNumTools; i++) {
+    SDL_RenderCopy(m_window->ren, m_textures->tilemap,
+                   menubuttons[i].clip, &menubuttons[i].box);
+  }
 }
 /*****************************************************************************/
 void clsEditor::check_events(SDL_Event* e) {
@@ -111,89 +109,89 @@ void clsEditor::check_events(SDL_Event* e) {
         SDL_GetMouseState(&x, &y);
 
         //check all of the tile buttons to see if we are on that one.
-        for (uchar i = 0; i < DEFINED_NUM_BUTN_TILES; i++) {
-            if ( x >= Toolbar::tilebuttons[i].box.x && x <=
-                            Toolbar::tilebuttons[i].box.x + Toolbar::tilebuttons[i].box.w ) { //In the x range
-                if ( y >= Toolbar::tilebuttons[i].box.y && y <=
-                            Toolbar::tilebuttons[i].box.y + Toolbar::tilebuttons[i].box.h) { //in the y range
-                    paintbrush.CurrentTile = Toolbar::tilebuttons[i].buttontype;
-                } //end if in y
-            } // end if in x
+        for (uchar i = 0; i < defined::kNumMapTiles; i++) {
+          if ( x >= tilebuttons[i].box.x && x <=
+                        tilebuttons[i].box.x + tilebuttons[i].box.w ) { //In the x range
+            if ( y >= tilebuttons[i].box.y && y <=
+                        tilebuttons[i].box.y + tilebuttons[i].box.h) { //in the y range
+                paintbrush.CurrentTile = tilebuttons[i].buttontype;
+            } //end if in y
+          } // end if in x
         } // end for buttons
 
         //check all of the menu buttons
-        for (uchar i = 0; i < DEFINED_NUM_BUTN_MENU; i++) {
-            if ( x >= Toolbar::menubuttons[i].box.x && x <=
-                        Toolbar::menubuttons[i].box.x + Toolbar::menubuttons[i].box.w ) { //In the x range
-                if ( y >= Toolbar::menubuttons[i].box.y && y <=
-                        Toolbar::menubuttons[i].box.y + Toolbar::menubuttons[i].box.h) { //in the y range
-                    blnButtonDown = false;
-                    switch (Toolbar::menubuttons[i].buttontype) {
-                    case menuSave:
-                        Map::save();
-                        break;
-                    case menuClose:
-                        if (Screen::promptuser(promptYesNo, "Do you really want to quit?") == 'Y') {
-                            e->type = SDL_QUIT;
-                        } //end if yes
-                        break;
-                    } //end switch
-                } //end if in y
-            } // end if in x
+        for (uchar i = 0; i < defined::kNumTools; i++) {
+          if ( x >= menubuttons[i].box.x && x <=
+                    menubuttons[i].box.x + menubuttons[i].box.w ) { //In the x range
+            if ( y >= menubuttons[i].box.y && y <=
+                    menubuttons[i].box.y + menubuttons[i].box.h) { //in the y range
+                blnButtonDown = false;
+                switch (menubuttons[i].buttontype) {
+                case menuSave:
+                    Map::save();
+                    break;
+                case menuClose:
+                    if (promptuser(promptYesNo, "Do you really want to quit?") == 'Y') {
+                      e->type = SDL_QUIT;
+                    } //end if yes
+                    break;
+                } //end switch
+            } //end if in y
+          } // end if in x
         } //end for menu buttons
 
 
         //user did not click on any buttons therefore change the map tile.
         //convert to map coordinates
         uint mapx, mapy;
-        mapx = (uint) ( (x + Screen::offset.x) / global::pic_size);
-        mapy = (uint) ( (y + Screen::offset.y) / global::pic_size);
+        mapx = (uint) ( (x + offset.x) / m_window->pic_size);
+        mapy = (uint) ( (y + offset.y) / m_window->pic_size);
 
-        global::map[mapy][mapx] = paintbrush.CurrentTile;
+        global::mymap.setMapCell(mapx,mapy,paintbrush.CurrentTile);
     } else if (e->type == SDL_KEYDOWN) {
 
         switch( e->key.keysym.sym) {
         //All of the directional cases
         case SDLK_UP:
         case SDLK_w:
-            Screen::offset.y -= global::pic_size;
-            if (Screen::offset.y < 0) {Screen::offset.y = 0;}
+            offset.y -= m_window->pic_size;
+            if (offset.y < 0) { offset.y = 0; }
             break;
         case SDLK_DOWN:
         case SDLK_s:
-            Screen::offset.y += global::pic_size;
-            if (Screen::offset.y > (DEFINED_MAP_HEIGHT * global::pic_size) - Screen::window.height)
-                {Screen::offset.y = (DEFINED_MAP_HEIGHT * global::pic_size) - Screen::window.height;}
+            offset.y += m_window->pic_size;
+            if (offset.y > (defined::kMapHeight * m_window->pic_size) - m_window->height)
+                { offset.y = (defined::kMapHeight * m_window->pic_size) - m_window->height; }
             break;
         case SDLK_RIGHT:
         case SDLK_d:
-            Screen::offset.x += global::pic_size;
-            if (Screen::offset.x > (DEFINED_MAP_WIDTH * global::pic_size) - Screen::window.width)
-                {Screen::offset.x = (DEFINED_MAP_WIDTH * global::pic_size) - Screen::window.width;}
+            offset.x += m_window->pic_size;
+            if (offset.x > (defined::kMapWidth * m_window->pic_size) - m_window->width)
+                { offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width; }
             break;
         case SDLK_LEFT:
         case SDLK_a:
-            Screen::offset.x -= global::pic_size;
-            if (Screen::offset.x < 0) {Screen::offset.x = 0;}
+            offset.x -= m_window->pic_size;
+            if (offset.x < 0) {offset.x = 0;}
             break;
         case SDLK_HOME:
-            Screen::offset.x = Screen::offset.y = 0;
+            offset.x = offset.y = 0;
             break;
         case SDLK_END:
-            Screen::offset.x = (DEFINED_MAP_WIDTH * global::pic_size) - Screen::window.width;
+            offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width;
             break;
         case SDLK_PAGEDOWN:
-            Screen::offset.x -= Screen::window.width;
+            offset.x -= m_window->width;
             break;
         case SDLK_PAGEUP:
-            Screen::offset.x += Screen::window.width;
+            offset.x += m_window->width;
             break;
 
         //Quiting cases
         case SDLK_q:
         case SDLK_ESCAPE:
           //change the event type to be a quit.
-          if (Screen::promptuser(promptYesNo, "Do you really want to quit?") == 'Y') {
+          if (promptuser(promptYesNo, "Do you really want to quit?") == 'Y') {
             e->type = SDL_QUIT;
             return;
           }
@@ -201,45 +199,45 @@ void clsEditor::check_events(SDL_Event* e) {
 
         //Menu cases
         case SDLK_v:
-          Map::save();
+          save();
           break;
         case SDLK_n:
-          Map::newmap();
+          newmap();
           break;
         case SDLK_l:
-          Map::load();
+          load();
           break;
 
         //Switch tile
         case SDLK_1:
-            Toolbar::paintbrush.CurrentTile = tileSpace;
+            paintbrush.CurrentTile = tileSpace;
             break;
         case SDLK_2:
-            Toolbar::paintbrush.CurrentTile = tileBricksLarge;
+            paintbrush.CurrentTile = tileBricksLarge;
             break;
         case SDLK_3:
-            Toolbar::paintbrush.CurrentTile = tilePlayer;
+            paintbrush.CurrentTile = tilePlayer;
             break;
         case SDLK_4:
-            Toolbar::paintbrush.CurrentTile = tilePole;
+            paintbrush.CurrentTile = tilePole;
             break;
         case SDLK_5:
-            Toolbar::paintbrush.CurrentTile = tileMonster;
+            paintbrush.CurrentTile = tileMonster;
             break;
         case SDLK_6:
-            Toolbar::paintbrush.CurrentTile = tileCoin;
+            paintbrush.CurrentTile = tileCoin;
             break;
         case SDLK_7:
-            Toolbar::paintbrush.CurrentTile = tileBricksSmall;
+            paintbrush.CurrentTile = tileBricksSmall;
             break;
         case SDLK_8:
-            Toolbar::paintbrush.CurrentTile = tileBricksGray;
+            paintbrush.CurrentTile = tileBricksGray;
             break;
         case SDLK_9:
-            Toolbar::paintbrush.CurrentTile = tileBricksGreen;
+            paintbrush.CurrentTile = tileBricksGreen;
             break;
         case SDLK_0:
-            Toolbar::paintbrush.CurrentTile = tileBricksOrange;
+            paintbrush.CurrentTile = tileBricksOrange;
             break;
         } //end switch
     } //end if event type
@@ -255,20 +253,20 @@ void clsEditor::save() {
     char Answer;
     if (savemap != NULL) {
       if (global::blnDebugMode) { printf("Save found.\n");}
-      Answer = Screen::promptuser(promptYesNo, "Save already exists, would you like to overwrite?");
+      Answer = promptuser(promptYesNo, "Save already exists, would you like to overwrite?");
     } else { if (global::blnDebugMode) { printf("No save found.\n"); } }//end if savemap = null
 
     if (Answer == 'Y' || savemap == NULL) {
       fclose(savemap);
       savemap = fopen("map.sav", "w");
       if (global::blnDebugMode) {printf("Make save.\n");}
-      for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-        for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-          fprintf(savemap,"%2x", global::map[y][x]);
+      for (uint y = 0; y < defined::kMapHeight; y++) {
+        for (uint x = 0; x < defined::kMapWidth; x++) {
+          fprintf(savemap,"%2x", global::mymap.getMapCell(x,y));
         } //end for x
         fprintf(savemap, "\n");
       } //end for y
-      Screen::promptuser(promptOkay, "Save successful.");
+      promptuser(promptOkay, "Save successful.");
     } //end if map save
     fclose(savemap);
 }
@@ -278,12 +276,12 @@ void clsEditor::load() {
   /// @brief Loads the map from map.sav.
   /////////////////////////////////////////////////
 
-  if (Screen::promptuser(promptYesNo, "Do you want to load old map? All progress will be lost.") == 'Y' ){
+  if (promptuser(promptYesNo, "Do you want to load old map? All progress will be lost.") == 'Y' ){
     FILE* mapload = fopen("map.sav", "r");
-    if (mapload == NULL) {Screen::promptuser(promptOkay, "Saved map could not be found!"); return;}
-    for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-      for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-        fscanf(mapload, "%2x", &global::map[y][x] );
+    if (mapload == NULL) { promptuser(promptOkay, "Saved map could not be found!"); return; }
+    for (uint y = 0; y < defined::kMapHeight; y++) {
+      for (uint x = 0; x < defined::kMapWidth; x++) {
+        fscanf(mapload, "%2x", &global::mymap.getMapCell(x,y) );
       } //end for x
     } //end for y
   } //end if yes
@@ -295,12 +293,128 @@ void clsEditor::newmap() {
   /////////////////////////////////////////////////
 
   //New map; completely blank
-  if (Screen::promptuser(promptYesNo, "Do you really want to completely blank the map?") == 'Y') {
-    for (uint y = 0; y < DEFINED_MAP_HEIGHT; y++) {
-      for (uint x = 0; x < DEFINED_MAP_WIDTH; x++) {
-        global::map[y][x] = tileSpace;
+  if (promptuser(promptYesNo, "Do you really want to completely blank the map?") == 'Y') {
+    for (uint y = 0; y < defined::kMapHeight; y++) {
+      for (uint x = 0; x < defined::kMapWidth; x++) {
+        global::mymap.setMapCell(x,y,tileSpace);
       } //end for x
     } //end for y
   } //end if yes
+}
+/*****************************************************************************/
+void clsEditor::update() {
+  SDL_RenderClear(m_window->ren);
+  map_draw();
+  toolbar_draw();
+  SDL_RenderPresent(m_window->ren);
+}
+/*****************************************************************************/
+char clsEditor::promptuser(uchar prompttype, std::string message) {
+  /////////////////////////////////////////////////
+  /// @brief Prompts the user for some information.
+  ///
+  /// @param propmttype = What prompt to the user, Yes/No or an Okay.
+  /// @param message = The message that appears above the prompt.
+  /// @return What key is pressed by the user.
+  ///
+  /////////////////////////////////////////////////
+
+  //Prompt the user for something, prompt the user for something.
+  //returns what they say.
+
+  //Clear the Renderer
+  SDL_RenderClear(m_window->ren);
+
+  SDL_Surface* surmessage = TTF_RenderText_Solid(m_window->font,
+                            message.c_str(), m_window->colors.Black);
+  if (surmessage == nullptr) {
+    error();
+    return 'F';
+  }
+
+  SDL_Rect dst;
+
+  Textures::texmessage = SDL_CreateTextureFromSurface(window.ren, surmessage);
+  if (Textures::texmessage == nullptr) {
+    error();
+    return 'F';
+  } else {blnload.blnMessage = true;}
+
+  SDL_QueryTexture(Textures::texmessage, NULL, NULL, &dst.w, &dst.h);
+  //figure out x and y so that message is in the middle
+
+  dst.x = (uint) ((window.width / 2) - (dst.w / 2));
+  dst.y = (uint) ((window.height / 2) - (dst.h / 2));
+
+  SDL_RenderCopy(window.ren, Textures::texmessage, NULL, &dst);
+
+  std::string message2;
+
+  switch (prompttype) {
+  case promptYesNo:
+    message2 = "Please hit Y for yes, or N for no.";
+    break;
+  case promptOkay:
+    message2 = "Please hit any button to close.";
+    break;
+  default :
+    message2 = " ";
+    break;
+  }
+
+  surmessage = TTF_RenderText_Solid(m_window->font,
+                              message2.c_str(), m_window->colors.Black);
+  if (surmessage == nullptr) {
+    error();
+    return 'F';
+  }
+
+  Textures::texmessage = SDL_CreateTextureFromSurface(m_window->ren, surmessage);
+  if (Textures::texmessage == nullptr) {
+    error();
+    return 'F';
+  } else { blnload.blnMessage = true; }
+
+  SDL_QueryTexture(Textures::texmessage, NULL, NULL, &dst.w, &dst.h);
+  //figure out x and y so that message is in the middle, but below the first message
+  dst.x = (uint) ((window.width / 2) - (dst.w / 2));
+  dst.y = (uint) ((window.height / 2) + (dst.h / 2));
+
+  SDL_RenderCopy(m_window->ren, Textures::texmessage, NULL, &dst);
+
+  bool blnStopLoop = false;
+  char keyPress;
+  SDL_Event event;
+
+  //Start looping while wait for a response.
+  do {
+      SDL_RenderPresent(m_window->ren);
+      if (SDL_PollEvent( &event ) ) {
+          if (event.type == SDL_QUIT) {
+              //player wants to quit leave the loop
+              keyPress = 'N';
+              blnStopLoop = true;
+          } else if (event.type == SDL_KEYDOWN) {
+              switch (prompttype) {
+              case promptOkay:
+                  keyPress = 'O';
+                  blnStopLoop = true;
+                  break;
+              case promptYesNo:
+                  switch (event.key.keysym.sym) {
+                  case SDLK_y:
+                      keyPress = 'Y';
+                      blnStopLoop = true;
+                      break;
+                  case SDLK_n:
+                      keyPress = 'N';
+                      blnStopLoop = true;
+                      break;
+                  } //end switch key
+              }//end switch prompt type
+          } // end if event type
+      } //end if poll event
+  } while (blnStopLoop == false);
+  return keyPress;
 }
 /*****************************************************************************/

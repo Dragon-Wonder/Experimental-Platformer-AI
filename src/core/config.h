@@ -54,10 +54,13 @@ enum configValueSpot {
 	cnfgHumanBuild      /**< 14: Spot for if human build instead of ai. */
 };
 
+/// @addtogroup TypeDefs
+/// @{
 typedef struct ConfigValues Configures;
+/// @}
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class clsConfig config.h "source/config.h"
+/// @class clsConfig config.h "src/core/config.h"
 /// @brief This class will hold all of the values and functions related to the
 ///        config file.
 /////////////////////////////////////////////////

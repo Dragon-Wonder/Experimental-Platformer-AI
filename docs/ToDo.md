@@ -12,7 +12,7 @@ Improvements to the code can be made as [Issues](https://github.com/Dragon-Wonde
 
 * Start giving document changes numbers (so commits are better than "Doc update")
 
-* Figure out IOS compling 
+* Figure out IOS compling
 
 * Replace pictures with better ones
 
@@ -23,3 +23,5 @@ Improvements to the code can be made as [Issues](https://github.com/Dragon-Wonde
 ~~* Change the Read me so its not so off putting~~ 2015-08-10
 
 ~~* Update readme to use 2.0.4 SDL library ~~ 2015-09-01
+
+* Added documentation for the Editor when merged.

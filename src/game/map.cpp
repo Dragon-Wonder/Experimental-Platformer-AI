@@ -355,10 +355,10 @@ uchar tempmap[defined::kMapHeight][defined::kMapWidth] = {{1,1,1,1,1,1,1,1,1,1,1
 			} //end if monster tile
 		} //end for width
 	} //end for height
-	if (global::blnDebugMode) {printf("Found %d Monsters.\n",numMonsters);}
+	if (global::blnDebugMode) { printf("Found %d Monsters.\n",numMonsters); }
 
 	global::enty.allocateMonsters(numMonsters);
-	if (global::blnError) {printf("Could not allocate the memory!\n"); return;}
+	if (global::blnError) { printf("Could not allocate the memory!\n"); return; }
 }
 /*****************************************************************************/
 uchar clsMap::getMapCell(uint x, uint y) {
