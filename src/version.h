@@ -16,16 +16,16 @@
 /*****************************************************************************/
 //Date Version Types
 /** The day of the last build of the program, currently not used. */
-#define DEFINED_VER_DATE "02"
+#define DEFINED_VER_DATE "03"
 
 /** The month of the last build of the program, currently not used. */
-#define DEFINED_VER_MONTH "05"
+#define DEFINED_VER_MONTH "09"
 
 /** The year of the last build of the program, currently not used. */
-#define DEFINED_VER_YEAR "2019"
+#define DEFINED_VER_YEAR "2021"
 
 /** The Ubuntu style of the date of the last build. It is in YY.MM format. */
-#define DEFINED_VER_UBUNTU_VERSION_STYLE  "19.05"
+#define DEFINED_VER_UBUNTU_VERSION_STYLE  "21.09"
 /*****************************************************************************/
 /** The Major number of the version number */
 #define DEFINED_VER_MAJOR  6
@@ -38,13 +38,13 @@
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 6,0,0,2
+#define DEFINED_VER_RC_FILEVERSION 6,0,0,3
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "6, 0, 0, 2\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "6, 0, 0, 3\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "6.0.0-alpha.2\0"
+#define DEFINED_VER_FULLVERSION_STRING  "6.0.0-alpha.3\0"
 
 //Software Status
 /**

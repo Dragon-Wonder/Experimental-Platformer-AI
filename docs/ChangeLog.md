@@ -3,6 +3,13 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [6.0.0-alpha.3] - 2021-09-03
+### Updated
+* Continued merging editor and menu systems.
+* Moved back to CodeBlocks project
+* It complies now, but still more works needs to be done
+
+
 ## [6.0.0-alpha.2] - 2019-05-02
 ### Updated
 * Continued merging editor and menu systems.

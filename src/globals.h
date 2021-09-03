@@ -137,7 +137,14 @@ struct stcMonster {
 	bool living; /**< Whether or not the monster is alive. Will stop updating if false. */
 	unsigned char state; /**< Monster's state (examples: left, right, jumping, etc...). Currently does nothing. */
 }; //prefix = mst
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @defgroup enum Enumerators
+/// @brief These are all the different enums that are used throughout the code.
+/// @{
+/////////////////////////////////////////////////
 
+/** Holds all the different tiles that are in tiles.png. */
 /** @enum dir
   * The different directions that are possible for the player / monster in
   * an enum for easier reference,
@@ -158,7 +165,25 @@ enum enumMenu {
   menuEditor,
   menuAbout,
   menuOptions,
-  menuError
+  menuError,
+  menuSave
+};
+
+/** Holds the different prompt types */
+enum promptTypes {
+  promptYesNo = 0,
+  promptOkay,
+  promptNew,
+  promptPrompt,
+  promptUse
+};
+
+/** Holds the different returns from a prompt*/
+enum promptReturns {
+  returnYes = 0,
+  returnNo,
+  returnError,
+  returnMaybe
 };
 
 /** Holds the different tools */
@@ -168,6 +193,9 @@ enum enumTools {
   toolLeft,
   toolRght
 };
+// end enum groups
+/// @}
+/*****************************************************************************/
 /// @addtogroup TypeDefs
 /// @{
 typedef struct stcGeneration GEN; /**< Change structure typedef for easier reference. */
@@ -178,6 +206,7 @@ typedef struct stcVel VEL; /**< Change structure typedef for easier reference. *
 typedef struct stcBasePlayer BPLYR; /**< Change structure typedef for easier reference. */
 typedef std::vector<MNSTR> VectorMonsters; /**< Define a vector for the monsters */
 typedef std::vector<GEN> VectorGeneration; /**< Define a vector for the generation */
+typedef struct stcLoc OFFST; /**< Define a map offset */
 
 //Ahh laziness at its finest
 typedef unsigned char uchar; /**< Change unsigned char to uchar because I'm lazy. */

@@ -3,9 +3,10 @@
 /*****************************************************************************/
 clsEditor::clsEditor() {
   //ctor
-  clsScreen screen;
+  //clsScreen screen;
   m_window = screen.getWinAtt();
   m_textures = screen.get_Textures();
+  m_offset = {0,0};
 
   for (uchar i = 0; i < defined::kNumMapTiles; ++i ) { map_clips[i] = screen.getMapClips(i); }
   for (uchar i = 0; i < defined::kNumTools; ++i ) { tool_clips[i] = screen.getToolClips(i); }
@@ -18,6 +19,7 @@ clsEditor::~clsEditor() {
 void clsEditor::start() {
   bool quit = false;
   make_buttons();
+  SDL_Event event;
 
   while ( !quit ) {
     if (SDL_PollEvent( &event ) != 0 ) {
@@ -41,21 +43,24 @@ void clsEditor::make_buttons() {
     //Make tile buttons
     for (uchar i = 0; i < defined::kNumMapTiles; i++) {
         button_xplaces[i] = centerx - ( ( (defined::kNumMapTiles / 2)- i ) * 4 )
-                                    - ( ( (defined::kNumMapTile / 2) - i ) * m_window->pic_size );
+                                    - ( ( (defined::kNumMapTiles / 2) - i ) * m_window->pic_size );
     }
+
+
 
     for (uchar i = 0; i < defined::kNumMapTiles; i++) {
       tilebuttons[i].buttontype = i;
-      tilebuttons[i].clip = &m_textures->clips[i];
+      tilebuttons[i].clip = &map_clips[i];
       tilebuttons[i].box.w = tilebuttons[i].box.h = m_window->pic_size;
       tilebuttons[i].box.y = 2;
       tilebuttons[i].box.x = button_xplaces[i];
     }
 
+
     //Make menu buttons
     for (uchar i = 0; i < defined::kNumTools; i++) {
-        menubuttons[i].buttontype = toolClose + i;
-        menubuttons[i].clip = &m_textures->clips[toolClose + i];
+        menubuttons[i].buttontype = toolQuit + i;
+        menubuttons[i].clip = &tool_clips[i];
         menubuttons[i].box.w = menubuttons[i].box.h = m_window->pic_size;
         menubuttons[i].box.y = 2;
         menubuttons[i].box.x = (m_window->width - 2) - ( (i+1) * m_window->pic_size);
@@ -74,22 +79,22 @@ void clsEditor::toolbar_draw() {
   dst.y = 0;
   for (uchar i = 0; i < defined::kNumMapTiles; i++) {
     dst.x = button_xplaces[i] - 2;
-    SDL_RenderCopy(m_window->ren, m_textures->toolboxframe, NULL, &dst);
+    SDL_RenderCopy(m_window->ren, m_textures->toolframetex, NULL, &dst);
   }
 
   //Show all the tile buttons
   for (uchar i = 0; i < defined::kNumMapTiles; i++) {
-    SDL_RenderCopy(m_window->ren, m_textures->tilemap,
+    SDL_RenderCopy(m_window->ren, m_textures->maptiles,
                    tilebuttons[i].clip, &tilebuttons[i].box);
     if (tilebuttons[i].buttontype == paintbrush.CurrentTile) {
-        SDL_RenderCopy(m_window->ren, m_textures->tilemap,
-                       &m_textures->clips[menuFrame] , &tilebuttons[i].box);
+        SDL_RenderCopy(m_window->ren, m_textures->maptiles,
+                       NULL , &tilebuttons[i].box);
     }
   }
 
   //show all the menu buttons
   for (uchar i = 0; i < defined::kNumTools; i++) {
-    SDL_RenderCopy(m_window->ren, m_textures->tilemap,
+    SDL_RenderCopy(m_window->ren, m_textures->maptiles,
                    menubuttons[i].clip, &menubuttons[i].box);
   }
 }
@@ -128,9 +133,10 @@ void clsEditor::check_events(SDL_Event* e) {
                 blnButtonDown = false;
                 switch (menubuttons[i].buttontype) {
                 case menuSave:
-                    Map::save();
+                    /** \todo (GamerMan7799#1#): Re-implement saving */
+                    //Map::save();
                     break;
-                case menuClose:
+                case menuQuit:
                     if (promptuser(promptYesNo, "Do you really want to quit?") == 'Y') {
                       e->type = SDL_QUIT;
                     } //end if yes
@@ -144,8 +150,8 @@ void clsEditor::check_events(SDL_Event* e) {
         //user did not click on any buttons therefore change the map tile.
         //convert to map coordinates
         uint mapx, mapy;
-        mapx = (uint) ( (x + offset.x) / m_window->pic_size);
-        mapy = (uint) ( (y + offset.y) / m_window->pic_size);
+        mapx = (uint) ( (x + m_offset.x) / m_window->pic_size);
+        mapy = (uint) ( (y + m_offset.y) / m_window->pic_size);
 
         global::mymap.setMapCell(mapx,mapy,paintbrush.CurrentTile);
     } else if (e->type == SDL_KEYDOWN) {
@@ -154,37 +160,37 @@ void clsEditor::check_events(SDL_Event* e) {
         //All of the directional cases
         case SDLK_UP:
         case SDLK_w:
-            offset.y -= m_window->pic_size;
-            if (offset.y < 0) { offset.y = 0; }
+            m_offset.y -= m_window->pic_size;
+            if (m_offset.y < 0) { m_offset.y = 0; }
             break;
         case SDLK_DOWN:
         case SDLK_s:
-            offset.y += m_window->pic_size;
-            if (offset.y > (defined::kMapHeight * m_window->pic_size) - m_window->height)
-                { offset.y = (defined::kMapHeight * m_window->pic_size) - m_window->height; }
+            m_offset.y += m_window->pic_size;
+            if (m_offset.y > (defined::kMapHeight * m_window->pic_size) - m_window->height)
+                { m_offset.y = (defined::kMapHeight * m_window->pic_size) - m_window->height; }
             break;
         case SDLK_RIGHT:
         case SDLK_d:
-            offset.x += m_window->pic_size;
-            if (offset.x > (defined::kMapWidth * m_window->pic_size) - m_window->width)
-                { offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width; }
+            m_offset.x += m_window->pic_size;
+            if (m_offset.x > (defined::kMapWidth * m_window->pic_size) - m_window->width)
+                { m_offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width; }
             break;
         case SDLK_LEFT:
         case SDLK_a:
-            offset.x -= m_window->pic_size;
-            if (offset.x < 0) {offset.x = 0;}
+            m_offset.x -= m_window->pic_size;
+            if (m_offset.x < 0) { m_offset.x = 0; }
             break;
         case SDLK_HOME:
-            offset.x = offset.y = 0;
+            m_offset.x = m_offset.y = 0;
             break;
         case SDLK_END:
-            offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width;
+            m_offset.x = (defined::kMapWidth * m_window->pic_size) - m_window->width;
             break;
         case SDLK_PAGEDOWN:
-            offset.x -= m_window->width;
+            m_offset.x -= m_window->width;
             break;
         case SDLK_PAGEUP:
-            offset.x += m_window->width;
+            m_offset.x += m_window->width;
             break;
 
         //Quiting cases
@@ -281,7 +287,7 @@ void clsEditor::load() {
     if (mapload == NULL) { promptuser(promptOkay, "Saved map could not be found!"); return; }
     for (uint y = 0; y < defined::kMapHeight; y++) {
       for (uint x = 0; x < defined::kMapWidth; x++) {
-        fscanf(mapload, "%2x", &global::mymap.getMapCell(x,y) );
+        fscanf(mapload, "%2x", global::mymap.getMapCell(x,y) );
       } //end for x
     } //end for y
   } //end if yes
@@ -304,7 +310,8 @@ void clsEditor::newmap() {
 /*****************************************************************************/
 void clsEditor::update() {
   SDL_RenderClear(m_window->ren);
-  map_draw();
+  screen.update();
+  //map_draw();
   toolbar_draw();
   SDL_RenderPresent(m_window->ren);
 }
@@ -328,25 +335,25 @@ char clsEditor::promptuser(uchar prompttype, std::string message) {
   SDL_Surface* surmessage = TTF_RenderText_Solid(m_window->font,
                             message.c_str(), m_window->colors.Black);
   if (surmessage == nullptr) {
-    error();
+    //screen.showErrors();
     return 'F';
   }
 
   SDL_Rect dst;
 
-  Textures::texmessage = SDL_CreateTextureFromSurface(window.ren, surmessage);
-  if (Textures::texmessage == nullptr) {
-    error();
+  m_texmessage = SDL_CreateTextureFromSurface(m_window->ren, surmessage);
+  if (m_texmessage == nullptr) {
+    //screen.showErrors();
     return 'F';
-  } else {blnload.blnMessage = true;}
+  } else { blnMessage = true; }
 
-  SDL_QueryTexture(Textures::texmessage, NULL, NULL, &dst.w, &dst.h);
+  SDL_QueryTexture(m_texmessage, NULL, NULL, &dst.w, &dst.h);
   //figure out x and y so that message is in the middle
 
-  dst.x = (uint) ((window.width / 2) - (dst.w / 2));
-  dst.y = (uint) ((window.height / 2) - (dst.h / 2));
+  dst.x = (uint) ((m_window->width / 2) - (dst.w / 2));
+  dst.y = (uint) ((m_window->height / 2) - (dst.h / 2));
 
-  SDL_RenderCopy(window.ren, Textures::texmessage, NULL, &dst);
+  SDL_RenderCopy(m_window->ren, m_texmessage, NULL, &dst);
 
   std::string message2;
 
@@ -365,22 +372,22 @@ char clsEditor::promptuser(uchar prompttype, std::string message) {
   surmessage = TTF_RenderText_Solid(m_window->font,
                               message2.c_str(), m_window->colors.Black);
   if (surmessage == nullptr) {
-    error();
+    //screen.showErrors();
     return 'F';
   }
 
-  Textures::texmessage = SDL_CreateTextureFromSurface(m_window->ren, surmessage);
-  if (Textures::texmessage == nullptr) {
-    error();
+  m_texmessage = SDL_CreateTextureFromSurface(m_window->ren, surmessage);
+  if (m_texmessage == nullptr) {
+    //screen.showErrors();
     return 'F';
-  } else { blnload.blnMessage = true; }
+  } else { blnMessage = true; }
 
-  SDL_QueryTexture(Textures::texmessage, NULL, NULL, &dst.w, &dst.h);
+  SDL_QueryTexture(m_texmessage, NULL, NULL, &dst.w, &dst.h);
   //figure out x and y so that message is in the middle, but below the first message
-  dst.x = (uint) ((window.width / 2) - (dst.w / 2));
-  dst.y = (uint) ((window.height / 2) + (dst.h / 2));
+  dst.x = (uint) ((m_window->width / 2) - (dst.w / 2));
+  dst.y = (uint) ((m_window->height / 2) + (dst.h / 2));
 
-  SDL_RenderCopy(m_window->ren, Textures::texmessage, NULL, &dst);
+  SDL_RenderCopy(m_window->ren, m_texmessage, NULL, &dst);
 
   bool blnStopLoop = false;
   char keyPress;

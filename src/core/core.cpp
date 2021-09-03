@@ -32,7 +32,7 @@ int clsCore::start() {
   }
 
   if (global::blnError) { printf("\nThere was an error!\n"); return 1; }
-  char menuselection
+  char menuselection;
   while (!global::blnQuit) {
     menuselection = m_menu.MainMenu();
     switch(menuselection) {
@@ -74,7 +74,7 @@ int clsCore::start() {
     } // end switch
   }; // end loop
 
-  m_screen.~clsm_screen();
+  m_screen.~clsScreen();
 	printf("\nDone\n");
 }
 /*****************************************************************************/

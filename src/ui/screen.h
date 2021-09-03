@@ -99,10 +99,11 @@ class clsScreen {
     void update(void);
     void cleanup(void);
     void playerDeath(void);
-    TEX get_Textures(void);
+    TEX* get_Textures(void);
     stcWinAtt* getWinAtt(void);
     SDL_Rect getMapClips(uchar);
     SDL_Rect getToolClips(uchar);
+    void showErrors(void);
 
     static bool bln_SDL_started; /**< If SDL is currently running without issue. */
 

@@ -37,13 +37,7 @@ typedef struct stcToolButton BTTN;
 enum tools {
     toolPencil = 0,
     toolBucket,
-    toolLine,
-};
-
-/** Holds the different prompts types to the user. */
-enum prompttype {
-    promptYesNo = 0,
-    promptOkay
+    toolLine
 };
 /*****************************************************************************/
 /////////////////////////////////////////////////
@@ -68,16 +62,20 @@ private:
   void save(void);
   void load(void);
   void newmap(void);
-  char promptuser(uchar, std::string)
+  char promptuser(uchar, std::string);
 
   stcWinAtt* m_window;
-  TEX m_textures;
+  TEX* m_textures;
+  SDL_Texture* m_texmessage;
   SDL_Rect map_clips[defined::kNumMapTiles];
   SDL_Rect tool_clips[defined::kNumTools];
-  BURSH paintbrush;
+  BRUSH paintbrush;
+  bool blnMessage;
   BTTN tilebuttons[defined::kNumMapTiles];
-  uint button_xplaces[deinfed::kNumMapTiles];
+  uint button_xplaces[defined::kNumMapTiles];
   BTTN menubuttons[defined::kNumTools];
+  OFFST m_offset;
+  clsScreen screen;
 };
 /*****************************************************************************/
 #endif

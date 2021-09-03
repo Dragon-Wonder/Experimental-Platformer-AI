@@ -31,7 +31,7 @@ class clsMenu {
     void OptionsMenu(void);
     char GameMenu(void);
     char promptUser(char, std::string);
-    stats doLevelUp(stats);
+    //stats doLevelUp(stats);
 
   protected:
 
